@@ -4,6 +4,8 @@
 import SwiftUI
 
 struct NotableObservationsView: View {
+    let locationService = LocationService.global
+
     @Environment(NotableObservationsProvider.self) var provider
     @State var isLoading = false
     @State private var error: eBirdServiceError?

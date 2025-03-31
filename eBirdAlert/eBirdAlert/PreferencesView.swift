@@ -4,20 +4,18 @@
 import SwiftUI
 
 struct PreferencesView: View {
-    @AppStorage(wrappedValue: "", .settingsApplicationKey)
-    var applicationKey: String
+    var preferences = PreferencesModel.global
 
     var body: some View {
         Form {
             Label("eBird Application Key", systemImage: "key")
-            TextField(text: $applicationKey,
+            TextField(text: preferences.$applicationKey,
                       prompt: Text("eBird application key"))
             {
                 Text("App Key")
             }
             .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
-            // .onSubmit { loginOrRefresh() }
         }
     }
 }
