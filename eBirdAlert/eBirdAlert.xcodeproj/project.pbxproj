@@ -1,0 +1,565 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		3BEF40AB2D9ADB5D00817F9C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BEF40902D9ADB5C00817F9C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3BEF40972D9ADB5C00817F9C;
+			remoteInfo = eBirdAlert;
+		};
+		3BEF40B52D9ADB5D00817F9C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BEF40902D9ADB5C00817F9C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3BEF40972D9ADB5C00817F9C;
+			remoteInfo = eBirdAlert;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3BEF40982D9ADB5C00817F9C /* eBirdAlert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eBirdAlert.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BEF40AA2D9ADB5D00817F9C /* eBirdAlertTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = eBirdAlertTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BEF40B42D9ADB5D00817F9C /* eBirdAlertUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = eBirdAlertUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		3BEF409A2D9ADB5C00817F9C /* eBirdAlert */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = eBirdAlert;
+			sourceTree = "<group>";
+		};
+		3BEF40AD2D9ADB5D00817F9C /* eBirdAlertTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = eBirdAlertTests;
+			sourceTree = "<group>";
+		};
+		3BEF40B72D9ADB5D00817F9C /* eBirdAlertUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = eBirdAlertUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3BEF40952D9ADB5C00817F9C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BEF40A72D9ADB5D00817F9C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BEF40B12D9ADB5D00817F9C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3BEF408F2D9ADB5C00817F9C = {
+			isa = PBXGroup;
+			children = (
+				3BEF409A2D9ADB5C00817F9C /* eBirdAlert */,
+				3BEF40AD2D9ADB5D00817F9C /* eBirdAlertTests */,
+				3BEF40B72D9ADB5D00817F9C /* eBirdAlertUITests */,
+				3BEF40992D9ADB5C00817F9C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3BEF40992D9ADB5C00817F9C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3BEF40982D9ADB5C00817F9C /* eBirdAlert.app */,
+				3BEF40AA2D9ADB5D00817F9C /* eBirdAlertTests.xctest */,
+				3BEF40B42D9ADB5D00817F9C /* eBirdAlertUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3BEF40972D9ADB5C00817F9C /* eBirdAlert */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BEF40BE2D9ADB5D00817F9C /* Build configuration list for PBXNativeTarget "eBirdAlert" */;
+			buildPhases = (
+				3BEF40942D9ADB5C00817F9C /* Sources */,
+				3BEF40952D9ADB5C00817F9C /* Frameworks */,
+				3BEF40962D9ADB5C00817F9C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3BEF409A2D9ADB5C00817F9C /* eBirdAlert */,
+			);
+			name = eBirdAlert;
+			packageProductDependencies = (
+			);
+			productName = eBirdAlert;
+			productReference = 3BEF40982D9ADB5C00817F9C /* eBirdAlert.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3BEF40A92D9ADB5D00817F9C /* eBirdAlertTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BEF40C12D9ADB5D00817F9C /* Build configuration list for PBXNativeTarget "eBirdAlertTests" */;
+			buildPhases = (
+				3BEF40A62D9ADB5D00817F9C /* Sources */,
+				3BEF40A72D9ADB5D00817F9C /* Frameworks */,
+				3BEF40A82D9ADB5D00817F9C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3BEF40AC2D9ADB5D00817F9C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3BEF40AD2D9ADB5D00817F9C /* eBirdAlertTests */,
+			);
+			name = eBirdAlertTests;
+			packageProductDependencies = (
+			);
+			productName = eBirdAlertTests;
+			productReference = 3BEF40AA2D9ADB5D00817F9C /* eBirdAlertTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3BEF40B32D9ADB5D00817F9C /* eBirdAlertUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BEF40C42D9ADB5D00817F9C /* Build configuration list for PBXNativeTarget "eBirdAlertUITests" */;
+			buildPhases = (
+				3BEF40B02D9ADB5D00817F9C /* Sources */,
+				3BEF40B12D9ADB5D00817F9C /* Frameworks */,
+				3BEF40B22D9ADB5D00817F9C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3BEF40B62D9ADB5D00817F9C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3BEF40B72D9ADB5D00817F9C /* eBirdAlertUITests */,
+			);
+			name = eBirdAlertUITests;
+			packageProductDependencies = (
+			);
+			productName = eBirdAlertUITests;
+			productReference = 3BEF40B42D9ADB5D00817F9C /* eBirdAlertUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3BEF40902D9ADB5C00817F9C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					3BEF40972D9ADB5C00817F9C = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					3BEF40A92D9ADB5D00817F9C = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 3BEF40972D9ADB5C00817F9C;
+					};
+					3BEF40B32D9ADB5D00817F9C = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 3BEF40972D9ADB5C00817F9C;
+					};
+				};
+			};
+			buildConfigurationList = 3BEF40932D9ADB5C00817F9C /* Build configuration list for PBXProject "eBirdAlert" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3BEF408F2D9ADB5C00817F9C;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 3BEF40992D9ADB5C00817F9C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3BEF40972D9ADB5C00817F9C /* eBirdAlert */,
+				3BEF40A92D9ADB5D00817F9C /* eBirdAlertTests */,
+				3BEF40B32D9ADB5D00817F9C /* eBirdAlertUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3BEF40962D9ADB5C00817F9C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BEF40A82D9ADB5D00817F9C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BEF40B22D9ADB5D00817F9C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3BEF40942D9ADB5C00817F9C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BEF40A62D9ADB5D00817F9C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BEF40B02D9ADB5D00817F9C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3BEF40AC2D9ADB5D00817F9C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3BEF40972D9ADB5C00817F9C /* eBirdAlert */;
+			targetProxy = 3BEF40AB2D9ADB5D00817F9C /* PBXContainerItemProxy */;
+		};
+		3BEF40B62D9ADB5D00817F9C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3BEF40972D9ADB5C00817F9C /* eBirdAlert */;
+			targetProxy = 3BEF40B52D9ADB5D00817F9C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3BEF40BC2D9ADB5D00817F9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3BEF40BD2D9ADB5D00817F9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3BEF40BF2D9ADB5D00817F9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"eBirdAlert/Preview Content\"";
+				DEVELOPMENT_TEAM = 65BH4M439S;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "eBird Alert!";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.rafferty.colin.eBirdAlert;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3BEF40C02D9ADB5D00817F9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"eBirdAlert/Preview Content\"";
+				DEVELOPMENT_TEAM = 65BH4M439S;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "eBird Alert!";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.rafferty.colin.eBirdAlert;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		3BEF40C22D9ADB5D00817F9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 65BH4M439S;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.rafferty.colin.eBirdAlertTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/eBirdAlert.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/eBirdAlert";
+			};
+			name = Debug;
+		};
+		3BEF40C32D9ADB5D00817F9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 65BH4M439S;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.rafferty.colin.eBirdAlertTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/eBirdAlert.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/eBirdAlert";
+			};
+			name = Release;
+		};
+		3BEF40C52D9ADB5D00817F9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 65BH4M439S;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.rafferty.colin.eBirdAlertUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = eBirdAlert;
+			};
+			name = Debug;
+		};
+		3BEF40C62D9ADB5D00817F9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 65BH4M439S;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.rafferty.colin.eBirdAlertUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = eBirdAlert;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3BEF40932D9ADB5C00817F9C /* Build configuration list for PBXProject "eBirdAlert" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3BEF40BC2D9ADB5D00817F9C /* Debug */,
+				3BEF40BD2D9ADB5D00817F9C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3BEF40BE2D9ADB5D00817F9C /* Build configuration list for PBXNativeTarget "eBirdAlert" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3BEF40BF2D9ADB5D00817F9C /* Debug */,
+				3BEF40C02D9ADB5D00817F9C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3BEF40C12D9ADB5D00817F9C /* Build configuration list for PBXNativeTarget "eBirdAlertTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3BEF40C22D9ADB5D00817F9C /* Debug */,
+				3BEF40C32D9ADB5D00817F9C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3BEF40C42D9ADB5D00817F9C /* Build configuration list for PBXNativeTarget "eBirdAlertUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3BEF40C52D9ADB5D00817F9C /* Debug */,
+				3BEF40C62D9ADB5D00817F9C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3BEF40902D9ADB5C00817F9C /* Project object */;
+}
