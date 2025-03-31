@@ -1,12 +1,27 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-import SwiftData
 import SwiftUI
 
 struct PreferencesView: View {
-    // TODO: Implement me
+    @AppStorage(wrappedValue: "", .settingsApplicationKey)
+    var applicationKey: String
+
     var body: some View {
-        Text("My Prefs")
+        Form {
+            Label("eBird Application Key", systemImage: "key")
+            TextField(text: $applicationKey,
+                      prompt: Text("eBird application key"))
+            {
+                Text("App Key")
+            }
+            .textInputAutocapitalization(.never)
+            .disableAutocorrection(true)
+            // .onSubmit { loginOrRefresh() }
+        }
     }
+}
+
+#Preview {
+    PreferencesView()
 }

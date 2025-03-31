@@ -7,11 +7,15 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
+            Tab("Rarities", systemImage: "bird.circle") {
+                NotableObservationsView()
+            }
+
             Tab("Items", systemImage: "tray.and.arrow.up.fill") {
                 ItemsView()
             }
 
-            Tab("Prefs", systemImage: "person.crop.circle.fill") {
+            Tab("Settings", systemImage: "gearshape") {
                 PreferencesView()
             }
         }

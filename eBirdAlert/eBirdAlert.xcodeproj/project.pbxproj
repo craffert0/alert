@@ -29,9 +29,22 @@
 		3BEF40B42D9ADB5D00817F9C /* eBirdAlertUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = eBirdAlertUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3BEF40D52D9B0D7700817F9C /* Exceptions for "eBirdAlert" folder in "eBirdAlert" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3BEF40972D9ADB5C00817F9C /* eBirdAlert */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3BEF409A2D9ADB5C00817F9C /* eBirdAlert */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3BEF40D52D9B0D7700817F9C /* Exceptions for "eBirdAlert" folder in "eBirdAlert" target */,
+			);
 			path = eBirdAlert;
 			sourceTree = "<group>";
 		};
@@ -399,6 +412,7 @@
 				DEVELOPMENT_TEAM = 65BH4M439S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = eBirdAlert/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "eBird Alert!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -429,6 +443,7 @@
 				DEVELOPMENT_TEAM = 65BH4M439S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = eBirdAlert/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "eBird Alert!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

@@ -6,6 +6,8 @@ import SwiftUI
 
 @main
 struct eBirdAlertApp: App {
+    @State var notableProvider = NotableObservationsProvider()
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -21,7 +23,7 @@ struct eBirdAlertApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environment(notableProvider)
         }
         .modelContainer(sharedModelContainer)
     }

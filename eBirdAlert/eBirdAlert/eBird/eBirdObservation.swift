@@ -30,3 +30,7 @@ struct eBirdObservation: Codable {
     let lastName: String
     let hasRichMedia: Bool
 }
+
+extension eBirdObservation: Identifiable {
+    var id: String { speciesCode }
+}
