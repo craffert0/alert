@@ -32,3 +32,5 @@ struct BirdObservations {
 extension BirdObservations: Identifiable {
     var id: String { speciesCode }
 }
+
+extension BirdObservations: Species {}

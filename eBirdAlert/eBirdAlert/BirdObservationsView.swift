@@ -17,6 +17,11 @@ struct BirdObservationsView: View {
         // 4. Map?
         VStack {
             Text(o.sciName)
+            NavigationLink {
+                SpeciesDetailView(species: o)
+            } label: {
+                Label("Details", systemImage: "network")
+            }
             List {
                 ForEach(o.observations) { e in
                     NavigationLink {
@@ -28,6 +33,7 @@ struct BirdObservationsView: View {
             }
             .listStyle(.automatic)
             .navigationTitle(o.comName)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
