@@ -5,7 +5,7 @@ import Observation
 
 @Observable
 class NotableObservationsProvider {
-    var observations: [eBirdObservation] = []
+    var observations: [BirdObservations] = []
     let client: NotableObservationsClient
 
     init(client: NotableObservationsClient = NotableObservationsClient()) {
@@ -14,6 +14,6 @@ class NotableObservationsProvider {
 
     func refresh() async throws {
         let latestObservations = try await client.observations
-        observations = latestObservations
+        observations = latestObservations.collate()
     }
 }

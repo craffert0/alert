@@ -15,7 +15,8 @@ struct NotableObservationsView: View {
         NavigationView {
             List {
                 ForEach(provider.observations) { o in
-                    Text("\(o.speciesCode): \(o.comName)")
+                    let delta = o.latestSighting.distance(to: Date.now)
+                    Text("\(o.comName) (\(o.observations.count)): \(Int(delta))")
                 }
             }
             .listStyle(.inset)
