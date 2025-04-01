@@ -42,7 +42,9 @@ extension URLSession: Sendable {
         else {
             throw eBirdServiceError.networkError
         }
-        let result = try JSONDecoder().decode([eBirdObservation].self, from: data)
+        let d = JSONDecoder()
+        d.dateDecodingStrategy = .eBirdStyle
+        let result = try d.decode([eBirdObservation].self, from: data)
         return result
     }
 }
