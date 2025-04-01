@@ -47,6 +47,9 @@ class Server:
             )
         ]
 
+    def checklist(self, subId):
+        return self.get("product/checklist/view/" + subId)
+
     def taxonomy(self, species):
         return self.get("ref/taxonomy/ebird", f"&species={species}")
 
@@ -54,8 +57,41 @@ class Server:
 def main():
     server = Server()
     # print(json.dumps(server.taxonomy("louwat,commer"), indent=2))
-    print(json.dumps(server.notable(), indent=2))
+    # print(json.dumps(server.notable(), indent=2))
+    print(json.dumps(server.checklist("S222156738"), indent=2))
 
 
 if __name__ == "__main__":
     main()
+
+
+# {
+#   "speciesCode": "chiswi",
+#   "comName": "Chimney Swift",
+#   "sciName": "Chaetura pelagica",
+#   "locId": "L109516",
+#   "locName": "Prospect Park",
+#   "obsDt": "2025-03-31 11:05",
+#   "howMany": 8,
+#   "lat": 40.6602841,
+#   "lng": -73.9689534,
+#   "obsValid": false,
+#   "obsReviewed": false,
+#   "locationPrivate": false,
+#   "subId": "S222156738",
+#   "subnational2Code": "US-NY-047",
+#   "subnational2Name": "Kings",
+#   "subnational1Code": "US-NY",
+#   "subnational1Name": "New York",
+#   "countryCode": "US",
+#   "countryName": "United States",
+#   "userDisplayName": "Susie Dippel",
+#   "obsId": "OBS3012607309",
+#   "checklistId": "CL23822",
+#   "presenceNoted": false,
+#   "hasComments": false,
+#   "firstName": "Susie",
+#   "lastName": "Dippel",
+#   "hasRichMedia": false,
+#   "colin_id": "OBS3012607309.S222156738"
+# }

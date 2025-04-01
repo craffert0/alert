@@ -6,7 +6,7 @@ import Observation
 @Observable
 class NotableObservationsProvider {
     var observations: [BirdObservations] = []
-    let client: NotableObservationsClient
+    private let client: NotableObservationsClient
 
     init(client: NotableObservationsClient = NotableObservationsClient()) {
         self.client = client

@@ -15,12 +15,16 @@ struct NotableObservationsView: View {
         NavigationView {
             List {
                 ForEach(provider.observations) { o in
-                    let delta = o.latestSighting.distance(to: Date.now)
-                    Text("\(o.comName) (\(o.observations.count)): \(Int(delta))")
+                    NavigationLink {
+                        BirdObservationsView(o)
+                    } label: {
+                        let delta = o.latestSighting.distance(to: Date.now)
+                        Text("\(o.comName) (\(o.observations.count)): \(Int(delta))")
+                    }
                 }
             }
-            .listStyle(.inset)
-            .navigationTitle("Notable Sightings")
+            .listStyle(.automatic)
+            .navigationTitle("Rarities")
             // .toolbar(content: toolbarContent)
             // .environment(\.editMode, $editMode)
             .refreshable {
