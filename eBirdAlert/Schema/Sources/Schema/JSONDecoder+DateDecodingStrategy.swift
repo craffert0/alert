@@ -9,12 +9,22 @@ public extension JSONDecoder.DateDecodingStrategy {
         let f = DateFormatter()
         f.timeZone = TimeZone.current
         f.locale = Locale(identifier: "en_US_POSIX")
+
+        // Most have HH:mm
         f.dateFormat = "yyyy-MM-dd HH:mm"
-        guard let date = f.date(from: raw) else {
-            throw DecodingError.dataCorrupted(
-                DecodingError.Context(codingPath: d.codingPath,
-                                      debugDescription: raw))
+        if let date = f.date(from: raw) {
+            return date
         }
-        return date
+
+        // Some are just the date
+        f.dateFormat = "yyyy-MM-dd"
+        if let date = f.date(from: raw) {
+            return date
+        }
+
+        // Oh well.
+        throw DecodingError.dataCorrupted(
+            DecodingError.Context(codingPath: d.codingPath,
+                                  debugDescription: raw))
     }
 }

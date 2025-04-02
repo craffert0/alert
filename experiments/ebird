@@ -43,7 +43,7 @@ class Server:
             generate_unique_id(x)
             for x in self.get(
                 "data/obs/geo/recent/notable",
-                f"&lat={lat}&lng={lng}&dist=5&back=2&detail=full",
+                f"&lat={lat}&lng={lng}&dist=50&back=2&detail=full",
             )
         ]
 
@@ -57,8 +57,8 @@ class Server:
 def main():
     server = Server()
     # print(json.dumps(server.taxonomy("louwat,commer"), indent=2))
-    # print(json.dumps(server.notable(), indent=2))
-    print(json.dumps(server.checklist("S222156738"), indent=2))
+    print(json.dumps(server.notable(), indent=2))
+    # print(json.dumps(server.checklist("S222156738"), indent=2))
 
 
 if __name__ == "__main__":

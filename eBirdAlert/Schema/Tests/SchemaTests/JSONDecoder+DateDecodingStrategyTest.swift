@@ -18,7 +18,7 @@ struct Wrapper: Codable {
             .date
     }
 
-    @Test func test() throws {
+    @Test func testFull() throws {
         let dates = [
             "2025-03-05 16:04",
             "2025-03-20 15:58",
@@ -29,6 +29,22 @@ struct Wrapper: Codable {
             f.timeZone = TimeZone.current
             f.locale = Locale(identifier: "en_US_POSIX")
             f.dateFormat = "yyyy-MM-dd HH:mm"
+            let expected = f.date(from: d)!
+            let actual = try parse(d)
+            #expect(actual == expected)
+        }
+    }
+
+    @Test func testDays() throws {
+        let dates = [
+            "2025-03-05",
+            "2025-03-20",
+        ]
+        for d in dates {
+            let f = DateFormatter()
+            f.timeZone = TimeZone.current
+            f.locale = Locale(identifier: "en_US_POSIX")
+            f.dateFormat = "yyyy-MM-dd"
             let expected = f.date(from: d)!
             let actual = try parse(d)
             #expect(actual == expected)
