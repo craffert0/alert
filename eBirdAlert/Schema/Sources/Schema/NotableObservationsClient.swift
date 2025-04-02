@@ -12,7 +12,8 @@ public struct NotableObservationsClient {
 
     public var observations: [eBirdObservation] {
         get async throws {
-            try await service.getNearbyNotable()
+            // remove duplicates from getNearbyNotable()
+            try await Array(Set(service.getNearbyNotable()))
         }
     }
 }

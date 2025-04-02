@@ -3,8 +3,4 @@
 
 import Schema
 
-extension eBirdObservation: @retroactive Identifiable {
-    public var id: String { "\(obsId).\(subId)" }
-}
-
 extension eBirdObservation: Species {}
