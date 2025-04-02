@@ -2,6 +2,7 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import Foundation
+import Schema
 
 struct BirdObservations {
     let speciesCode: String
