@@ -32,7 +32,3 @@ public struct eBirdObservation: Codable {
     public let lastName: String
     public let hasRichMedia: Bool
 }
-
-extension eBirdObservation: Identifiable {
-    public var id: String { "\(obsId).\(subId)" }
-}

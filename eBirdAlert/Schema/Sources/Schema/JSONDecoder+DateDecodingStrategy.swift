@@ -6,13 +6,11 @@ import Foundation
 public extension JSONDecoder.DateDecodingStrategy {
     static let eBirdStyle = custom { d in
         let raw = try d.singleValueContainer().decode(String.self)
-        let formatter = ISO8601DateFormatter()
-        formatter.timeZone = TimeZone.current
-        formatter.formatOptions =
-            [.withFullDate, .withDashSeparatorInDate,
-             .withSpaceBetweenDateAndTime, .withTime,
-             .withColonSeparatorInTime]
-        guard let date = formatter.date(from: raw + ":00") else {
+        let f = DateFormatter()
+        f.timeZone = TimeZone.current
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "yyyy-MM-dd HH:mm"
+        guard let date = f.date(from: raw) else {
             throw DecodingError.dataCorrupted(
                 DecodingError.Context(codingPath: d.codingPath,
                                       debugDescription: raw))

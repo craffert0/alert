@@ -6,7 +6,7 @@ import Schema
 
 let validStatus = 200 ... 299
 
-extension URLSession: Sendable {
+extension URLSession: Sendable, @retroactive eBirdService {
     func get<Output: Decodable>(
         path: String,
         queryItems: [URLQueryItem] = [],
@@ -48,10 +48,13 @@ extension URLSession: Sendable {
         return try d.decode(Output.self, from: data)
     }
 
-    func getNearbyNotable(back: Int = 2, distKM: Int = 50,
-                          hotspot: Bool = false, max: Int? = nil)
-        async throws -> [eBirdObservation]
-    {
+    public func getNearbyNotable() async throws -> [Schema.eBirdObservation] {
+        // TODO: should each come from Preferences
+        let back = 2
+        let distKM = 50
+        let hotspot = false
+        let max: Int? = nil
+
         var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "detail", value: "full"),
             URLQueryItem(name: "back", value: "\(back)"),
@@ -68,7 +71,7 @@ extension URLSession: Sendable {
                              withLocation: true)
     }
 
-    func getChecklist(subId: String) async throws -> eBirdChecklist {
+    public func getChecklist(subId: String) async throws -> eBirdChecklist {
         try await get(path: "product/checklist/view/" + subId)
     }
 }
