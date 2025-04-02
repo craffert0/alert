@@ -1,0 +1,475 @@
+{
+  "projId": "EBIRD",
+  "subId": "S222144997",
+  "protocolId": "P22",
+  "locId": "L109516",
+  "durationHrs": 1.667,
+  "allObsReported": true,
+  "comments": "9th street entrance to ambergill and some sky watching with no raptors, down nethermead to containers and south end of lake to fort Hamilton exit",
+  "creationDt": "2025-03-31 16:27",
+  "lastEditedDt": "2025-04-01 15:22",
+  "obsDt": "2025-03-31 14:46",
+  "obsTimeValid": true,
+  "checklistId": "CL23822",
+  "numObservers": 1,
+  "effortDistanceKm": 3.219,
+  "effortDistanceEnteredUnit": "mi",
+  "subnational1Code": "US-NY",
+  "submissionMethodCode": "EBIRD_iOS",
+  "submissionMethodVersion": "3.1.33",
+  "deleteTrack": false,
+  "userDisplayName": "E R",
+  "numSpecies": 41,
+  "submissionMethodVersionDisp": "3.1.33",
+  "subAux": [
+    {
+      "subId": "S222144997",
+      "fieldName": "nocturnal",
+      "entryMethodCode": "ebird_nocturnal",
+      "auxCode": "0"
+    }
+  ],
+  "subAuxAi": [
+    {
+      "subId": "S222144997",
+      "method": "concurrent",
+      "aiType": "sound",
+      "source": "merlin",
+      "eventId": 0
+    }
+  ],
+  "projectIds": [],
+  "obs": [
+    {
+      "speciesCode": "cangoo",
+      "howManyAtleast": 30,
+      "howManyAtmost": 30,
+      "present": false,
+      "obsId": "OBS3012441122",
+      "howManyStr": "30"
+    },
+    {
+      "speciesCode": "mutswa",
+      "exoticCategory": "N",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012441093",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "wooduc",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012441103",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "norsho",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012441129",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "mallar3",
+      "howManyAtleast": 4,
+      "howManyAtmost": 4,
+      "present": false,
+      "obsId": "OBS3012441132",
+      "howManyStr": "4"
+    },
+    {
+      "speciesCode": "rinduc",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "mediaCounts": {
+        "P": 1
+      },
+      "present": false,
+      "obsId": "OBS3012441106",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "rudduc",
+      "howManyAtleast": 25,
+      "howManyAtmost": 25,
+      "present": false,
+      "obsId": "OBS3012441127",
+      "howManyStr": "25"
+    },
+    {
+      "speciesCode": "rocpig1",
+      "exoticCategory": "N",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012441100",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "moudov",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3012441095",
+      "howManyStr": "3"
+    },
+    {
+      "speciesCode": "laugul",
+      "howManyAtleast": 4,
+      "howManyAtmost": 4,
+      "present": false,
+      "obsId": "OBS3012441124",
+      "howManyStr": "4"
+    },
+    {
+      "speciesCode": "ribgul",
+      "howManyAtleast": 30,
+      "howManyAtmost": 30,
+      "present": false,
+      "obsId": "OBS3012441114",
+      "howManyStr": "30"
+    },
+    {
+      "speciesCode": "amhgul1",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012441112",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "doccor",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012441109",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "coohaw",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012441111",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "belkin1",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012441131",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "yebsap",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012441098",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "rebwoo",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012441094",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "dowwoo",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012441096",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "norfli",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "mediaCounts": {
+        "P": 1
+      },
+      "present": false,
+      "obsId": "OBS3012441097",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "easpho",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "mediaCounts": {
+        "P": 1
+      },
+      "present": false,
+      "obsId": "OBS3012441117",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "blujay",
+      "howManyAtleast": 12,
+      "howManyAtmost": 12,
+      "present": false,
+      "obsId": "OBS3012441115",
+      "howManyStr": "12"
+    },
+    {
+      "speciesCode": "amecro",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3012441116",
+      "howManyStr": "3"
+    },
+    {
+      "speciesCode": "bkcchi",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3012441108",
+      "howManyStr": "3"
+    },
+    {
+      "speciesCode": "tuftit",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012441118",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "gockin",
+      "howManyAtleast": 10,
+      "howManyAtmost": 10,
+      "present": false,
+      "obsId": "OBS3012441107",
+      "howManyStr": "10",
+      "obsAux": [
+        {
+          "fieldName": "breeding_code",
+          "entryMethodCode": "api_breeding",
+          "auxCode": "S7",
+          "value": "S7"
+        }
+      ]
+    },
+    {
+      "speciesCode": "brncre",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3012441130",
+      "howManyStr": "3"
+    },
+    {
+      "speciesCode": "carwre",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012441126",
+      "howManyStr": "2",
+      "obsAux": [
+        {
+          "fieldName": "breeding_code",
+          "entryMethodCode": "api_breeding",
+          "auxCode": "S1",
+          "value": "S1"
+        }
+      ]
+    },
+    {
+      "speciesCode": "eursta",
+      "exoticCategory": "N",
+      "howManyAtleast": 10,
+      "howManyAtmost": 10,
+      "present": false,
+      "obsId": "OBS3012441125",
+      "howManyStr": "10"
+    },
+    {
+      "speciesCode": "amerob",
+      "howManyAtleast": 200,
+      "howManyAtmost": 200,
+      "mediaCounts": {
+        "P": 2
+      },
+      "present": false,
+      "obsId": "OBS3012441113",
+      "howManyStr": "200",
+      "obsAux": [
+        {
+          "fieldName": "breeding_code",
+          "entryMethodCode": "api_breeding",
+          "auxCode": "SM",
+          "value": "SM"
+        }
+      ]
+    },
+    {
+      "speciesCode": "houspa",
+      "exoticCategory": "N",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012441120",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "eurgol",
+      "exoticCategory": "P",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "mediaCounts": {
+        "P": 4
+      },
+      "present": false,
+      "obsId": "OBS3012441099",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "amegfi",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012441128",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "daejun",
+      "howManyAtleast": 12,
+      "howManyAtmost": 12,
+      "present": false,
+      "obsId": "OBS3012441121",
+      "howManyStr": "12"
+    },
+    {
+      "speciesCode": "whtspa",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012441123",
+      "howManyStr": "5",
+      "obsAux": [
+        {
+          "fieldName": "breeding_code",
+          "entryMethodCode": "api_breeding",
+          "auxCode": "S1",
+          "value": "S1"
+        }
+      ]
+    },
+    {
+      "speciesCode": "sonspa",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012441105",
+      "howManyStr": "5",
+      "obsAux": [
+        {
+          "fieldName": "breeding_code",
+          "entryMethodCode": "api_breeding",
+          "auxCode": "S1",
+          "value": "S1"
+        }
+      ]
+    },
+    {
+      "speciesCode": "swaspa",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "mediaCounts": {
+        "P": 1
+      },
+      "present": false,
+      "obsId": "OBS3012441110",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "rewbla",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3012441133",
+      "howManyStr": "3",
+      "obsAux": [
+        {
+          "fieldName": "breeding_code",
+          "entryMethodCode": "api_breeding",
+          "auxCode": "S1",
+          "value": "S1"
+        }
+      ]
+    },
+    {
+      "speciesCode": "rusbla",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "comments": "Singing by ambergill bridge",
+      "mediaCounts": {
+        "P": 3
+      },
+      "present": false,
+      "obsId": "OBS3012441104",
+      "howManyStr": "1",
+      "obsAux": [
+        {
+          "fieldName": "breeding_code",
+          "entryMethodCode": "api_breeding",
+          "auxCode": "S1",
+          "value": "S1"
+        }
+      ]
+    },
+    {
+      "speciesCode": "comgra",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012441102",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "louwat",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "comments": "Continuing along ambergill, working its way up and down- singing some! Sometimes sounded like two, or just one individual alternating whisper song with louder song in a disorienting way",
+      "mediaCounts": {
+        "P": 18
+      },
+      "present": false,
+      "obsId": "OBS3012441101",
+      "howManyStr": "1",
+      "obsAux": [
+        {
+          "fieldName": "breeding_code",
+          "entryMethodCode": "api_breeding",
+          "auxCode": "S1",
+          "value": "S1"
+        }
+      ]
+    },
+    {
+      "speciesCode": "norcar",
+      "howManyAtleast": 15,
+      "howManyAtmost": 15,
+      "present": false,
+      "obsId": "OBS3012441119",
+      "howManyStr": "15",
+      "obsAux": [
+        {
+          "fieldName": "breeding_code",
+          "entryMethodCode": "api_breeding",
+          "auxCode": "SM",
+          "value": "SM"
+        }
+      ]
+    }
+  ]
+}

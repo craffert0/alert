@@ -23,12 +23,16 @@ let package = Package(
     targets: [
         .target(
             name: "Schema",
-            dependencies: [
-            ]
         ),
         .testTarget(
             name: "SchemaTests",
-            dependencies: ["Schema"]
+            dependencies: ["Schema"],
+            resources: [
+                .process("Observations/20250402T1030.json"),
+                .process("Checklists/S222144997.json"),
+                .process("Checklists/S222159728.json"),
+                .process("Checklists/S222245597.json"),
+            ],
         ),
     ]
 )

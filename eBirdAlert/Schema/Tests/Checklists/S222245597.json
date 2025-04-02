@@ -1,0 +1,213 @@
+{
+  "projId": "EBIRD",
+  "subId": "S222245597",
+  "protocolId": "P22",
+  "locId": "L285884",
+  "durationHrs": 1.0,
+  "allObsReported": true,
+  "comments": "Walked the perimeter of Sylvan Water.",
+  "creationDt": "2025-04-01 08:18",
+  "lastEditedDt": "2025-04-01 08:18",
+  "obsDt": "2025-03-31 16:00",
+  "obsTimeValid": true,
+  "checklistId": "CL23822",
+  "numObservers": 1,
+  "effortDistanceKm": 0.805,
+  "effortDistanceEnteredUnit": "mi",
+  "subnational1Code": "US-NY",
+  "submissionMethodCode": "EBIRD_web",
+  "deleteTrack": false,
+  "userDisplayName": "Keith Michael",
+  "numSpecies": 22,
+  "subAux": [
+    {
+      "subId": "S222245597",
+      "fieldName": "nocturnal",
+      "entryMethodCode": "ebird_nocturnal",
+      "auxCode": "0"
+    }
+  ],
+  "subAuxAi": [],
+  "projectIds": [],
+  "obs": [
+    {
+      "speciesCode": "cangoo",
+      "howManyAtleast": 6,
+      "howManyAtmost": 6,
+      "present": false,
+      "obsId": "OBS3014179232",
+      "howManyStr": "6"
+    },
+    {
+      "speciesCode": "mallar3",
+      "howManyAtleast": 4,
+      "howManyAtmost": 4,
+      "present": false,
+      "obsId": "OBS3014179238",
+      "howManyStr": "4"
+    },
+    {
+      "speciesCode": "categr1",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "comments": "Seen and reported by many at this location. It was circling the edge of Sylvan Water, occasionally flying. On the eastern edge, it spent time feeding on the flies on a large Snapping Turtle carcass as well as on a Raccoon carcass. Curiously, I had recently seen another large, deceased Snapping Turtle on Staten Island. I don't know whether the dead Snapping Turtles are of concern, but it might be something to look out for.",
+      "present": false,
+      "obsId": "OBS3014179230",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "rethaw",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3014179245",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "rebwoo",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3014179229",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "dowwoo",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3014179231",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "norfli",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3014179246",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "easpho",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3014179233",
+      "howManyStr": "3"
+    },
+    {
+      "speciesCode": "blujay",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3014179240",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "amecro",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3014179228",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "tuftit",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3014179242",
+      "howManyStr": "3"
+    },
+    {
+      "speciesCode": "treswa",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3014179243",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "gockin",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3014179235",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "whbnut",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3014179244",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "eursta",
+      "exoticCategory": "N",
+      "howManyAtleast": 6,
+      "howManyAtmost": 6,
+      "present": false,
+      "obsId": "OBS3014179227",
+      "howManyStr": "6"
+    },
+    {
+      "speciesCode": "normoc",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3014179241",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "amerob",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3014179236",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "houspa",
+      "exoticCategory": "N",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3014179226",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "sonspa",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3014179247",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "rewbla",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3014179239",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "comgra",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3014179234",
+      "howManyStr": "3"
+    },
+    {
+      "speciesCode": "norcar",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3014179237",
+      "howManyStr": "1"
+    }
+  ]
+}

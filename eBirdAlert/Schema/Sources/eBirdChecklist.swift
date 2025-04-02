@@ -4,8 +4,6 @@
 import Foundation
 
 public struct eBirdChecklist: Codable {
-    public let projId: String
-    public let subId: String
     public let protocolId: String
     public let locId: String
     public let durationHrs: Float
@@ -19,7 +17,6 @@ public struct eBirdChecklist: Codable {
     public let numObservers: Int
     public let effortDistanceKm: Float
     public let effortDistanceEnteredUnit: String
-    public let subnational1Code: String
     public let submissionMethodCode: String
     public let submissionMethodVersion: String
     public let deleteTrack: Bool
@@ -32,14 +29,12 @@ public struct eBirdChecklist: Codable {
     public let obs: [Obs]
 
     public struct SubAux: Codable {
-        public let subId: String
         public let fieldName: String
         public let entryMethodCode: String
         public let auxCode: String
     }
 
     public struct SubAuxAi: Codable {
-        public let subId: String
         public let method: String
         public let aiType: String
         public let source: String
@@ -49,11 +44,8 @@ public struct eBirdChecklist: Codable {
     public struct Obs: Codable {
         public let speciesCode: String
         public let exoticCategory: String?
-        public let howManyAtleast: Int
-        public let howManyAtmost: Int
         public let comments: String?
-        public let present: Bool
         public let obsId: String
-        public let howManyStr: String
+        public let howManyStr: String?
     }
 }

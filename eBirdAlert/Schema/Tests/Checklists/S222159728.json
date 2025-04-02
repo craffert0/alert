@@ -1,0 +1,367 @@
+{
+  "projId": "EBIRD",
+  "subId": "S222159728",
+  "protocolId": "P22",
+  "locId": "L285884",
+  "durationHrs": 5.0,
+  "allObsReported": true,
+  "creationDt": "2025-03-31 17:44",
+  "lastEditedDt": "2025-03-31 23:25",
+  "obsDt": "2025-03-31 12:00",
+  "obsTimeValid": true,
+  "checklistId": "CL23822",
+  "numObservers": 1,
+  "effortDistanceKm": 6.437,
+  "effortDistanceEnteredUnit": "mi",
+  "subnational1Code": "US-NY",
+  "submissionMethodCode": "EBIRD_web",
+  "deleteTrack": false,
+  "userDisplayName": "Tzvi Deutsch",
+  "numSpecies": 40,
+  "subAux": [
+    {
+      "subId": "S222159728",
+      "fieldName": "nocturnal",
+      "entryMethodCode": "ebird_nocturnal",
+      "auxCode": "0"
+    }
+  ],
+  "subAuxAi": [],
+  "projectIds": [],
+  "obs": [
+    {
+      "speciesCode": "cangoo",
+      "howManyAtleast": 7,
+      "howManyAtmost": 7,
+      "present": false,
+      "obsId": "OBS3012650739",
+      "howManyStr": "7"
+    },
+    {
+      "speciesCode": "mallar3",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012650736",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "ambduc",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012650758",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "gnwtea",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012650756",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "rocpig1",
+      "exoticCategory": "N",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012650750",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "moudov",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012650749",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "amewoo",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "mediaCounts": {
+        "P": 1
+      },
+      "present": false,
+      "obsId": "OBS3012996476",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "ribgul",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650754",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "categr1",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "comments": "Barely burnt marshmallow colored egret still here. Found it walking around the grass at the 4th ave entrance. It then flew over to Sylvan at some point in the afternoon were it demonstrated one of the keys as to why this species became the most widespread heron,and one of the most widespread birds on the planet, the, ability to eat anything... Yesterday it was feeding primarily on worms and spiders today i watched it snag a few frogs. It also wandered over to feed on the many flies on a decaying racoon carcass, doing the same to a dead snapping turtle a couple of yards away from the racoon.Interesting to observe the different frog hunting behavior vs  the Great egret or Great blue, seemed to grasp the frog between its \"chopsticks\" vs the stabby behavior of the other two heron species usually found here. PHOTOS ARE A BIT ROUGH,PLEASE PROCEED WITH CAUTION!",
+      "mediaCounts": {
+        "P": 17
+      },
+      "present": false,
+      "obsId": "OBS3012650727",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "coohaw",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650744",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "rethaw",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "mediaCounts": {
+        "P": 1
+      },
+      "present": false,
+      "obsId": "OBS3012650752",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "yebsap",
+      "howManyAtleast": 4,
+      "howManyAtmost": 4,
+      "present": false,
+      "obsId": "OBS3012650748",
+      "howManyStr": "4"
+    },
+    {
+      "speciesCode": "rebwoo",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650735",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "dowwoo",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650745",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "amekes",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650760",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "merlin",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650764",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "monpar",
+      "exoticCategory": "N",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650751",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "easpho",
+      "howManyAtleast": 10,
+      "howManyAtmost": 10,
+      "present": false,
+      "obsId": "OBS3012650738",
+      "howManyStr": "10"
+    },
+    {
+      "speciesCode": "blujay",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650757",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "amecro",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012650747",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "bkcchi",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650755",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "gockin",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3012650726",
+      "howManyStr": "3"
+    },
+    {
+      "speciesCode": "whbnut",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012650728",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "brncre",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012650730",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "eursta",
+      "exoticCategory": "N",
+      "howManyAtleast": 10,
+      "howManyAtmost": 10,
+      "present": false,
+      "obsId": "OBS3012650731",
+      "howManyStr": "10"
+    },
+    {
+      "speciesCode": "normoc",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012650759",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "herthr",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650729",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "amerob",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012650753",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "houspa",
+      "exoticCategory": "N",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012650740",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "fiespa",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650734",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "foxspa",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650746",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "daejun",
+      "howManyAtleast": 4,
+      "howManyAtmost": 4,
+      "present": false,
+      "obsId": "OBS3012650743",
+      "howManyStr": "4"
+    },
+    {
+      "speciesCode": "whtspa",
+      "howManyAtleast": 10,
+      "howManyAtmost": 10,
+      "present": false,
+      "obsId": "OBS3012650732",
+      "howManyStr": "10"
+    },
+    {
+      "speciesCode": "sonspa",
+      "howManyAtleast": 5,
+      "howManyAtmost": 5,
+      "present": false,
+      "obsId": "OBS3012650733",
+      "howManyStr": "5"
+    },
+    {
+      "speciesCode": "swaspa",
+      "howManyAtleast": 4,
+      "howManyAtmost": 4,
+      "present": false,
+      "obsId": "OBS3012650742",
+      "howManyStr": "4"
+    },
+    {
+      "speciesCode": "rewbla",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650741",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "bnhcow",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650763",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "comgra",
+      "howManyAtleast": 15,
+      "howManyAtmost": 15,
+      "present": false,
+      "obsId": "OBS3012650737",
+      "howManyStr": "15"
+    },
+    {
+      "speciesCode": "palwar",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3012650761",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "norcar",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3012650762",
+      "howManyStr": "2"
+    }
+  ]
+}
