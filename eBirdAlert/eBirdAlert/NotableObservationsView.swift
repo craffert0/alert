@@ -19,7 +19,7 @@ struct NotableObservationsView: View {
                         BirdObservationsView(o)
                     } label: {
                         let delta = o.latestSighting.distance(to: Date.now)
-                        Text("\(o.comName) (\(o.observations.count)): \(Int(delta))")
+                        Text("\(o.comName) (\(o.observations.count)) \(delta.english)")
                     }
                 }
             }
