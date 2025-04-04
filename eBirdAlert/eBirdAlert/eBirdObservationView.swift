@@ -16,6 +16,8 @@ struct eBirdObservationView: View {
     var body: some View {
         VStack {
             Text(e.comName)
+            Text(e.locName)
+            Spacer()
             switch checklist.status {
             case .unloaded:
                 Text("maybe load?")
@@ -25,6 +27,7 @@ struct eBirdObservationView: View {
                 if let comments = checklist.comments {
                     Label("general comments", systemImage: "globe.americas")
                     Text(comments)
+                    Spacer()
                 }
             case let .error(reason):
                 Text("error: \(reason)")
@@ -32,6 +35,7 @@ struct eBirdObservationView: View {
             if let comments = checklist.observation(for: e.obsId)?.comments {
                 Label("sighting comments", systemImage: "location.square")
                 Text(comments)
+                Spacer()
             }
         }
     }
