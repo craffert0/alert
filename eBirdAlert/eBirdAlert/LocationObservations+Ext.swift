@@ -9,16 +9,19 @@ extension LocationObservations: @retroactive Identifiable {
 }
 
 extension LocationObservations {
-    var appleMapItem: MKMapItem {
-        let coordinate = CLLocationCoordinate2DMake(lat, lng)
-        let placemark = MKPlacemark(coordinate: coordinate)
-        let mapItem = MKMapItem(placemark: placemark)
-        mapItem.name = locName
-        return mapItem
-    }
-
-    var googleMapURL: URL {
-        // TODO: this should have a much better name & pin
-        URL(string: "https://www.google.com/maps/@\(lat),\(lng),12z")!
+    func openMap() {
+        switch PreferencesModel.global.mapOption {
+        case .apple:
+            let coordinate = CLLocationCoordinate2DMake(lat, lng)
+            let placemark = MKPlacemark(coordinate: coordinate)
+            let mapItem = MKMapItem(placemark: placemark)
+            mapItem.name = locName
+            mapItem.openInMaps()
+        case .google:
+            // TODO: this should have a much better name & pin
+            UIApplication.shared.open(
+                URL(string: "https://www.google.com/maps/@\(lat),\(lng),17z")!
+            )
+        }
     }
 }

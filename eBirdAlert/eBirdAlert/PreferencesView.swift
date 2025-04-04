@@ -4,18 +4,35 @@
 import SwiftUI
 
 struct PreferencesView: View {
-    var preferences = PreferencesModel.global
+    @ObservedObject var preferences = PreferencesModel.global
 
     var body: some View {
         Form {
-            Label("eBird Application Key", systemImage: "key")
-            TextField(text: preferences.$applicationKey,
-                      prompt: Text("eBird application key"))
-            {
-                Text("App Key")
+            Stepper(value: preferences.$daysBack, step: 1) {
+                Text("\(preferences.daysBack) days back")
             }
-            .textInputAutocapitalization(.never)
-            .disableAutocorrection(true)
+
+            Stepper(value: preferences.$distMiles, step: 1) {
+                Text("\(preferences.distMiles) miles radius")
+            }
+
+            List {
+                Picker("Map Type", selection: preferences.$mapOption) {
+                    Text("Apple").tag(MapOption.apple)
+                    Text("Google").tag(MapOption.google)
+                }
+            }
+
+            HStack {
+                Label("eBird Key:", systemImage: "key")
+                TextField(text: preferences.$applicationKey,
+                          prompt: Text("eBird application key"))
+                {
+                    Text("App Key")
+                }
+                .textInputAutocapitalization(.never)
+                .disableAutocorrection(true)
+            }
         }
     }
 }

@@ -15,8 +15,7 @@ struct LocationObservationsView: View {
     var body: some View {
         VStack {
             Button(l.locName) {
-                l.appleMapItem.openInMaps()
-                // UIApplication.shared.open(l.googleMapURL)
+                l.openMap()
             }
             List {
                 let now = Date.now

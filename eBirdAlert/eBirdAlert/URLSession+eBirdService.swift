@@ -49,22 +49,15 @@ extension URLSession: Sendable, @retroactive eBirdService {
     }
 
     public func getNearbyNotable() async throws -> [Schema.eBirdObservation] {
-        // TODO: should each come from Preferences
-        let back = 2
-        let distKM = 50
-        let hotspot = false
-        let max: Int? = nil
+        let prefs = PreferencesModel.global
 
-        var queryItems: [URLQueryItem] = [
+        let queryItems: [URLQueryItem] = [
             URLQueryItem(name: "detail", value: "full"),
-            URLQueryItem(name: "back", value: "\(back)"),
-            URLQueryItem(name: "dist", value: "\(distKM)"),
-            URLQueryItem(name: "hotspot",
-                         value: hotspot ? "true" : "false"),
+            URLQueryItem(name: "hotspot", value: "false"),
+            URLQueryItem(name: "back", value: "\(prefs.daysBack)"),
+            URLQueryItem(name: "dist", value: "\(Double(prefs.distMiles) * 1.62)"),
         ]
-        if let max {
-            queryItems += [URLQueryItem(name: "max", value: "\(max)")]
-        }
+        print(queryItems)
 
         return try await get(path: "data/obs/geo/recent/notable",
                              queryItems: queryItems,
