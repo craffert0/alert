@@ -14,12 +14,14 @@ struct NotableObservationsView: View {
     var body: some View {
         NavigationView {
             List {
+                let now = Date.now
                 ForEach(provider.observations) { o in
                     NavigationLink {
                         BirdObservationsView(o)
                     } label: {
-                        let delta = o.latestSighting.distance(to: Date.now)
-                        Text("\(o.comName) (\(o.observations.count)) \(delta.english)")
+                        Text(o.latestSighting.distance(to: now).english)
+                        Text(o.comName)
+                        Text("(\(o.locations.total_count))")
                     }
                 }
             }

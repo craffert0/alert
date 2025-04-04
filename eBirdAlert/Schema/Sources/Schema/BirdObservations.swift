@@ -3,28 +3,21 @@
 
 import Foundation
 
-public struct BirdObservations {
-    public let speciesCode: String
-    public let comName: String
-    public let sciName: String
-    public let latestSighting: Date
-    public let observations: [eBirdObservation]
+public struct BirdObservations: Encodable {
+    private var rep: eBirdObservation { locations.first!.observations.first! }
+    public var speciesCode: String { rep.speciesCode }
+    public var comName: String { rep.comName }
+    public var sciName: String { rep.sciName }
+    public var latestSighting: Date { rep.obsDt }
+    public let locations: [LocationObservations]
 
-    init(speciesCode: String,
-         comName: String,
-         sciName: String,
-         observations: [eBirdObservation])
-    {
-        self.speciesCode = speciesCode
-        self.comName = comName
-        self.sciName = sciName
-        self.observations = observations
-        var latest = observations.first!.obsDt
+    init(observations: [eBirdObservation]) {
+        var map: [String: [eBirdObservation]] = [:]
         for o in observations {
-            if o.obsDt > latest {
-                latest = o.obsDt
-            }
+            map[o.locId] = (map[o.locId] ?? []) + [o]
         }
-        latestSighting = latest
+        locations = map.values.map { v in
+            LocationObservations(observations: v.sorted { $0.obsDt > $1.obsDt })
+        }.sorted { $0.latestSighting > $1.latestSighting }
     }
 }

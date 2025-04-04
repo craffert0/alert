@@ -24,11 +24,14 @@ struct BirdObservationsView: View {
                 Label("Details", systemImage: "network")
             }
             List {
-                ForEach(o.observations) { e in
+                let now = Date.now
+                ForEach(o.locations) { l in
                     NavigationLink {
-                        eBirdObservationView(e)
+                        LocationObservationsView(l)
                     } label: {
-                        Text(e.locName)
+                        Text(l.latestSighting.distance(to: now).english)
+                        Text(l.locName)
+                        Text("(\(l.observations.count))")
                     }
                 }
             }
