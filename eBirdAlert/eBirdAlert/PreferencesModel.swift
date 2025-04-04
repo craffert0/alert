@@ -12,3 +12,14 @@ class PreferencesModel: ObservableObject {
     @AppStorage("settings.applicationKey") var applicationKey: String = ""
     @AppStorage("settings.mapType") var mapOption: MapOption = .apple
 }
+
+extension PreferencesModel {
+    var geoQueryItems: [URLQueryItem] {
+        [
+            URLQueryItem(name: "detail", value: "full"),
+            URLQueryItem(name: "hotspot", value: "false"),
+            URLQueryItem(name: "back", value: "\(daysBack)"),
+            URLQueryItem(name: "dist", value: "\(Double(distMiles) * 1.61)"),
+        ]
+    }
+}

@@ -7,7 +7,7 @@ enum eBirdServiceError: Error {
     case noKey
     case noLocation
     case networkError
-    case unauthorized
+    case httpError(statusCode: Int)
     case unexpectedError(error: Error)
 }
 
@@ -17,7 +17,8 @@ extension eBirdServiceError: LocalizedError {
         case .noKey: "no api key"
         case .noLocation: "could not get location"
         case .networkError: "network error?"
-        case .unauthorized: "you not authorized"
+        case let .httpError(statusCode):
+            HTTPURLResponse.localizedString(forStatusCode: statusCode)
         case let .unexpectedError(e): "unexpected: \(e)"
         }
     }
