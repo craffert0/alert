@@ -22,7 +22,6 @@ class LocationService: NSObject {
 extension LocationService: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let status = manager.authorizationStatus
-        print("location status: \(status.string)")
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             locationManager.startMonitoringSignificantLocationChanges()
@@ -34,7 +33,6 @@ extension LocationService: CLLocationManagerDelegate {
     func locationManager(_: CLLocationManager,
                          didUpdateLocations locations: [CLLocation])
     {
-        print("did update", locations)
         guard let location = locations.last else { return }
         DispatchQueue.main.async {
             self.location = location

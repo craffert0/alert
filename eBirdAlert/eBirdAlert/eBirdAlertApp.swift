@@ -13,7 +13,6 @@ struct eBirdAlertApp: App {
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

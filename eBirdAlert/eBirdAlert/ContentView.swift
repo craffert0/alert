@@ -11,10 +11,6 @@ struct ContentView: View {
                 NotableObservationsView()
             }
 
-            Tab("Items", systemImage: "tray.and.arrow.up.fill") {
-                ItemsView()
-            }
-
             Tab("Settings", systemImage: "gearshape") {
                 PreferencesView()
             }
@@ -24,5 +20,4 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }

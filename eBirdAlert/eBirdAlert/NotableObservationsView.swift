@@ -12,6 +12,14 @@ struct NotableObservationsView: View {
     @State private var hasError = false
 
     var body: some View {
+        if locationService.location == nil {
+            Text("no location 😢")
+        } else {
+            properView
+        }
+    }
+
+    private var properView: some View {
         NavigationView {
             List {
                 let now = Date.now
