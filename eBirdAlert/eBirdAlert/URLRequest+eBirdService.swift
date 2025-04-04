@@ -25,6 +25,7 @@ extension URLRequest {
             ]
         }
 
+        print(allQueryItems)
         let url = URL(string: "https://api.ebird.org/v2/" + path)!
             .appending(queryItems: allQueryItems)
 

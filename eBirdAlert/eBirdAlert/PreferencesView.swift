@@ -5,22 +5,38 @@ import SwiftUI
 
 struct PreferencesView: View {
     @ObservedObject var preferences = PreferencesModel.global
+    @State var daysBack: Double = .init(PreferencesModel.global.daysBack)
 
     var body: some View {
         Form {
-            Stepper(value: preferences.$daysBack, step: 1) {
-                Text("\(preferences.daysBack) days back")
+            HStack {
+                Slider(value: $daysBack,
+                       in: 1 ... 10,
+                       step: 1.0,
+                       onEditingChanged: { _ in
+                           preferences.daysBack = Int(daysBack)
+                       })
+                Text("\(Int(daysBack)) days")
             }
 
-            Stepper(value: preferences.$distMiles, step: 1) {
-                Text("\(preferences.distMiles) miles radius")
-            }
-
-            List {
-                Picker("Map Type", selection: preferences.$mapOption) {
-                    Text("Apple").tag(MapOption.apple)
-                    Text("Google").tag(MapOption.google)
+            HStack {
+                Slider(value: preferences.$distValue,
+                       in: 1 ... 20,
+                       onEditingChanged: { _ in })
+                Picker(
+                    preferences.distValue.formatted(
+                        .number.rounded(rule: .down, increment: 0.01)
+                    ),
+                    selection: preferences.$distUnits
+                ) {
+                    Text("miles").tag(DistanceUnits.miles)
+                    Text("km").tag(DistanceUnits.kilometers)
                 }
+            }
+
+            Picker("Map Type", selection: preferences.$mapOption) {
+                Text("Apple").tag(MapOption.apple)
+                Text("Google").tag(MapOption.google)
             }
 
             HStack {

@@ -8,7 +8,8 @@ class PreferencesModel: ObservableObject {
     static let global = PreferencesModel()
 
     @AppStorage("settings.daysBack") var daysBack: Int = 2
-    @AppStorage("settings.distMiles") var distMiles: Int = 3
+    @AppStorage("settings.distValue") var distValue: Double = 3
+    @AppStorage("settings.distUnits") var distUnits: DistanceUnits = .miles
     @AppStorage("settings.applicationKey") var applicationKey: String = ""
     @AppStorage("settings.mapType") var mapOption: MapOption = .apple
 }
@@ -19,7 +20,8 @@ extension PreferencesModel {
             URLQueryItem(name: "detail", value: "full"),
             URLQueryItem(name: "hotspot", value: "false"),
             URLQueryItem(name: "back", value: "\(daysBack)"),
-            URLQueryItem(name: "dist", value: "\(Double(distMiles) * 1.61)"),
+            URLQueryItem(name: "dist",
+                         value: "\(distUnits.asKilometers(distValue))"),
         ]
     }
 }
