@@ -20,11 +20,17 @@ struct LocationObservationsView: View {
             List {
                 let now = Date.now
                 ForEach(l.observations) { e in
-                    NavigationLink {
-                        eBirdObservationView(e)
-                    } label: {
-                        Text(e.obsDt.distance(to: now).english)
-                        Text(e.userDisplayName)
+                    if let comments = SwiftDataService.shared
+                        .load(checklist: e.subId)
+                        .observation(for: e.obsId)?
+                        .comments
+                    {
+                        NavigationLink {
+                            eBirdObservationView(e)
+                        } label: {
+                            Text(e.obsDt.distance(to: now).english)
+                            Text(comments)
+                        }
                     }
                 }
             }

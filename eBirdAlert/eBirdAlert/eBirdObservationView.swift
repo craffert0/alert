@@ -15,9 +15,18 @@ struct eBirdObservationView: View {
 
     var body: some View {
         VStack {
-            Text(e.comName)
+            Text("\(e.howMany ?? 1) \(e.comName)")
             Text(e.locName)
+            HStack {
+                Text(e.obsDt.distance(to: Date.now).english)
+                Text(e.userDisplayName)
+            }
             Spacer()
+            if let comments = checklist.observation(for: e.obsId)?.comments {
+                Label("sighting comments", systemImage: "location.square")
+                Text(comments)
+                Spacer()
+            }
             switch checklist.status {
             case .unloaded:
                 Text("maybe load?")
@@ -31,11 +40,6 @@ struct eBirdObservationView: View {
                 }
             case let .error(reason):
                 Text("error: \(reason)")
-            }
-            if let comments = checklist.observation(for: e.obsId)?.comments {
-                Label("sighting comments", systemImage: "location.square")
-                Text(comments)
-                Spacer()
             }
         }
     }
