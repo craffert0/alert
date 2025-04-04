@@ -10,6 +10,7 @@ struct NotableObservationsView: View {
     @State var isLoading = false
     @State private var error: eBirdServiceError?
     @State private var hasError = false
+    @State private var lastLoadTime: Date?
 
     var body: some View {
         if locationService.location == nil {
@@ -44,6 +45,12 @@ struct NotableObservationsView: View {
             .alert(isPresented: $hasError, error: error) {}
         }
         .task {
+            await load()
+        }
+    }
+
+    func load() async {
+        if Date.now.timeIntervalSince(lastLoadTime ?? Date.distantPast) > 3600 {
             await refresh()
         }
     }
@@ -52,6 +59,7 @@ struct NotableObservationsView: View {
         isLoading = true
         do {
             try await provider.refresh()
+            lastLoadTime = Date.now
         } catch {
             self.error = error as? eBirdServiceError ?? .unexpectedError(error: error)
             hasError = true
