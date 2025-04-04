@@ -33,12 +33,10 @@ class SwiftDataService {
 
     @MainActor
     func prepare(checklist id: String) {
-        if get(checklist: id) == nil {
-            print("new checklist: \(id)")
-            modelContext.insert(Checklist(for: id, status: .unloaded))
-        } else {
-            print("have checklist: \(id)")
+        guard get(checklist: id) == nil else {
+            return
         }
+        modelContext.insert(Checklist(for: id, status: .unloaded))
     }
 
     @MainActor
@@ -50,7 +48,6 @@ class SwiftDataService {
         }()
 
         if case .unloaded = c.status {
-            print("loading \(id)")
             c.status = .loading(startTime: Date.now)
             Task {
                 do {
