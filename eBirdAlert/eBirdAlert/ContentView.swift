@@ -11,6 +11,10 @@ struct ContentView: View {
                 NotableObservationsView()
             }
 
+            Tab("Checklists", systemImage: "checklist") {
+                ChecklistsView()
+            }
+
             Tab("Settings", systemImage: "gearshape") {
                 PreferencesView()
             }
@@ -20,4 +24,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(for: Checklist.self, inMemory: true)
 }

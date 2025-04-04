@@ -3,12 +3,12 @@
 
 import Foundation
 
-public struct eBirdChecklist: Codable {
+public struct eBirdChecklist: Codable, Sendable {
     public let protocolId: String
     public let locId: String
     public let durationHrs: Float
     public let allObsReported: Bool
-    public let comments: String
+    public let comments: String?
     public let creationDt: Date
     public let lastEditedDt: Date
     public let obsDt: Date
@@ -28,20 +28,20 @@ public struct eBirdChecklist: Codable {
     // public let projectIds: [] // TODO:
     public let obs: [Obs]
 
-    public struct SubAux: Codable {
+    public struct SubAux: Codable, Sendable {
         public let fieldName: String
         public let entryMethodCode: String
         public let auxCode: String
     }
 
-    public struct SubAuxAi: Codable {
+    public struct SubAuxAi: Codable, Sendable {
         public let method: String
         public let aiType: String
         public let source: String
         public let eventId: Int
     }
 
-    public struct Obs: Codable {
+    public struct Obs: Codable, Sendable {
         public let speciesCode: String
         public let exoticCategory: String?
         public let comments: String?

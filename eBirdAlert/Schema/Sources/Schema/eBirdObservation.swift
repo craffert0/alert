@@ -10,7 +10,7 @@ public struct eBirdObservation: Codable {
     public let locId: String
     public let locName: String
     public let obsDt: Date
-    public let howMany: Int
+    public let howMany: Int?
     public let lat: Double
     public let lng: Double
     public let obsValid: Bool

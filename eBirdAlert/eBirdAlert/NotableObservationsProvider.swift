@@ -16,5 +16,12 @@ class NotableObservationsProvider {
     func refresh() async throws {
         let latestObservations = try await client.observations
         observations = latestObservations.collate()
+        for o in observations {
+            for l in o.locations {
+                for e in l.observations {
+                    await SwiftDataService.shared.prepare(checklist: e.subId)
+                }
+            }
+        }
     }
 }
