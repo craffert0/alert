@@ -11,7 +11,7 @@ struct PreferencesView: View {
         Form {
             HStack {
                 Slider(value: $daysBack,
-                       in: 1 ... 10,
+                       in: 1 ... 8,
                        step: 1.0,
                        onEditingChanged: { _ in
                            preferences.daysBack = Int(daysBack)

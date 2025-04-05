@@ -13,7 +13,7 @@ struct ChecklistsView: View {
                     case .unloaded:
                         Text("maybe load?")
                     case let .loading(startTime):
-                        Text("loading \(startTime.distance(to: Date.now).english)")
+                        Text("loading \(startTime.relative())")
                     case .value:
                         Text("checklist")
                     case let .error(reason):

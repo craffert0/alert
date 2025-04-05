@@ -28,7 +28,7 @@ struct NotableObservationsView: View {
                     NavigationLink {
                         BirdObservationsView(o)
                     } label: {
-                        Text(o.latestSighting.distance(to: now).english)
+                        Text(o.latestSighting.relative(to: now))
                         Text(o.comName)
                         Text("(\(o.locations.total_count))")
                     }

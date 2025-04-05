@@ -17,10 +17,8 @@ struct eBirdObservationView: View {
         VStack {
             Text("\(e.howMany ?? 1) \(e.comName)")
             Text(e.locName)
-            HStack {
-                Text(e.obsDt.distance(to: Date.now).english)
-                Text(e.userDisplayName)
-            }
+            Text(e.obsDt.eBirdFormatted)
+            Text(e.userDisplayName)
             Spacer()
             if let comments = checklist.observation(for: e.obsId)?.comments {
                 Label("sighting comments", systemImage: "location.square")
@@ -31,7 +29,7 @@ struct eBirdObservationView: View {
             case .unloaded:
                 Text("maybe load?")
             case let .loading(startTime):
-                Text("loading \(startTime.distance(to: Date.now).english)")
+                Text("loading \(startTime.relative())")
             case let .value(checklist):
                 if let comments = checklist.comments {
                     Label("general comments", systemImage: "globe.americas")

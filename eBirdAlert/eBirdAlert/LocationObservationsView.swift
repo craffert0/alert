@@ -28,7 +28,7 @@ struct LocationObservationsView: View {
                         NavigationLink {
                             eBirdObservationView(e)
                         } label: {
-                            Text(e.obsDt.distance(to: now).english)
+                            Text(e.obsDt.relative(to: now))
                             Text(comments)
                         }
                     }
