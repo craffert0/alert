@@ -12,6 +12,7 @@ class PreferencesModel: ObservableObject {
     @AppStorage("settings.distUnits") var distUnits: DistanceUnits = .miles
     @AppStorage("settings.applicationKey") var applicationKey: String = ""
     @AppStorage("settings.mapType") var mapOption: MapOption = .apple
+    @AppStorage("settings.debugMode") var debugMode: Bool = false
 }
 
 extension PreferencesModel {

@@ -5,14 +5,18 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var preferences = PreferencesModel.global
+
     var body: some View {
         TabView {
             Tab("Rarities", systemImage: "bird.circle") {
                 NotableObservationsView()
             }
 
-            Tab("Checklists", systemImage: "checklist") {
-                ChecklistsView()
+            if preferences.debugMode {
+                Tab("Checklists", systemImage: "checklist") {
+                    ChecklistsView()
+                }
             }
 
             Tab("Settings", systemImage: "gearshape") {

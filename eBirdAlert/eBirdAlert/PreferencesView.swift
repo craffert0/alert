@@ -10,6 +10,7 @@ struct PreferencesView: View {
     var body: some View {
         Form {
             HStack {
+                Label("", systemImage: "calendar.circle")
                 Slider(value: $daysBack,
                        in: 1 ... 8,
                        step: 1.0,
@@ -20,12 +21,14 @@ struct PreferencesView: View {
             }
 
             HStack {
+                Label("", systemImage: "figure.walk.circle")
                 Slider(value: preferences.$distValue,
                        in: 1 ... 20,
+                       step: 0.1,
                        onEditingChanged: { _ in })
                 Picker(
                     preferences.distValue.formatted(
-                        .number.rounded(rule: .down, increment: 0.01)
+                        .number.rounded(rule: .down, increment: 0.1)
                     ),
                     selection: preferences.$distUnits
                 ) {
@@ -34,10 +37,18 @@ struct PreferencesView: View {
                 }
             }
 
-            Picker("Map Type", selection: preferences.$mapOption) {
+            Picker(selection: preferences.$mapOption) {
                 Text("Apple").tag(MapOption.apple)
                 Text("Google").tag(MapOption.google)
+            } label: {
+                Label("Map Type", systemImage: "map.circle")
             }
+
+            Toggle(
+                "Debug Mode",
+                systemImage: "magnifyingglass.circle",
+                isOn: preferences.$debugMode
+            )
 
             HStack {
                 Label("eBird Key:", systemImage: "key")
