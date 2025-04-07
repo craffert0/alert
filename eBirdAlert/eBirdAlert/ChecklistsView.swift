@@ -5,19 +5,33 @@ import SwiftUI
 
 struct ChecklistsView: View {
     var body: some View {
-        List {
-            ForEach(SwiftDataService.shared.checklists) { c in
-                HStack {
-                    Text(c.id)
+        NavigationView {
+            List {
+                ForEach(SwiftDataService.shared.checklists
+                    .sorted { $0.date > $1.date })
+                { c in
                     switch c.status {
                     case .unloaded:
-                        Text("maybe load?")
+                        HStack {
+                            Text("\(c.date.relative()) \(c.id)")
+                            Text("maybe load?")
+                        }
                     case let .loading(startTime):
-                        Text("loading \(startTime.relative())")
-                    case .value:
-                        Text("checklist")
+                        HStack {
+                            Text("\(c.date.relative()) \(c.id)")
+                            Text("loading \(startTime.relative())")
+                        }
+                    case let .value(checklist):
+                        NavigationLink {
+                            ChecklistView(checklist: checklist)
+                        } label: {
+                            Text("\(c.date.relative()) \(c.id)")
+                        }
                     case let .error(reason):
-                        Text("error: \(reason)")
+                        HStack {
+                            Text("\(c.date.relative()) \(c.id)")
+                            Text("error: \(reason)")
+                        }
                     }
                 }
             }

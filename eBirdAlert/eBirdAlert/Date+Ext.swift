@@ -29,6 +29,8 @@ extension Date {
         case 60 ..< 3600: return "\(seconds / 60)m"
         case 3600 ..< Int(other.yesterday.distance(to: other)):
             return "\(seconds / 3600)h"
+        case (86400 * 366) ... Int.max:
+            return "!!"
         default:
             return formatted(FormatStyle().weekday(.short))
         }
