@@ -8,8 +8,7 @@ extension URLRequest {
          queryItems: [URLQueryItem] = [],
          withLocation: Bool = false) throws
     {
-        let applicationKey = PreferencesModel.global.applicationKey
-        guard applicationKey != "" else { throw eBirdServiceError.noKey }
+        let applicationKey = try KeychainService.global.applicationKey
 
         var allQueryItems =
             queryItems + [URLQueryItem(name: "fmt", value: "json")]
@@ -25,7 +24,6 @@ extension URLRequest {
             ]
         }
 
-        print(allQueryItems)
         let url = URL(string: "https://api.ebird.org/v2/" + path)!
             .appending(queryItems: allQueryItems)
 

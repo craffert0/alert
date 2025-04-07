@@ -36,7 +36,7 @@ struct NotableObservationsView: View {
             }
             .listStyle(.automatic)
             .navigationTitle("Rarities")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.large)
             // .toolbar(content: toolbarContent)
             // .environment(\.editMode, $editMode)
             .refreshable {

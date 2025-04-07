@@ -6,9 +6,11 @@ import SwiftUI
 struct PreferencesView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @State var daysBack: Double = .init(PreferencesModel.global.daysBack)
+    @State var showAuthenticationKey: Bool = false
 
     var body: some View {
         Form {
+            Text("Settings").font(.largeTitle)
             HStack {
                 Label("", systemImage: "calendar.circle")
                 Slider(value: $daysBack,
@@ -49,16 +51,10 @@ struct PreferencesView: View {
                 systemImage: "magnifyingglass.circle",
                 isOn: preferences.$debugMode
             )
-
-            HStack {
-                Label("eBird Key:", systemImage: "key")
-                TextField(text: preferences.$applicationKey,
-                          prompt: Text("eBird application key"))
-                {
-                    Text("App Key")
-                }
-                .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
+            Button("eBird Authentication Key", systemImage: "key") {
+                showAuthenticationKey = true
+            }.sheet(isPresented: $showAuthenticationKey) {
+                AuthenticationKeyView()
             }
         }
     }
