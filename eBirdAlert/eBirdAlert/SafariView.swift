@@ -4,17 +4,15 @@
 import SafariServices
 import SwiftUI
 
-struct SpeciesDetailView: UIViewControllerRepresentable {
+struct SafariView: UIViewControllerRepresentable {
     typealias UIViewControllerType = SFSafariViewController
     typealias Context =
-        UIViewControllerRepresentableContext<SpeciesDetailView>
+        UIViewControllerRepresentableContext<SafariView>
 
-    let species: Species
+    let url: URL
 
     func makeUIViewController(context _: Context) -> SFSafariViewController {
-        let url =
-            URL(string: "https://ebird.org/species/\(species.speciesCode)")!
-        return SFSafariViewController(url: url)
+        SFSafariViewController(url: url)
     }
 
     func updateUIViewController(_: SFSafariViewController, context _: Context) {}

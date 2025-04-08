@@ -23,7 +23,7 @@ struct BirdObservationsView: View {
             Button("Details", systemImage: "network") {
                 showSpecies = true
             }.sheet(isPresented: $showSpecies) {
-                SpeciesDetailView(species: o)
+                SafariView(species: o)
             }
 
             List {
