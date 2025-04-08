@@ -6,6 +6,7 @@ import SwiftUI
 
 struct BirdObservationsView: View {
     let o: BirdObservations
+    @State var showSpecies: Bool = false
 
     init(_ o: BirdObservations) {
         self.o = o
@@ -18,11 +19,13 @@ struct BirdObservationsView: View {
         // 4. Map?
         VStack {
             Text(o.sciName)
-            NavigationLink {
+
+            Button("Details", systemImage: "network") {
+                showSpecies = true
+            }.sheet(isPresented: $showSpecies) {
                 SpeciesDetailView(species: o)
-            } label: {
-                Label("Details", systemImage: "network")
             }
+
             List {
                 let now = Date.now
                 ForEach(o.locations) { l in

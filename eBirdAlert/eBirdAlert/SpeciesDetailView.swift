@@ -1,19 +1,21 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import SafariServices
 import SwiftUI
-import WebKit
 
-struct SpeciesDetailView: UIViewRepresentable {
+struct SpeciesDetailView: UIViewControllerRepresentable {
+    typealias UIViewControllerType = SFSafariViewController
+    typealias Context =
+        UIViewControllerRepresentableContext<SpeciesDetailView>
+
     let species: Species
 
-    func makeUIView(context _: Context) -> WKWebView {
-        let wkwebView = WKWebView()
+    func makeUIViewController(context _: Context) -> SFSafariViewController {
         let url =
             URL(string: "https://ebird.org/species/\(species.speciesCode)")!
-        wkwebView.load(URLRequest(url: url))
-        return wkwebView
+        return SFSafariViewController(url: url)
     }
 
-    func updateUIView(_: WKWebView, context _: Context) {}
+    func updateUIViewController(_: SFSafariViewController, context _: Context) {}
 }
