@@ -9,53 +9,67 @@ struct PreferencesView: View {
     @State var showAuthenticationKey: Bool = false
 
     var body: some View {
-        Form {
-            Text("Settings").font(.largeTitle)
-            HStack {
-                Label("", systemImage: "calendar.circle")
-                Slider(value: $daysBack,
-                       in: 1 ... 8,
-                       step: 1.0,
-                       onEditingChanged: { _ in
-                           preferences.daysBack = Int(daysBack)
-                       })
-                Text("\(Int(daysBack)) days")
-            }
+        NavigationStack {
+            Form {
+                Section {
+                    HStack {
+                        Label("", systemImage: "calendar.circle")
+                        Slider(value: $daysBack,
+                               in: 1 ... 8,
+                               step: 1.0,
+                               onEditingChanged: { _ in
+                                   preferences.daysBack = Int(daysBack)
+                               })
+                        Text("\(Int(daysBack)) days")
+                    }
 
-            HStack {
-                Label("", systemImage: "figure.walk.circle")
-                Slider(value: preferences.$distValue,
-                       in: 1 ... 20,
-                       step: 0.1,
-                       onEditingChanged: { _ in })
-                Picker(
-                    preferences.distValue.formatted(
-                        .number.rounded(rule: .down, increment: 0.1)
-                    ),
-                    selection: preferences.$distUnits
-                ) {
-                    Text("miles").tag(DistanceUnits.miles)
-                    Text("km").tag(DistanceUnits.kilometers)
+                    HStack {
+                        Label("", systemImage: "figure.walk.circle")
+                        Slider(value: preferences.$distValue,
+                               in: 1 ... 20,
+                               step: 0.1,
+                               onEditingChanged: { _ in })
+                        Picker(
+                            preferences.distValue.formatted(
+                                .number.rounded(rule: .down, increment: 0.1)
+                            ),
+                            selection: preferences.$distUnits
+                        ) {
+                            Text("miles").tag(DistanceUnits.miles)
+                            Text("km").tag(DistanceUnits.kilometers)
+                        }
+                    }
+                } header: {
+                    Text("Range")
                 }
-            }
 
-            Picker(selection: preferences.$mapOption) {
-                Text("Apple").tag(MapOption.apple)
-                Text("Google").tag(MapOption.google)
-            } label: {
-                Label("Map Type", systemImage: "map.circle")
-            }
+                Section {
+                    Picker(selection: preferences.$mapOption) {
+                        Text("Apple").tag(MapOption.apple)
+                        Text("Google").tag(MapOption.google)
+                    } label: {
+                        Label("Map Type", systemImage: "map.circle")
+                    }
 
-            Toggle(
-                "Debug Mode",
-                systemImage: "magnifyingglass.circle",
-                isOn: preferences.$debugMode
-            )
-            Button("eBird Authentication Key", systemImage: "key") {
-                showAuthenticationKey = true
-            }.sheet(isPresented: $showAuthenticationKey) {
-                AuthenticationKeyView()
-            }
+                    Toggle(
+                        "Debug Mode",
+                        systemImage: "magnifyingglass.circle",
+                        isOn: preferences.$debugMode
+                    )
+                } header: {
+                    Text("Interactions")
+                }
+
+                Section {
+                    Button("eBird Authentication Key", systemImage: "key") {
+                        showAuthenticationKey = true
+                    }.sheet(isPresented: $showAuthenticationKey) {
+                        AuthenticationKeyView()
+                    }
+                } header: {
+                    Text("Account")
+                }
+            }.navigationBarTitle("User Settings")
         }
     }
 }
