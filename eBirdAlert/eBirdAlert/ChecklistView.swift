@@ -14,16 +14,29 @@ struct ChecklistView: View {
             ScrollView(.vertical) {
                 LazyVStack {
                     ForEach(checklist.obs) { o in
-                        HStack {
-                            if let how = o.howManyStr {
-                                Text(how)
-                            }
-                            Text(o.speciesCode)
-                            if let c = o.comments {
-                                Text(c)
-                            }
-                        }
+                        ObsView(obs: o)
                     }
+                }
+            }
+        }
+    }
+
+    struct ObsView: View {
+        let obs: eBirdChecklist.Obs
+        @State var showSpecies: Bool = false
+
+        var body: some View {
+            HStack {
+                if let how = obs.howManyStr {
+                    Text(how)
+                }
+                Button(obs.speciesCode) {
+                    showSpecies = true
+                }.sheet(isPresented: $showSpecies) {
+                    SafariView(speciesCode: obs.speciesCode)
+                }
+                if let c = obs.comments {
+                    Text(c)
                 }
             }
         }

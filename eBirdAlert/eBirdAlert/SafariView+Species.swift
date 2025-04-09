@@ -4,9 +4,9 @@
 import Foundation
 
 extension SafariView {
-    init(species: Species) {
+    init(speciesCode: String) {
         let url =
-            URL(string: "https://ebird.org/species/\(species.speciesCode)")!
+            URL(string: "https://ebird.org/species/\(speciesCode)")!
         self.init(url: url)
     }
 }
