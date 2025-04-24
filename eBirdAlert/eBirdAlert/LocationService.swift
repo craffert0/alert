@@ -6,8 +6,6 @@ import Observation
 
 @Observable
 class LocationService: NSObject {
-    static var global = LocationService()
-
     private let locationManager = CLLocationManager()
     private(set) var location: CLLocation? = nil
 
@@ -34,14 +32,8 @@ extension LocationService: CLLocationManagerDelegate {
                          didUpdateLocations locations: [CLLocation])
     {
         guard let location = locations.last else { return }
-        DispatchQueue.main.async {
+        Task { @MainActor in
             self.location = location
         }
-    }
-
-    func locationManager(_: CLLocationManager,
-                         didFailWithError error: any Error)
-    {
-        print("fuck", error.localizedDescription)
     }
 }

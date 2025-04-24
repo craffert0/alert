@@ -9,6 +9,11 @@ enum eBirdServiceError: Error {
     case networkError
     case httpError(statusCode: Int)
     case unexpectedError(error: Error)
+
+    static func from(_ error: Error?) -> eBirdServiceError? {
+        guard let error else { return nil }
+        return error as? eBirdServiceError ?? .unexpectedError(error: error)
+    }
 }
 
 extension eBirdServiceError: LocalizedError {

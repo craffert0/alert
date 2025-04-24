@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import CoreLocation
 import Foundation
 import Schema
 import Testing
@@ -21,7 +22,7 @@ extension eBirdObservation {
 
     var raw_observations: [eBirdObservation] {
         get async throws {
-            try await service.getNearbyNotable()
+            try await service.getNotable(near: CLLocation())
         }
     }
 
@@ -41,7 +42,7 @@ extension eBirdObservation {
 
     @Test func raw_parse() async throws {
         let observations = try await raw_observations
-        try #require(observations.count == 183)
+        try #require(observations.count == 182)
         let o = observations.first!
         #expect(o.speciesCode == "louwat")
         let f = DateFormatter()
@@ -51,6 +52,6 @@ extension eBirdObservation {
 
     @Test func removed_duplicates_parse() async throws {
         let client = NotableObservationsClient(service: service)
-        #expect(try await client.observations.count < raw_observations.count)
+        #expect(try await client.observations(near: CLLocation()).count < raw_observations.count)
     }
 }

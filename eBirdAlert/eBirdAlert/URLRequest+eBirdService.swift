@@ -1,21 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import CoreLocation
 import Foundation
 
 extension URLRequest {
     init(eBirdPath path: String,
          queryItems: [URLQueryItem] = [],
-         withLocation: Bool = false) throws
+         withLocation location: CLLocation? = nil) throws
     {
         let applicationKey = try KeychainService.global.applicationKey
 
         var allQueryItems =
             queryItems + [URLQueryItem(name: "fmt", value: "json")]
-        if withLocation {
-            guard let location = LocationService.global.location else {
-                throw eBirdServiceError.noLocation
-            }
+        if let location {
             allQueryItems += [
                 URLQueryItem(name: "lat",
                              value: "\(location.coordinate.latitude)"),

@@ -3,14 +3,15 @@
 
 import SwiftUI
 
-struct NotableObservationsView: View {
-    let locationService = LocationService.global
-
-    @Environment(NotableObservationsProvider.self) var provider
-    @State var isLoading = false
+struct ObservationsView: View {
+    @Environment(LocationService.self) var locationService
+    @State var provider: ObservationsProvider
     @State private var error: eBirdServiceError?
     @State private var hasError = false
-    @State private var lastLoadTime: Date?
+
+    init(provider: ObservationsProvider) {
+        self.provider = provider
+    }
 
     var body: some View {
         if locationService.location == nil {
@@ -37,8 +38,6 @@ struct NotableObservationsView: View {
             .listStyle(.automatic)
             .navigationTitle("Rarities")
             .navigationBarTitleDisplayMode(.large)
-            // .toolbar(content: toolbarContent)
-            // .environment(\.editMode, $editMode)
             .refreshable {
                 await refresh()
             }
@@ -48,22 +47,24 @@ struct NotableObservationsView: View {
             await load()
         }
     }
+}
 
+extension ObservationsView {
     func load() async {
-        if Date.now.timeIntervalSince(lastLoadTime ?? Date.distantPast) > 3600 {
-            await refresh()
+        do {
+            try await provider.load()
+        } catch {
+            self.error = eBirdServiceError.from(error)
+            hasError = true
         }
     }
 
     func refresh() async {
-        isLoading = true
         do {
             try await provider.refresh()
-            lastLoadTime = Date.now
         } catch {
-            self.error = error as? eBirdServiceError ?? .unexpectedError(error: error)
+            self.error = eBirdServiceError.from(error)
             hasError = true
         }
-        isLoading = false
     }
 }

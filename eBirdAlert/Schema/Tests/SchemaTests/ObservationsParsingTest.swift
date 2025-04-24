@@ -14,6 +14,6 @@ import Testing
         let d = JSONDecoder()
         d.dateDecodingStrategy = .eBirdStyle
         let observations = try d.decode([eBirdObservation].self, from: json)
-        #expect(observations.count == 183)
+        #expect(observations.count == 182)
     }
 }

@@ -1,14 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import CoreLocation
 import Foundation
 import Schema
 
 class eBirdServiceFake {
     let notableName: String?
+    let allName: String?
 
-    init(notableName: String? = nil) {
+    init(notableName: String? = nil,
+         allName: String? = nil)
+    {
         self.notableName = notableName
+        self.allName = allName
     }
 
     private func get<Output: Decodable>(name: String) throws -> Output {
@@ -25,9 +30,14 @@ class eBirdServiceFake {
 }
 
 extension eBirdServiceFake: eBirdService {
-    func getNearbyNotable() async throws -> [eBirdObservation] {
+    func getNotable(near _: CLLocation) async throws -> [eBirdObservation] {
         guard let notableName else { throw eBirdServiceFakeError.noName }
         return try get(name: notableName)
+    }
+
+    func getAll(near _: CLLocation) async throws -> [eBirdObservation] {
+        guard let allName else { throw eBirdServiceFakeError.noName }
+        return try get(name: allName)
     }
 
     func getChecklist(subId: String) async throws -> eBirdChecklist {
