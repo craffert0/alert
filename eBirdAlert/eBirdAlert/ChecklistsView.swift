@@ -11,29 +11,7 @@ struct ChecklistsView: View {
         NavigationView {
             List {
                 ForEach(checklists) { c in
-                    switch c.status {
-                    case .unloaded:
-                        HStack {
-                            Text("\(c.date.relative()) \(c.id)")
-                            Text("unloaded")
-                        }
-                    case let .loading(startTime):
-                        HStack {
-                            Text("\(c.date.relative()) \(c.id)")
-                            Text("loading \(startTime.relative())")
-                        }
-                    case let .value(checklist):
-                        NavigationLink {
-                            ChecklistView(checklist: checklist)
-                        } label: {
-                            Text("\(c.date.relative()) \(c.id)")
-                        }
-                    case let .error(reason):
-                        HStack {
-                            Text("\(c.date.relative()) \(c.id)")
-                            Text("error: \(reason)")
-                        }
-                    }
+                    ChecklistLinkView(checklist: c)
                 }
             }
         }

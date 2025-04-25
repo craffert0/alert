@@ -20,15 +20,29 @@ final class Checklist {
         self.status = status
     }
 
-    func set(checklist: eBirdChecklist) {
-        date = checklist.obsDt
-        status = .value(checklist: checklist)
-    }
-
     func observation(for obsId: String) -> eBirdChecklist.Obs? {
         guard case let .value(checklist) = status else {
             return nil
         }
         return checklist.obs.first { $0.obsId == obsId }
+    }
+
+    func load() {
+        guard case .unloaded = status else { return }
+        status = .loading(startTime: Date.now)
+        Task {
+            do {
+                let e = try await URLSession.shared.getChecklist(subId: id)
+                Task { @MainActor in
+                    self.date = e.obsDt
+                    self.status = .value(checklist: e)
+                }
+            } catch {
+                let e = error
+                Task { @MainActor in
+                    self.status = .error(reason: "\(e)")
+                }
+            }
+        }
     }
 }

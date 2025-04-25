@@ -7,6 +7,7 @@ import SwiftUI
 struct BirdObservationsView: View {
     let o: BirdObservations
     @State var showSpecies: Bool = false
+    @State var now = TimeDataSource<Date>.currentDate
 
     init(_ o: BirdObservations) {
         self.o = o
@@ -27,12 +28,11 @@ struct BirdObservationsView: View {
             }
 
             List {
-                let now = Date.now
                 ForEach(o.locations) { l in
                     NavigationLink {
                         LocationObservationsView(l)
                     } label: {
-                        Text(l.latestSighting.relative(to: now))
+                        Text(l.latestSighting, relativeTo: now)
                         Text(l.locName)
                         Text("(\(l.observations.count))")
                     }

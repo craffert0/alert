@@ -17,11 +17,6 @@ class SwiftDataService {
     }
 
     @MainActor
-    var checklists: [Checklist] {
-        try! modelContext.fetch(FetchDescriptor<Checklist>())
-    }
-
-    @MainActor
     func prepare(obs: eBirdObservation) {
         guard get(checklist: obs.subId) == nil else {
             return
@@ -38,25 +33,7 @@ class SwiftDataService {
             modelContext.insert(c)
             return c
         }()
-
-        if case .unloaded = c.status {
-            c.status = .loading(startTime: Date.now)
-            Task {
-                do {
-                    let e =
-                        try await URLSession.shared.getChecklist(
-                            subId: obs.subId)
-                    DispatchQueue.main.async {
-                        c.set(checklist: e)
-                    }
-                } catch {
-                    let e = error
-                    DispatchQueue.main.async {
-                        c.status = .error(reason: "\(e)")
-                    }
-                }
-            }
-        }
+        c.load()
         return c
     }
 

@@ -8,6 +8,7 @@ struct ObservationsView: View {
     @State var provider: ObservationsProvider
     @State private var error: eBirdServiceError?
     @State private var hasError = false
+    @State var now = TimeDataSource<Date>.currentDate
 
     init(provider: ObservationsProvider) {
         self.provider = provider
@@ -24,12 +25,11 @@ struct ObservationsView: View {
     private var properView: some View {
         NavigationView {
             List {
-                let now = Date.now
                 ForEach(provider.observations) { o in
                     NavigationLink {
                         BirdObservationsView(o)
                     } label: {
-                        Text(o.latestSighting.relative(to: now))
+                        Text(o.latestSighting, relativeTo: now)
                         Text(o.comName)
                         Text("(\(o.locations.total_count))")
                     }

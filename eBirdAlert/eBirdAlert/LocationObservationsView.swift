@@ -7,6 +7,7 @@ import SwiftUI
 
 struct LocationObservationsView: View {
     @Environment(SwiftDataService.self) var swiftDataService
+    @State var now = TimeDataSource<Date>.currentDate
 
     let l: LocationObservations
 
@@ -20,19 +21,13 @@ struct LocationObservationsView: View {
                 l.openMap()
             }
             List {
-                let now = Date.now
                 ForEach(l.observations) { e in
-                    if let comments = swiftDataService
-                        .load(obs: e)
-                        .observation(for: e.obsId)?
-                        .comments
-                    {
+                    let c = swiftDataService.load(obs: e)
+                    if let comments = c.observation(for: e.obsId)?.comments {
                         NavigationLink {
-                            eBirdObservationView(
-                                e, in: swiftDataService.load(obs: e)
-                            )
+                            eBirdObservationView(e, in: c)
                         } label: {
-                            Text(e.obsDt.relative(to: now))
+                            Text(e.obsDt, relativeTo: now)
                             Text(comments)
                         }
                     }
