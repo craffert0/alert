@@ -1,20 +1,21 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import SwiftData
 import SwiftUI
 
 struct ChecklistsView: View {
+    @Query(sort: \Checklist.date, order: .reverse) var checklists: [Checklist]
+
     var body: some View {
         NavigationView {
             List {
-                ForEach(SwiftDataService.shared.checklists
-                    .sorted { $0.date > $1.date })
-                { c in
+                ForEach(checklists) { c in
                     switch c.status {
                     case .unloaded:
                         HStack {
                             Text("\(c.date.relative()) \(c.id)")
-                            Text("maybe load?")
+                            Text("unloaded")
                         }
                     case let .loading(startTime):
                         HStack {

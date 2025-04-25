@@ -8,13 +8,21 @@ import SwiftData
 @Model
 final class Checklist {
     @Attribute(.unique) var id: String
+    var date: Date
     var status: ChecklistStatus
 
     init(for id: String,
+         date: Date,
          status: ChecklistStatus)
     {
         self.id = id
+        self.date = date
         self.status = status
+    }
+
+    func set(checklist: eBirdChecklist) {
+        date = checklist.obsDt
+        status = .value(checklist: checklist)
     }
 
     func observation(for obsId: String) -> eBirdChecklist.Obs? {
@@ -22,15 +30,5 @@ final class Checklist {
             return nil
         }
         return checklist.obs.first { $0.obsId == obsId }
-    }
-}
-
-extension Checklist {
-    var date: Date {
-        if case let .value(checklist) = status {
-            checklist.obsDt
-        } else {
-            Date.distantPast
-        }
     }
 }

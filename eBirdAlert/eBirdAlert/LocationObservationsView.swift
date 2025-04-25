@@ -6,6 +6,8 @@ import Schema
 import SwiftUI
 
 struct LocationObservationsView: View {
+    @Environment(SwiftDataService.self) var swiftDataService
+
     let l: LocationObservations
 
     init(_ l: LocationObservations) {
@@ -20,13 +22,15 @@ struct LocationObservationsView: View {
             List {
                 let now = Date.now
                 ForEach(l.observations) { e in
-                    if let comments = SwiftDataService.shared
-                        .load(checklist: e.subId)
+                    if let comments = swiftDataService
+                        .load(obs: e)
                         .observation(for: e.obsId)?
                         .comments
                     {
                         NavigationLink {
-                            eBirdObservationView(e)
+                            eBirdObservationView(
+                                e, in: swiftDataService.load(obs: e)
+                            )
                         } label: {
                             Text(e.obsDt.relative(to: now))
                             Text(comments)

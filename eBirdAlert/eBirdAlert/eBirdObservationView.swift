@@ -6,11 +6,13 @@ import SwiftUI
 
 struct eBirdObservationView: View {
     let e: eBirdObservation
-    let checklist: Checklist
+    @State var checklist: Checklist
 
-    init(_ e: eBirdObservation) {
+    init(_ e: eBirdObservation,
+         in checklist: Checklist)
+    {
         self.e = e
-        checklist = SwiftDataService.shared.load(checklist: e.subId)
+        self.checklist = checklist
     }
 
     var body: some View {
@@ -27,7 +29,7 @@ struct eBirdObservationView: View {
             }
             switch checklist.status {
             case .unloaded:
-                Text("maybe load?")
+                Text("unknown")
             case let .loading(startTime):
                 Text("loading \(startTime.relative())")
             case let .value(checklist):

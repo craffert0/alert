@@ -10,12 +10,15 @@ class ObservationsProvider {
     var observations: [BirdObservations] = []
     private let client: ObservationsClient
     private let locationService: LocationService
+    private let swiftDataService: SwiftDataService
     private var lastLoadTime: Date?
 
     init(client: ObservationsClient,
+         swiftDataService: SwiftDataService,
          locationService: LocationService)
     {
         self.client = client
+        self.swiftDataService = swiftDataService
         self.locationService = locationService
     }
 
@@ -35,7 +38,7 @@ class ObservationsProvider {
         for o in observations {
             for l in o.locations {
                 for e in l.observations {
-                    await SwiftDataService.shared.prepare(checklist: e.subId)
+                    await swiftDataService.prepare(obs: e)
                 }
             }
         }

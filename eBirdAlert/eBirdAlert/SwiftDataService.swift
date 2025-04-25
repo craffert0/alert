@@ -2,28 +2,18 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import Foundation
+import Schema
 import SwiftData
 
 // https://developer.apple.com/documentation/swiftdata/preserving-your-apps-model-data-across-launches
 
+@Observable
 class SwiftDataService {
-    private let modelContainer: ModelContainer
     private let modelContext: ModelContext
 
     @MainActor
-    static let shared = SwiftDataService()
-
-    @MainActor
-    private init() {
-        let schema = Schema([
-            Checklist.self,
-        ])
-        let modelConfiguration =
-            ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-        modelContainer =
-            try! ModelContainer(for: schema,
-                                configurations: [modelConfiguration])
-        modelContext = modelContainer.mainContext
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
     }
 
     @MainActor
@@ -32,17 +22,19 @@ class SwiftDataService {
     }
 
     @MainActor
-    func prepare(checklist id: String) {
-        guard get(checklist: id) == nil else {
+    func prepare(obs: eBirdObservation) {
+        guard get(checklist: obs.subId) == nil else {
             return
         }
-        modelContext.insert(Checklist(for: id, status: .unloaded))
+        modelContext.insert(Checklist(for: obs.subId, date: obs.obsDt,
+                                      status: .unloaded))
     }
 
     @MainActor
-    func load(checklist id: String) -> Checklist {
-        let c = get(checklist: id) ?? {
-            let c = Checklist(for: id, status: .unloaded)
+    func load(obs: eBirdObservation) -> Checklist {
+        let c = get(checklist: obs.subId) ?? {
+            let c =
+                Checklist(for: obs.subId, date: obs.obsDt, status: .unloaded)
             modelContext.insert(c)
             return c
         }()
@@ -51,9 +43,11 @@ class SwiftDataService {
             c.status = .loading(startTime: Date.now)
             Task {
                 do {
-                    let e = try await URLSession.shared.getChecklist(subId: id)
+                    let e =
+                        try await URLSession.shared.getChecklist(
+                            subId: obs.subId)
                     DispatchQueue.main.async {
-                        c.status = .value(checklist: e)
+                        c.set(checklist: e)
                     }
                 } catch {
                     let e = error
@@ -66,8 +60,20 @@ class SwiftDataService {
         return c
     }
 
+    func garbageCollect(daysBack: Int) {
+        if let date = Calendar.current.date(byAdding: .day,
+                                            value: -daysBack,
+                                            to: Date.now)
+        {
+            try? modelContext.delete(
+                model: Checklist.self,
+                where: #Predicate { $0.date <= date }
+            )
+        }
+    }
+
     private func get(checklist id: String) -> Checklist? {
-        try! modelContext.fetch(
+        try? modelContext.fetch(
             FetchDescriptor<Checklist>(
                 predicate: #Predicate { $0.id == id },
                 sortBy: []
