@@ -83,6 +83,9 @@ struct PreferencesView: View {
 
     private var copyrightView: some View {
         Section {
+            Text("Copyright © 2025 Marleny Rafferty")
+                .frame(maxWidth: .infinity, alignment: .center)
+
             Button("Copyright © 2025 Colin Rafferty") {
                 preferences.debugTapCount += 1
                 if preferences.debugTapCount > 10 {
