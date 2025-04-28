@@ -14,6 +14,7 @@ from pathlib import Path
 
 lat = 40.67
 lng = -73.97
+regionCode = "US-NY-047"
 
 
 def generate_unique_id(x):
@@ -47,6 +48,15 @@ class Server:
             )
         ]
 
+    def species(self, regionCode):
+        return self.get("product/spplist/" + regionCode)
+
+    def regionobs(self, regionCode):
+        return self.get(f"data/obs/{regionCode}/recent")
+
+    def region(self, regionCode):
+        return self.get("ref/region/info/" + regionCode)
+
     def checklist(self, subId):
         return self.get("product/checklist/view/" + subId)
 
@@ -56,8 +66,9 @@ class Server:
 
 def main():
     server = Server()
+    print(json.dumps(server.regionobs(regionCode), indent=2))
     # print(json.dumps(server.taxonomy("louwat,commer"), indent=2))
-    print(json.dumps(server.notable(), indent=2))
+    # print(json.dumps(server.notable(), indent=2))
     # print(json.dumps(server.checklist("S222156738"), indent=2))
 
 
