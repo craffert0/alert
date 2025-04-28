@@ -20,16 +20,14 @@ struct LocationObservationsView: View {
             Button(l.locName) {
                 l.openMap()
             }
-            List {
-                ForEach(l.observations) { e in
-                    let c = swiftDataService.load(obs: e)
-                    if let comments = c.observation(for: e.obsId)?.comments {
-                        NavigationLink {
-                            eBirdObservationView(e, in: c)
-                        } label: {
-                            Text(e.obsDt, relativeTo: now)
-                            Text(comments)
-                        }
+            List(l.observations) { e in
+                let c = swiftDataService.load(obs: e)
+                if let comments = c.observation(for: e.obsId)?.comments {
+                    NavigationLink {
+                        eBirdObservationView(e, in: c)
+                    } label: {
+                        Text(e.obsDt, relativeTo: now)
+                        Text(comments)
                     }
                 }
             }

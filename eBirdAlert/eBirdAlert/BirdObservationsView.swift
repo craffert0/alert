@@ -27,15 +27,13 @@ struct BirdObservationsView: View {
                 SafariView(speciesCode: o.speciesCode)
             }
 
-            List {
-                ForEach(o.locations) { l in
-                    NavigationLink {
-                        LocationObservationsView(l)
-                    } label: {
-                        Text(l.latestSighting, relativeTo: now)
-                        Text(l.locName)
-                        Text("(\(l.observations.count))")
-                    }
+            List(o.locations) { l in
+                NavigationLink {
+                    LocationObservationsView(l)
+                } label: {
+                    Text(l.latestSighting, relativeTo: now)
+                    Text(l.locName)
+                    Text("(\(l.observations.count))")
                 }
             }
             .listStyle(.automatic)

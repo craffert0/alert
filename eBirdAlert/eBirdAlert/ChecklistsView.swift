@@ -9,10 +9,8 @@ struct ChecklistsView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(checklists) { c in
-                    ChecklistLinkView(checklist: c)
-                }
+            List(checklists) { c in
+                ChecklistLinkView(checklist: c)
             }
         }
     }

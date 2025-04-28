@@ -24,15 +24,13 @@ struct ObservationsView: View {
 
     private var properView: some View {
         NavigationView {
-            List {
-                ForEach(provider.observations) { o in
-                    NavigationLink {
-                        BirdObservationsView(o)
-                    } label: {
-                        Text(o.latestSighting, relativeTo: now)
-                        Text(o.comName)
-                        Text("(\(o.locations.total_count))")
-                    }
+            List(provider.observations) { o in
+                NavigationLink {
+                    BirdObservationsView(o)
+                } label: {
+                    Text(o.latestSighting, relativeTo: now)
+                    Text(o.comName)
+                    Text("(\(o.locations.total_count))")
                 }
             }
             .listStyle(.automatic)
