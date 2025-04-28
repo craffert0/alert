@@ -33,7 +33,7 @@ struct ChecklistView: View {
                 Button(obs.speciesCode) {
                     showSpecies = true
                 }.sheet(isPresented: $showSpecies) {
-                    SafariView(speciesCode: obs.speciesCode)
+                    SafariView(speciesCode: obs.speciesCode, site: .ebird)
                 }
                 if let c = obs.comments {
                     Text(c)

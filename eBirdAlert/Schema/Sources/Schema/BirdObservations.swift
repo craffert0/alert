@@ -11,7 +11,7 @@ public struct BirdObservations: Encodable {
     public var latestSighting: Date { rep.obsDt }
     public let locations: [LocationObservations]
 
-    init(observations: [eBirdObservation]) {
+    public init(observations: [eBirdObservation]) {
         var map: [String: [eBirdObservation]] = [:]
         for o in observations {
             map[o.locId] = (map[o.locId] ?? []) + [o]

@@ -3,7 +3,7 @@
 
 import Foundation
 
-public struct eBirdObservation: Codable {
+public struct eBirdObservation: Codable, Sendable {
     public let speciesCode: String
     public let comName: String
     public let sciName: String
@@ -41,4 +41,30 @@ extension eBirdObservation: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
+}
+
+public extension eBirdObservation {
+    static let fake = eBirdObservation(
+        speciesCode: "species",
+        comName: "My Fancy Species",
+        sciName: "Specious Reasoning",
+        locId: "backyard",
+        locName: "My Backyard",
+        obsDt: Date.now,
+        howMany: 4,
+        lat: 40.7,
+        lng: -74.0,
+
+        locationPrivate: false,
+        subId: "subid",
+
+        userDisplayName: "Barack Obama",
+        obsId: "obsid",
+        checklistId: "checklistis",
+
+        hasComments: true,
+        firstName: "Barack",
+        lastName: "Obama",
+        hasRichMedia: false
+    )
 }

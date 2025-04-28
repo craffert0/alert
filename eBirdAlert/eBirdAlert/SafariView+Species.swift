@@ -4,9 +4,24 @@
 import Foundation
 
 extension SafariView {
-    init(speciesCode: String) {
-        let url =
-            URL(string: "https://ebird.org/species/\(speciesCode)")!
-        self.init(url: url)
+    enum Site {
+        case ebird
+        case macaulay
+    }
+
+    init(speciesCode: String, site: Site) {
+        self.init(url: site.url(for: speciesCode))
+    }
+}
+
+extension SafariView.Site {
+    func url(for speciesCode: String) -> URL {
+        switch self {
+        case .ebird:
+            URL(string: "https://ebird.org/species/" + speciesCode)!
+        case .macaulay:
+            URL(string: "https://search.macaulaylibrary.org/catalog" +
+                "?taxonCode=" + speciesCode + "&sort=rating_rank_desc")!
+        }
     }
 }

@@ -23,7 +23,7 @@ struct eBirdObservationView: View {
                 Button(e.comName) {
                     showSpecies = true
                 }.sheet(isPresented: $showSpecies) {
-                    SafariView(speciesCode: e.speciesCode)
+                    SafariView(speciesCode: e.speciesCode, site: .ebird)
                 }
             }
             Text(e.obsDt.eBirdFormatted)
@@ -44,4 +44,10 @@ struct eBirdObservationView: View {
             }
         }
     }
+}
+
+#Preview {
+    eBirdObservationView(.fake, in: Checklist(for: "fake",
+                                              date: Date.now,
+                                              status: .unloaded))
 }
