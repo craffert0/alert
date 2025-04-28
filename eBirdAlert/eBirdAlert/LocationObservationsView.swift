@@ -9,7 +9,7 @@ struct LocationObservationsView: View {
     @Environment(SwiftDataService.self) var swiftDataService
     @State var now = TimeDataSource<Date>.currentDate
 
-    let l: LocationObservations
+    @State var l: LocationObservations
 
     init(_ l: LocationObservations) {
         self.l = l

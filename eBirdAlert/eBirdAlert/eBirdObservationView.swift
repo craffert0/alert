@@ -5,7 +5,7 @@ import Schema
 import SwiftUI
 
 struct eBirdObservationView: View {
-    let e: eBirdObservation
+    @State var e: eBirdObservation
     @State var checklist: Checklist
 
     init(_ e: eBirdObservation,

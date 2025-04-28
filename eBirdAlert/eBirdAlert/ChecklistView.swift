@@ -5,7 +5,7 @@ import Schema
 import SwiftUI
 
 struct ChecklistView: View {
-    let checklist: eBirdChecklist
+    @State var checklist: eBirdChecklist
 
     var body: some View {
         VStack {
@@ -22,7 +22,7 @@ struct ChecklistView: View {
     }
 
     struct ObsView: View {
-        let obs: eBirdChecklist.Obs
+        @State var obs: eBirdChecklist.Obs
         @State var showSpecies: Bool = false
 
         var body: some View {

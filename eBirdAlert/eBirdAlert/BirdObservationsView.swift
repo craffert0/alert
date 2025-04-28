@@ -5,7 +5,7 @@ import Schema
 import SwiftUI
 
 struct BirdObservationsView: View {
-    let o: BirdObservations
+    @State var o: BirdObservations
     @State var showSpecies: Bool = false
     @State var now = TimeDataSource<Date>.currentDate
 

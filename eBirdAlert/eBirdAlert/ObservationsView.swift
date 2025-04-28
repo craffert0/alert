@@ -7,7 +7,7 @@ struct ObservationsView: View {
     @Environment(LocationService.self) var locationService
     @State var provider: ObservationsProvider
     @State private var error: eBirdServiceError?
-    @State private var hasError = false
+    @State private var showError = false
     @State var now = TimeDataSource<Date>.currentDate
 
     init(provider: ObservationsProvider) {
@@ -39,7 +39,7 @@ struct ObservationsView: View {
             .refreshable {
                 await refresh()
             }
-            .alert(isPresented: $hasError, error: error) {}
+            .alert(isPresented: $showError, error: error) {}
         }
         .task {
             await load()
@@ -53,7 +53,7 @@ extension ObservationsView {
             try await provider.load()
         } catch {
             self.error = eBirdServiceError.from(error)
-            hasError = true
+            showError = true
         }
     }
 
@@ -62,7 +62,7 @@ extension ObservationsView {
             try await provider.refresh()
         } catch {
             self.error = eBirdServiceError.from(error)
-            hasError = true
+            showError = true
         }
     }
 }
