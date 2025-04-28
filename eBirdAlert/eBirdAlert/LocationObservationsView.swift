@@ -17,9 +17,7 @@ struct LocationObservationsView: View {
 
     var body: some View {
         VStack {
-            Button(l.locName) {
-                l.openMap()
-            }
+            LocationButton(location: l)
             List(l.observations) { e in
                 let c = swiftDataService.load(obs: e)
                 if let comments = c.observation(for: e.obsId)?.comments {

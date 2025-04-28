@@ -7,6 +7,7 @@ import SwiftUI
 struct eBirdObservationView: View {
     @State var e: eBirdObservation
     @State var checklist: Checklist
+    @State var showSpecies: Bool = false
 
     init(_ e: eBirdObservation,
          in checklist: Checklist)
@@ -17,9 +18,16 @@ struct eBirdObservationView: View {
 
     var body: some View {
         VStack {
-            Text("\(e.howMany ?? 1) \(e.comName)")
-            Text(e.locName)
+            HStack {
+                Text("\(e.howMany ?? 1)")
+                Button(e.comName) {
+                    showSpecies = true
+                }.sheet(isPresented: $showSpecies) {
+                    SafariView(speciesCode: e.speciesCode)
+                }
+            }
             Text(e.obsDt.eBirdFormatted)
+            LocationButton(location: e)
             Text(e.userDisplayName)
             Spacer()
             if let comments = checklist.observation(for: e.obsId)?.comments {
