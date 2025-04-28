@@ -24,22 +24,15 @@ struct eBirdObservationView: View {
             Spacer()
             if let comments = checklist.observation(for: e.obsId)?.comments {
                 Label("sighting comments", systemImage: "location.square")
-                Text(comments)
+                Text(comments).padding()
                 Spacer()
             }
-            switch checklist.status {
-            case .unloaded:
-                Text("unknown")
-            case let .loading(startTime):
-                Text("loading \(startTime.relative())")
-            case let .value(checklist):
-                if let comments = checklist.comments {
-                    Label("general comments", systemImage: "globe.americas")
-                    Text(comments)
-                    Spacer()
-                }
-            case let .error(reason):
-                Text("error: \(reason)")
+            if case let .value(checklist) = checklist.status,
+               let comments = checklist.comments
+            {
+                Label("general comments", systemImage: "globe.americas")
+                Text(comments).padding()
+                Spacer()
             }
         }
     }
