@@ -10,5 +10,9 @@
 	<string>Your location is required to find nearby birds</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Your location is required to find nearby birds</string>
+        <key>LSApplicationQueriesSchemes</key>
+        <array>
+          <string>ebird</string>
+        </array>
 </dict>
 </plist>

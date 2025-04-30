@@ -57,6 +57,13 @@ struct BirdObservationsView: View {
                 SafariView(speciesCode: o.speciesCode, site: .macaulay)
             }
 
+            if UIApplication.shared.canOpenURL(URL(eBird: "bawwar")) {
+                Spacer()
+                Button("eBird", systemImage: "checklist") {
+                    UIApplication.shared.open(URL(eBird: o.speciesCode))
+                }
+            }
+
             Spacer()
         }
     }
