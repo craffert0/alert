@@ -21,22 +21,14 @@ struct BirdObservationsView: View {
         // 4. Map?
         VStack {
             Text(o.sciName)
+            Spacer()
 
             buttonsView
 
-            List(o.locations) { l in
-                NavigationLink {
-                    LocationObservationsView(l)
-                } label: {
-                    Text(l.latestSighting, relativeTo: now)
-                    Text(l.locName)
-                    Text("(\(l.observations.count))")
-                }
-            }
-            .listStyle(.automatic)
-            .navigationTitle(o.comName)
-            .navigationBarTitleDisplayMode(.inline)
+            observationsView
         }
+        .navigationTitle(o.comName)
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private var buttonsView: some View {
@@ -66,6 +58,19 @@ struct BirdObservationsView: View {
 
             Spacer()
         }
+    }
+
+    private var observationsView: some View {
+        List(o.locations) { l in
+            NavigationLink {
+                LocationObservationsView(l)
+            } label: {
+                Text(l.latestSighting, relativeTo: now)
+                Text(l.locName)
+                Text("(\(l.observations.count))")
+            }
+        }
+        .listStyle(.automatic)
     }
 }
 
