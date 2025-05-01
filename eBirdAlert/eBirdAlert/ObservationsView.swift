@@ -23,7 +23,7 @@ struct ObservationsView: View {
     }
 
     private var properView: some View {
-        NavigationView {
+        NavigationStack {
             List(provider.observations) { o in
                 NavigationLink {
                     BirdObservationsView(o)

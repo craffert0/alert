@@ -75,7 +75,7 @@ struct BirdObservationsView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         BirdObservationsView(BirdObservations(observations: [.fake]))
     }
 }

@@ -8,7 +8,7 @@ struct ChecklistsView: View {
     @Query(sort: \Checklist.date, order: .reverse) var checklists: [Checklist]
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List(checklists) { c in
                 ChecklistLinkView(checklist: c)
             }
