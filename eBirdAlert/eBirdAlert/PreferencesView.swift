@@ -6,7 +6,6 @@ import SwiftUI
 struct PreferencesView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @State var daysBack: Double = .init(PreferencesModel.global.daysBack)
-    @State var showAuthenticationKey: Bool = false
     @State var showLicense: Bool = false
 
     private var githubMarkdown =
@@ -26,14 +25,6 @@ struct PreferencesView: View {
                     Text("Google").tag(MapOption.google)
                 }
                 .pickerStyle(.inline)
-
-                Section("Account") {
-                    Button("eBird Authentication Key", systemImage: "key") {
-                        showAuthenticationKey = true
-                    }.sheet(isPresented: $showAuthenticationKey) {
-                        AuthenticationKeyView()
-                    }
-                }
 
                 copyrightView
             }.navigationBarTitle("eBird Alert!")

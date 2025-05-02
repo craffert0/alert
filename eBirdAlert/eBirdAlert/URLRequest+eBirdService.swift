@@ -9,7 +9,7 @@ extension URLRequest {
          queryItems: [URLQueryItem] = [],
          withLocation location: CLLocation? = nil) throws
     {
-        let applicationKey = try KeychainService.global.applicationKey
+        let applicationKey = KeyService.global.applicationKey
 
         var allQueryItems =
             queryItems + [URLQueryItem(name: "fmt", value: "json")]
