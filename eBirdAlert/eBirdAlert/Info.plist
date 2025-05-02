@@ -5,7 +5,7 @@
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Your location is required to find nearby birds</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Your location is required to find nearby birds</string>
+	<string>Your location is required to notify you of new birds</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is required to find nearby birds</string>
 	<key>NSLocationUsageDescription</key>
