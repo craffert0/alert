@@ -13,7 +13,7 @@ class LocationService: NSObject {
         super.init()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
     }
 }
 
