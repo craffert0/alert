@@ -19,9 +19,9 @@ extension LocationProtocol {
             mapItem.name = locName
             mapItem.openInMaps()
         case .google:
-            // TODO: this should have a much better name & pin
             UIApplication.shared.open(
-                URL(string: "https://www.google.com/maps/@\(lat),\(lng),17z")!
+                URL(string: "https://www.google.com/maps/place")!
+                    .appending(components: locName, "@\(lat),\(lng),17z")
             )
         }
     }
