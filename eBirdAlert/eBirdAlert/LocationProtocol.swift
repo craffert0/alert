@@ -11,18 +11,31 @@ protocol LocationProtocol {
 
 extension LocationProtocol {
     func openMap() {
-        switch PreferencesModel.global.mapOption {
+        let prefs = PreferencesModel.global
+        switch prefs.mapType {
         case .apple:
             let coordinate = CLLocationCoordinate2DMake(lat, lng)
             let placemark = MKPlacemark(coordinate: coordinate)
             let mapItem = MKMapItem(placemark: placemark)
             mapItem.name = locName
-            mapItem.openInMaps()
+            var launchOptions: [String: Any] = [:]
+            if let key = prefs.directionsType.appleDirectionsKey {
+                launchOptions[MKLaunchOptionsDirectionsModeKey] = key
+            }
+            mapItem.openInMaps(launchOptions: launchOptions)
         case .google:
-            UIApplication.shared.open(
-                URL(string: "https://www.google.com/maps/place")!
-                    .appending(components: locName, "@\(lat),\(lng),17z")
-            )
+            // https://developers.google.com/maps/documentation/urls/ios-urlscheme
+            if let key = prefs.directionsType.googleDirectionsKey {
+                UIApplication.shared.open(
+                    URL(string:
+                        "comgooglemaps://?daddr=\(lat),\(lng)&directionsmode=\(key)")!
+                )
+            } else {
+                UIApplication.shared.open(
+                    URL(string:
+                        "https://www.google.com/maps/place/\(lat),\(lng)/@\(lat),\(lng),17z")!
+                )
+            }
         }
     }
 }

@@ -20,11 +20,10 @@ struct PreferencesView: View {
                     distanceView
                 }
 
-                Picker("Map Type", selection: preferences.$mapOption) {
-                    Text("Apple").tag(MapOption.apple)
-                    Text("Google").tag(MapOption.google)
+                Section("Map") {
+                    mapTypeView
+                    directionsTypeView
                 }
-                .pickerStyle(.inline)
 
                 copyrightView
             }.navigationBarTitle("eBird Alert!")
@@ -65,6 +64,22 @@ struct PreferencesView: View {
                         )
                     )
                 }
+            }
+        }
+    }
+
+    private var mapTypeView: some View {
+        Picker("Map Type", selection: preferences.$mapType) {
+            ForEach(MapOption.allCases) { option in
+                Text(option.rawValue.capitalized)
+            }
+        }
+    }
+
+    private var directionsTypeView: some View {
+        Picker("Directions", selection: preferences.$directionsType) {
+            ForEach(MapDirectionsOption.allCases) { option in
+                Text(option.rawValue.capitalized)
             }
         }
     }

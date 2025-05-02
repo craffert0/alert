@@ -10,7 +10,9 @@ class PreferencesModel: ObservableObject {
     @AppStorage("settings.daysBack") var daysBack: Int = 2
     @AppStorage("settings.distValue") var distValue: Double = 3
     @AppStorage("settings.distUnits") var distUnits: DistanceUnits = .miles
-    @AppStorage("settings.mapType") var mapOption: MapOption = .apple
+    @AppStorage("settings.mapType") var mapType: MapOption = .apple
+    @AppStorage("settings.mapDirectionsType")
+    var directionsType: MapDirectionsOption = .none
     @Published var debugMode: Bool = false
 }
 

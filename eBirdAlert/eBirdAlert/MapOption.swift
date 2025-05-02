@@ -5,3 +5,7 @@ enum MapOption: String {
     case apple
     case google
 }
+
+extension MapOption: CaseIterable, Identifiable {
+    var id: Self { self }
+}
