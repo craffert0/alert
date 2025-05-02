@@ -18,13 +18,10 @@ struct eBirdObservationView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                Text("\(e.howMany ?? 1)")
-                Button(e.comName) {
-                    showSpecies = true
-                }.sheet(isPresented: $showSpecies) {
-                    SafariView(speciesCode: e.speciesCode, site: .ebird)
-                }
+            Button("\(e.howMany ?? 1) \(e.comName)") {
+                showSpecies = true
+            }.sheet(isPresented: $showSpecies) {
+                SafariView(speciesCode: e.speciesCode, site: .ebird)
             }
             Text(e.obsDt.eBirdFormatted)
             LocationButton(location: e)
