@@ -7,6 +7,7 @@ struct PreferencesView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @State var daysBack: Double = .init(PreferencesModel.global.daysBack)
     @State var showAuthenticationKey: Bool = false
+    @State var showLicense: Bool = false
 
     private var githubMarkdown =
         "[git@github.com:craffert0/alert]" +
@@ -15,11 +16,9 @@ struct PreferencesView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section {
+                Section("Range") {
                     daysView
                     distanceView
-                } header: {
-                    Text("Range")
                 }
 
                 Picker("Map Type", selection: preferences.$mapOption) {
@@ -28,14 +27,12 @@ struct PreferencesView: View {
                 }
                 .pickerStyle(.inline)
 
-                Section {
+                Section("Account") {
                     Button("eBird Authentication Key", systemImage: "key") {
                         showAuthenticationKey = true
                     }.sheet(isPresented: $showAuthenticationKey) {
                         AuthenticationKeyView()
                     }
-                } header: {
-                    Text("Account")
                 }
 
                 copyrightView
@@ -82,28 +79,30 @@ struct PreferencesView: View {
     }
 
     private var copyrightView: some View {
-        Section {
-            Button("Copyright © 2025 Colin Rafferty and Marleny Rafferty") {
-                preferences.debugTapCount += 1
-                if preferences.debugTapCount > 10 {
-                    preferences.debugMode = true
-                }
-            }
-            .buttonStyle(.plain)
+        Section("Info") {
+            Text(
+                "Copyright © 2025 Colin Rafferty and Marleny Rafferty"
+            )
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity, alignment: .center)
-
-            NavigationLink {
-                LicenseView(model: LicenseModel())
-            } label: {
-                Text("Licensed GNU GPLv2.0")
-                    .frame(maxWidth: .infinity, alignment: .center)
+            .onTapGesture(count: 10) {
+                preferences.debugMode = true
             }
 
-            Text(try! AttributedString(markdown: githubMarkdown))
-                .frame(maxWidth: .infinity, alignment: .center)
-        } header: {
-            Text("Info")
+            Button("Licensed GNU GPLv2.0") {
+                showLicense = true
+            }
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .sheet(isPresented: $showLicense) {
+                LicenseView(model: LicenseModel())
+            }
+
+            Text(
+                try! AttributedString(markdown: githubMarkdown)
+            )
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity, alignment: .center)
         }
     }
 }
