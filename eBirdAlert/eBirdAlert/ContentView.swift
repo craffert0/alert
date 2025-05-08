@@ -28,6 +28,13 @@ struct ContentView: View {
 }
 
 #Preview {
+    let locationService = LocationService()
+    let provider =
+        ObservationsProvider(client: FakeObservationsClient(),
+                             checklistDataService: FakeChecklistDataService(),
+                             locationService: locationService)
     ContentView()
         .modelContainer(for: Checklist.self, inMemory: true)
+        .environment(locationService)
+        .environment(\.eBirdNotable, provider)
 }

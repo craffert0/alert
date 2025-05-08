@@ -16,6 +16,28 @@ class SwiftDataService {
         self.modelContext = modelContext
     }
 
+    func garbageCollect(daysBack: Int) {
+        if let date = Calendar.current.date(byAdding: .day,
+                                            value: -daysBack,
+                                            to: Date.now)
+        {
+            try? modelContext.delete(
+                model: Checklist.self,
+                where: #Predicate { $0.date <= date }
+            )
+        }
+    }
+
+    private func get(checklist id: String) -> Checklist? {
+        try? modelContext.fetch(
+            FetchDescriptor<Checklist>(
+                predicate: #Predicate { $0.id == id },
+                sortBy: []
+            )).first
+    }
+}
+
+extension SwiftDataService: ChecklistDataService {
     @MainActor
     func prepare(obs: eBirdObservation) {
         guard get(checklist: obs.subId) == nil else {
@@ -35,25 +57,5 @@ class SwiftDataService {
         }()
         c.load()
         return c
-    }
-
-    func garbageCollect(daysBack: Int) {
-        if let date = Calendar.current.date(byAdding: .day,
-                                            value: -daysBack,
-                                            to: Date.now)
-        {
-            try? modelContext.delete(
-                model: Checklist.self,
-                where: #Predicate { $0.date <= date }
-            )
-        }
-    }
-
-    private func get(checklist id: String) -> Checklist? {
-        try? modelContext.fetch(
-            FetchDescriptor<Checklist>(
-                predicate: #Predicate { $0.id == id },
-                sortBy: []
-            )).first
     }
 }

@@ -20,7 +20,7 @@ struct eBirdAlertApp: App {
         let locationService = LocationService()
         let notableProvider =
             ObservationsProvider(client: client,
-                                 swiftDataService: swiftDataService,
+                                 checklistDataService: swiftDataService,
                                  locationService: locationService)
 
         self.modelContainer = modelContainer
