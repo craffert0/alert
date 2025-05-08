@@ -17,7 +17,7 @@ struct PreferencesView: View {
             Form {
                 Section("Range") {
                     daysView
-                    distanceView
+                    DistancePreferencesView()
                 }
 
                 Section("Map") {
@@ -42,29 +42,6 @@ struct PreferencesView: View {
                 "\(Int(daysBack)) day" +
                     (Int(daysBack) == 1 ? "" : "s")
             )
-        }
-    }
-
-    private var distanceView: some View {
-        HStack {
-            Label("", systemImage: "figure.walk.circle")
-
-            Picker(selection: preferences.$distUnits) {
-                Text("miles").tag(DistanceUnits.miles)
-                Text("km").tag(DistanceUnits.kilometers)
-            } label: {
-                HStack {
-                    Slider(value: preferences.$distValue,
-                           in: 1 ... 20,
-                           step: 0.1) {}
-                    Text(
-                        preferences.distValue.formatted(
-                            .number.rounded(rule: .down,
-                                            increment: 0.1)
-                        )
-                    )
-                }
-            }
         }
     }
 
