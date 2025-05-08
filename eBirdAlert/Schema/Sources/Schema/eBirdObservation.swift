@@ -68,3 +68,7 @@ public extension eBirdObservation {
         hasRichMedia: false
     )
 }
+
+public extension [eBirdObservation] {
+    static let fake = [eBirdObservation.fake]
+}

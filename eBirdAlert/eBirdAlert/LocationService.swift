@@ -6,34 +6,5 @@ import Observation
 
 @Observable
 class LocationService: NSObject {
-    private let locationManager = CLLocationManager()
-    private(set) var location: CLLocation? = nil
-
-    override init() {
-        super.init()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-    }
-}
-
-extension LocationService: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        let status = manager.authorizationStatus
-        switch status {
-        case .authorizedWhenInUse, .authorizedAlways:
-            locationManager.startMonitoringSignificantLocationChanges()
-        default:
-            locationManager.stopMonitoringSignificantLocationChanges()
-        }
-    }
-
-    func locationManager(_: CLLocationManager,
-                         didUpdateLocations locations: [CLLocation])
-    {
-        guard let location = locations.last else { return }
-        Task { @MainActor in
-            self.location = location
-        }
-    }
+    var location: CLLocation? = nil
 }
