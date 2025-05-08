@@ -14,6 +14,7 @@ class PreferencesModel: ObservableObject {
     @AppStorage("settings.mapDirectionsType")
     var directionsType: MapDirectionsOption = .none
     @Published var debugMode: Bool = false
+    let maxDistance: Double = 250
 }
 
 extension PreferencesModel {
