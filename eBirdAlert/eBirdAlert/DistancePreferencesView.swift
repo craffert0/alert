@@ -3,12 +3,17 @@
 
 import SwiftUI
 
+extension Double {
+    var reduced: Double { log(self) }
+    var expanded: Double { exp(self) }
+}
+
 struct DistancePreferencesView: View {
     @ObservedObject var preferences = PreferencesModel.global
-    private var distValueLog = Binding {
-        log(PreferencesModel.global.distValue)
+    private var distValueReduced = Binding {
+        PreferencesModel.global.distValue.reduced
     } set: { newValue in
-        PreferencesModel.global.distValue = exp(newValue)
+        PreferencesModel.global.distValue = newValue.expanded
     }
 
     var body: some View {
@@ -26,7 +31,7 @@ struct DistancePreferencesView: View {
 
     private var slider: some View {
         HStack {
-            Slider(value: distValueLog, in: 0 ... log(999))
+            Slider(value: distValueReduced, in: 1.reduced ... 250.reduced)
             Text(preferences.distValue.formatted(.eBirdFormat))
         }
     }
