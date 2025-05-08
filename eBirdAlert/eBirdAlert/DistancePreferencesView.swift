@@ -27,12 +27,7 @@ struct DistancePreferencesView: View {
     private var slider: some View {
         HStack {
             Slider(value: distValueLog, in: 0 ... log(999))
-            Text(
-                preferences.distValue.formatted(
-                    .number.rounded(rule: .toNearestOrAwayFromZero,
-                                    increment: 0.1)
-                )
-            )
+            Text(preferences.distValue.formatted(.eBirdFormat))
         }
     }
 }
