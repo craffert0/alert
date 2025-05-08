@@ -78,12 +78,25 @@ extension ObservationsView {
     func load() async {
         loading = true
         do {
-            try await provider.load()
+            try await tryLoading()
         } catch {
             self.error = eBirdServiceError.from(error)
             showError = true
         }
         loading = false
+    }
+
+    private func tryLoading() async throws {
+        while true {
+            try await provider.load()
+            if !provider.observations.isEmpty ||
+                preferences.distValue >= preferences.maxDistance
+            {
+                return
+            }
+            preferences.distValue =
+                min(2 * preferences.distValue, preferences.maxDistance)
+        }
     }
 
     func refresh() async {
