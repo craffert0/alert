@@ -12,7 +12,7 @@ struct ContentView: View {
     var body: some View {
         TabView {
             Tab("Rarities", systemImage: "bird.circle") {
-                ObservationsView(provider: notableProvider!)
+                MainView(provider: notableProvider!)
             }
 
             if preferences.debugMode {

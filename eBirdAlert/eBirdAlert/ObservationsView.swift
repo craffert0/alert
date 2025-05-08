@@ -4,7 +4,6 @@
 import SwiftUI
 
 struct ObservationsView: View {
-    @Environment(LocationService.self) var locationService
     @State var provider: ObservationsProvider
     @State private var error: eBirdServiceError?
     @State private var showError = false
@@ -15,14 +14,6 @@ struct ObservationsView: View {
     }
 
     var body: some View {
-        if locationService.location == nil {
-            Text("no location 😢")
-        } else {
-            properView
-        }
-    }
-
-    private var properView: some View {
         NavigationStack {
             List(provider.observations) { o in
                 NavigationLink {
@@ -65,4 +56,13 @@ extension ObservationsView {
             showError = true
         }
     }
+}
+
+#Preview {
+    let provider = ObservationsProvider(
+        client: FakeObservationsClient(observations: .fake),
+        checklistDataService: FakeChecklistDataService(),
+        locationService: FixedLocationService(latitude: 41, longitude: -74)
+    )
+    ObservationsView(provider: provider)
 }
