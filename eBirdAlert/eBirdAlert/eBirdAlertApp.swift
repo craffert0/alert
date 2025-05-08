@@ -17,7 +17,7 @@ struct eBirdAlertApp: App {
         let client = NotableObservationsClient(service: URLSession.shared)
         let swiftDataService =
             SwiftDataService(modelContext: modelContainer.mainContext)
-        let locationService = LocationService()
+        let locationService = CoreLocationService()
         let notableProvider =
             ObservationsProvider(client: client,
                                  checklistDataService: swiftDataService,

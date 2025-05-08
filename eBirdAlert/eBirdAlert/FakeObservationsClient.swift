@@ -5,7 +5,11 @@ import CoreLocation
 import Schema
 
 public class FakeObservationsClient {
-    private let observations: [eBirdObservation]? = nil
+    private let observations: [eBirdObservation]?
+
+    init(observations: [eBirdObservation]? = nil) {
+        self.observations = observations
+    }
 }
 
 extension FakeObservationsClient: ObservationsClient {
