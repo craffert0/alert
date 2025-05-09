@@ -9,6 +9,7 @@ enum eBirdServiceError: Error {
     case networkError
     case httpError(statusCode: Int)
     case unexpectedError(error: Error)
+    case expandedArea(distance: Double, units: DistanceUnits)
 
     static func from(_ error: Error?) -> eBirdServiceError? {
         guard let error else { return nil }
@@ -25,6 +26,7 @@ extension eBirdServiceError: LocalizedError {
         case let .httpError(statusCode):
             HTTPURLResponse.localizedString(forStatusCode: statusCode)
         case let .unexpectedError(e): "unexpected: \(e)"
+        case .expandedArea: "Expanded Area"
         }
     }
 }

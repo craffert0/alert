@@ -23,8 +23,9 @@ class ObservationsProvider {
     }
 
     func load() async throws {
-        if Date.now.timeIntervalSince(lastLoadTime ?? Date.distantPast)
-            > 3600
+        let lastLoadTime = lastLoadTime ?? Date.distantPast
+        if observations.isEmpty ||
+            Date.now.timeIntervalSince(lastLoadTime) > 3600
         {
             try await refresh()
         }

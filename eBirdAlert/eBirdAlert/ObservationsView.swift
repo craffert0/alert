@@ -23,9 +23,17 @@ struct ObservationsView: View {
                 listView
             }
         }
-        .alert(isPresented: $showError, error: error) {}
         .task {
             await load()
+        }
+        .alert(isPresented: $showError, error: error) { _ in
+        } message: { e in
+            if case let .expandedArea(distance, units) = e {
+                Text("eBird could not find birds in the original range," +
+                    " so we expanded the range to " +
+                    distance.formatted(.eBirdFormat) + " " +
+                    units.rawValue + " in order to find some.")
+            }
         }
     }
 
@@ -78,12 +86,35 @@ extension ObservationsView {
     func load() async {
         loading = true
         do {
-            try await provider.load()
+            try await tryLoading()
         } catch {
             self.error = eBirdServiceError.from(error)
             showError = true
         }
         loading = false
+    }
+
+    private func tryLoading() async throws {
+        var retried = false
+        while true {
+            try await provider.load()
+            if !provider.observations.isEmpty {
+                if retried {
+                    throw eBirdServiceError.expandedArea(
+                        distance: preferences.distValue,
+                        units: preferences.distUnits
+                    )
+                } else {
+                    return
+                }
+                if preferences.distValue >= preferences.maxDistance {
+                    return
+                }
+            }
+            retried = true
+            preferences.distValue =
+                min(2 * preferences.distValue, preferences.maxDistance)
+        }
     }
 
     func refresh() async {
