@@ -29,14 +29,18 @@ struct eBirdObservationView: View {
             Spacer()
             if let comments = checklist.observation(for: e.obsId)?.comments {
                 Label("sighting comments", systemImage: "location.square")
-                Text(comments).padding()
+                Text(comments)
+                    .textSelection(.enabled)
+                    .padding()
                 Spacer()
             }
             if case let .value(checklist) = checklist.status,
                let comments = checklist.comments
             {
                 Label("general comments", systemImage: "globe.americas")
-                Text(comments).padding()
+                Text(comments)
+                    .textSelection(.enabled)
+                    .padding()
                 Spacer()
             }
         }
