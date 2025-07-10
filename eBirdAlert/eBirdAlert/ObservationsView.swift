@@ -96,24 +96,21 @@ extension ObservationsView {
 
     private func tryLoading() async throws {
         var retried = false
-        while true {
-            try await provider.load()
-            if !provider.observations.isEmpty {
-                if retried {
-                    throw eBirdServiceError.expandedArea(
-                        distance: preferences.distValue,
-                        units: preferences.distUnits
-                    )
-                } else {
-                    return
-                }
-                if preferences.distValue >= preferences.maxDistance {
-                    return
-                }
-            }
+        try await provider.load()
+        while provider.observations.isEmpty,
+              preferences.distValue < preferences.maxDistance
+        {
             retried = true
             preferences.distValue =
                 min(2 * preferences.distValue, preferences.maxDistance)
+            try await provider.load()
+        }
+
+        if !provider.observations.isEmpty, retried {
+            throw eBirdServiceError.expandedArea(
+                distance: preferences.distValue,
+                units: preferences.distUnits
+            )
         }
     }
 
