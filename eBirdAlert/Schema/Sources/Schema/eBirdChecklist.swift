@@ -47,5 +47,10 @@ public struct eBirdChecklist: Codable, Sendable {
         public let comments: String?
         public let obsId: String
         public let howManyStr: String?
+        public let mediaCounts: MediaCounts?
+    }
+
+    public struct MediaCounts: Codable, Sendable {
+        public let P: Int
     }
 }
