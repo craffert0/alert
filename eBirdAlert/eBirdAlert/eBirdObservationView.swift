@@ -8,6 +8,7 @@ struct eBirdObservationView: View {
     @State var e: eBirdObservation
     @State var checklist: Checklist
     @State var showSpecies: Bool = false
+    @State var showPhotos: Bool = false
 
     init(_ e: eBirdObservation,
          in checklist: Checklist)
@@ -15,6 +16,8 @@ struct eBirdObservationView: View {
         self.e = e
         self.checklist = checklist
     }
+
+    var obs: eBirdChecklist.Obs? { checklist.observation(for: e.obsId) }
 
     var body: some View {
         VStack {
@@ -26,8 +29,15 @@ struct eBirdObservationView: View {
             Text(e.obsDt.eBirdFormatted)
             LocationButton(location: e)
             Text(e.userDisplayName)
+            if let hasMedia = obs?.hasMedia, hasMedia {
+                Button("Photos") {
+                    showPhotos = true
+                }.sheet(isPresented: $showPhotos) {
+                    SafariView(speciesCode: checklist.id, site: .photos)
+                }
+            }
             Spacer()
-            if let comments = checklist.observation(for: e.obsId)?.comments {
+            if let comments = obs?.comments {
                 Label("sighting comments", systemImage: "location.square")
                 Text(comments)
                     .textSelection(.enabled)
