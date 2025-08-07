@@ -6,3 +6,7 @@ import Schema
 extension eBirdChecklist.Obs: @retroactive Identifiable {
     public var id: String { obsId }
 }
+
+public extension eBirdChecklist.Obs {
+    var hasMedia: Bool { (mediaCounts?.P ?? 0) != 0 }
+}

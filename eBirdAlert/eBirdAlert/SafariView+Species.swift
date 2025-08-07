@@ -7,21 +7,25 @@ extension SafariView {
     enum Site {
         case ebird
         case macaulay
+        case photos
     }
 
-    init(speciesCode: String, site: Site) {
-        self.init(url: site.url(for: speciesCode))
+    init(code: String, site: Site) {
+        self.init(url: site.url(for: code))
     }
 }
 
 extension SafariView.Site {
-    func url(for speciesCode: String) -> URL {
+    func url(for code: String) -> URL {
         switch self {
         case .ebird:
-            URL(string: "https://ebird.org/species/" + speciesCode)!
+            URL(string: "https://ebird.org/species/" + code)!
         case .macaulay:
             URL(string: "https://search.macaulaylibrary.org/catalog" +
-                "?taxonCode=" + speciesCode + "&sort=rating_rank_desc")!
+                "?taxonCode=" + code + "&sort=rating_rank_desc")!
+        case .photos:
+            URL(string: "https://ebird.org/checklist/" + code +
+                "?view=photos")!
         }
     }
 }
