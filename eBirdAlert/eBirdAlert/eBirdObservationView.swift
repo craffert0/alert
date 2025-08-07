@@ -24,7 +24,7 @@ struct eBirdObservationView: View {
             Button("\(e.howMany ?? 1) \(e.comName)") {
                 showSpecies = true
             }.sheet(isPresented: $showSpecies) {
-                SafariView(speciesCode: e.speciesCode, site: .ebird)
+                SafariView(code: e.speciesCode, site: .ebird)
             }
             Text(e.obsDt.eBirdFormatted)
             LocationButton(location: e)
@@ -33,7 +33,7 @@ struct eBirdObservationView: View {
                 Button("Photos") {
                     showPhotos = true
                 }.sheet(isPresented: $showPhotos) {
-                    SafariView(speciesCode: checklist.id, site: .photos)
+                    SafariView(code: checklist.id, site: .photos)
                 }
             }
             Spacer()
