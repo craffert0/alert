@@ -7,6 +7,7 @@ import SwiftUI
 struct eBirdObservationView: View {
     @State var e: eBirdObservation
     @State var checklist: Checklist
+    @State var showChecklist: Bool = false
     @State var showSpecies: Bool = false
     @State var showPhotos: Bool = false
 
@@ -21,7 +22,7 @@ struct eBirdObservationView: View {
 
     var body: some View {
         VStack {
-            Text(e.userDisplayName)
+            userView
             Text(e.obsDt.eBirdFormatted)
             LocationButton(location: e)
             speciesView
@@ -42,6 +43,14 @@ struct eBirdObservationView: View {
         }
     }
 
+    private var userView: some View {
+        Button(e.userDisplayName) {
+            showChecklist = true
+        }.sheet(isPresented: $showChecklist) {
+            SafariView(code: checklist.id, site: .checklist)
+        }
+    }
+
     private var speciesView: some View {
         Button("\(e.howMany ?? 1) \(e.comName)") {
             showSpecies = true
@@ -51,7 +60,7 @@ struct eBirdObservationView: View {
     }
 
     private var photosView: some View {
-        Button("Photos") {
+        Button("Checklist photos") {
             showPhotos = true
         }.sheet(isPresented: $showPhotos) {
             SafariView(code: checklist.id, site: .photos)
