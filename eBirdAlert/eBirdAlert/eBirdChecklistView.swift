@@ -28,11 +28,8 @@ struct eBirdChecklistView: View {
         @State var showSpecies: Bool = false
 
         var body: some View {
-            HStack {
-                if let how = obs.howManyStr {
-                    Text(how)
-                }
-                Button(obs.printableName) {
+            VStack {
+                Button("\(obs.howManyStr ?? "1") \(obs.printableName)") {
                     showSpecies = true
                 }.sheet(isPresented: $showSpecies) {
                     SafariView(code: obs.speciesCode, site: .ebird)
