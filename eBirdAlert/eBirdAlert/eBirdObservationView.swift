@@ -21,11 +21,7 @@ struct eBirdObservationView: View {
 
     var body: some View {
         VStack {
-            Button("\(e.howMany ?? 1) \(e.comName)") {
-                showSpecies = true
-            }.sheet(isPresented: $showSpecies) {
-                SafariView(code: e.speciesCode, site: .ebird)
-            }
+            speciesView
             Text(e.obsDt.eBirdFormatted)
             LocationButton(location: e)
             Text(e.userDisplayName)
@@ -44,15 +40,17 @@ struct eBirdObservationView: View {
                     .padding()
                 Spacer()
             }
-            if case let .value(checklist) = checklist.status,
-               let comments = checklist.comments
-            {
-                Label("general comments", systemImage: "globe.americas")
-                Text(comments)
-                    .textSelection(.enabled)
-                    .padding()
-                Spacer()
+            if case let .value(checklist) = checklist.status {
+                eBirdChecklistView(checklist: checklist)
             }
+        }
+    }
+
+    private var speciesView: some View {
+        Button("\(e.howMany ?? 1) \(e.comName)") {
+            showSpecies = true
+        }.sheet(isPresented: $showSpecies) {
+            SafariView(code: e.speciesCode, site: .ebird)
         }
     }
 }
