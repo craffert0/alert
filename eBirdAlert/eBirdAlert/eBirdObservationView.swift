@@ -21,16 +21,12 @@ struct eBirdObservationView: View {
 
     var body: some View {
         VStack {
-            speciesView
+            Text(e.userDisplayName)
             Text(e.obsDt.eBirdFormatted)
             LocationButton(location: e)
-            Text(e.userDisplayName)
+            speciesView
             if let hasMedia = obs?.hasMedia, hasMedia {
-                Button("Photos") {
-                    showPhotos = true
-                }.sheet(isPresented: $showPhotos) {
-                    SafariView(code: checklist.id, site: .photos)
-                }
+                photosView
             }
             Spacer()
             if let comments = obs?.comments {
@@ -51,6 +47,14 @@ struct eBirdObservationView: View {
             showSpecies = true
         }.sheet(isPresented: $showSpecies) {
             SafariView(code: e.speciesCode, site: .ebird)
+        }
+    }
+
+    private var photosView: some View {
+        Button("Photos") {
+            showPhotos = true
+        }.sheet(isPresented: $showPhotos) {
+            SafariView(code: checklist.id, site: .photos)
         }
     }
 }
