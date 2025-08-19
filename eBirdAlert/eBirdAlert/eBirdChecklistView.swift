@@ -32,7 +32,7 @@ struct eBirdChecklistView: View {
                 if let how = obs.howManyStr {
                     Text(how)
                 }
-                Button(obs.speciesCode) {
+                Button(obs.printableName) {
                     showSpecies = true
                 }.sheet(isPresented: $showSpecies) {
                     SafariView(code: obs.speciesCode, site: .ebird)

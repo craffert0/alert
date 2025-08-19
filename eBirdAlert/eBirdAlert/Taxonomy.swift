@@ -16,4 +16,8 @@ class Taxonomy {
     func search(string: String) -> [Taxon] {
         taxa.filter { $0.contains(string: string) }
     }
+
+    func find(for speciesCode: String) -> Taxon? {
+        taxa.first { $0.speciesCode == speciesCode }
+    }
 }
