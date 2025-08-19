@@ -29,15 +29,13 @@ struct eBirdObservationView: View {
             if let hasMedia = obs?.hasMedia, hasMedia {
                 photosView
             }
-            Spacer()
             if let comments = obs?.comments {
-                Label("sighting comments", systemImage: "location.square")
                 Text(comments)
                     .textSelection(.enabled)
                     .padding()
-                Spacer()
             }
             if case let .value(checklist) = checklist.status {
+                Divider()
                 eBirdChecklistView(checklist: checklist)
             }
         }
