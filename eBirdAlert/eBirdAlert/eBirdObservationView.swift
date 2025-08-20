@@ -7,6 +7,7 @@ import SwiftUI
 struct eBirdObservationView: View {
     @State var e: eBirdObservation
     @State var checklist: Checklist
+    @State var showChecklist: Bool = false
     @State var showSpecies: Bool = false
     @State var showPhotos: Bool = false
 
@@ -21,38 +22,47 @@ struct eBirdObservationView: View {
 
     var body: some View {
         VStack {
-            Button("\(e.howMany ?? 1) \(e.comName)") {
-                showSpecies = true
-            }.sheet(isPresented: $showSpecies) {
-                SafariView(code: e.speciesCode, site: .ebird)
-            }
+            userView
             Text(e.obsDt.eBirdFormatted)
             LocationButton(location: e)
-            Text(e.userDisplayName)
+            speciesView
             if let hasMedia = obs?.hasMedia, hasMedia {
-                Button("Photos") {
-                    showPhotos = true
-                }.sheet(isPresented: $showPhotos) {
-                    SafariView(code: checklist.id, site: .photos)
-                }
+                photosView
             }
-            Spacer()
             if let comments = obs?.comments {
-                Label("sighting comments", systemImage: "location.square")
                 Text(comments)
                     .textSelection(.enabled)
                     .padding()
-                Spacer()
             }
-            if case let .value(checklist) = checklist.status,
-               let comments = checklist.comments
-            {
-                Label("general comments", systemImage: "globe.americas")
-                Text(comments)
-                    .textSelection(.enabled)
-                    .padding()
-                Spacer()
+            if case let .value(checklist) = checklist.status {
+                Divider()
+                eBirdChecklistView(checklist: checklist,
+                                   species: e.speciesCode)
             }
+        }
+    }
+
+    private var userView: some View {
+        Button(e.userDisplayName) {
+            showChecklist = true
+        }.sheet(isPresented: $showChecklist) {
+            SafariView(code: checklist.id, site: .checklist)
+        }
+    }
+
+    private var speciesView: some View {
+        Button("\(e.howMany ?? 1) \(e.comName)") {
+            showSpecies = true
+        }.sheet(isPresented: $showSpecies) {
+            SafariView(code: e.speciesCode, site: .ebird)
+        }
+    }
+
+    private var photosView: some View {
+        Button("Checklist photos") {
+            showPhotos = true
+        }.sheet(isPresented: $showPhotos) {
+            SafariView(code: checklist.id, site: .photos)
         }
     }
 }

@@ -7,6 +7,7 @@ extension SafariView {
     enum Site {
         case ebird
         case macaulay
+        case checklist
         case photos
     }
 
@@ -23,6 +24,8 @@ extension SafariView.Site {
         case .macaulay:
             URL(string: "https://search.macaulaylibrary.org/catalog" +
                 "?taxonCode=" + code + "&sort=rating_rank_desc")!
+        case .checklist:
+            URL(string: "https://ebird.org/checklist/" + code)!
         case .photos:
             URL(string: "https://ebird.org/checklist/" + code +
                 "?view=photos")!

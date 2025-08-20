@@ -48,6 +48,24 @@ class Server:
             )
         ]
 
+    def nearby(self, species):
+        return self.get(
+            f"data/obs/geo/recent/{species}",
+            f"&lat={lat}&lng={lng}&dist=10&back=2&detail=full",
+        )
+
+    def nearest(self, species):
+        return self.get(
+            f"data/nearest/geo/recent/{species}",
+            f"&lat={lat}&lng={lng}&dist=10&back=2",
+        )
+
+    def recent(self):
+        return self.get(
+            "data/obs/geo/recent",
+            f"&lat={lat}&lng={lng}&dist=5&back=4",
+        )
+
     def species(self, regionCode):
         return self.get("product/spplist/" + regionCode)
 
@@ -66,7 +84,10 @@ class Server:
 
 def main():
     server = Server()
-    print(json.dumps(server.regionobs(regionCode), indent=2))
+    # print(json.dumps(server.nearest("yebfly"), indent=2))
+    print(json.dumps(server.species("US-NY"), indent=2))
+    # print(json.dumps(server.nearby("yebfly"), indent=2))
+    # print(json.dumps(server.regionobs(regionCode), indent=2))
     # print(json.dumps(server.taxonomy("louwat,commer"), indent=2))
     # print(json.dumps(server.notable(), indent=2))
     # print(json.dumps(server.checklist("S222156738"), indent=2))

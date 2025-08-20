@@ -9,4 +9,11 @@ extension eBirdChecklist.Obs: @retroactive Identifiable {
 
 public extension eBirdChecklist.Obs {
     var hasMedia: Bool { (mediaCounts?.P ?? 0) != 0 }
+
+    var printableName: String {
+        guard let taxon = Taxonomy.global.find(for: speciesCode) else {
+            return speciesCode
+        }
+        return taxon.comName
+    }
 }
