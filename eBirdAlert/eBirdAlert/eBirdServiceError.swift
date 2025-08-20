@@ -8,12 +8,19 @@ enum eBirdServiceError: Error {
     case noLocation
     case networkError
     case httpError(statusCode: Int)
+    case urlError(error: URLError)
     case unexpectedError(error: Error)
     case expandedArea(distance: Double, units: DistanceUnits)
 
     static func from(_ error: Error?) -> eBirdServiceError? {
         guard let error else { return nil }
-        return error as? eBirdServiceError ?? .unexpectedError(error: error)
+        if let urlError = error as? URLError {
+            return .urlError(error: urlError)
+        }
+        if let ebirdError = error as? eBirdServiceError {
+            return ebirdError
+        }
+        return .unexpectedError(error: error)
     }
 }
 
@@ -25,6 +32,7 @@ extension eBirdServiceError: LocalizedError {
         case .networkError: "network error?"
         case let .httpError(statusCode):
             HTTPURLResponse.localizedString(forStatusCode: statusCode)
+        case .urlError: "bad network connection"
         case let .unexpectedError(e): "unexpected: \(e)"
         case .expandedArea: "Expanded Area"
         }
