@@ -39,6 +39,8 @@ struct eBirdChecklistView: View {
                 }
                 if let c = obs.comments {
                     Text(c)
+                        .textSelection(.enabled)
+                        .padding([.horizontal])
                 }
             }
         }
