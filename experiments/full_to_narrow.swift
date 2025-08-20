@@ -16,5 +16,5 @@ try print(String(data: encoder.encode(
         JSONDecoder().decode([Taxon].self,
                              from: FileManager.default.contents(
                                  atPath: CommandLine.arguments[1])!)
-            .sorted(by: { $0.comName < $1.comName })),
+            .sorted(by: { $0.speciesCode < $1.speciesCode })),
     encoding: .utf8)!)
