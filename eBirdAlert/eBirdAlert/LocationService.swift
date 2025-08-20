@@ -6,5 +6,5 @@ import Observation
 
 @Observable
 class LocationService: NSObject {
-    var location: CLLocation? = nil
+    var location: CLLocation?
 }

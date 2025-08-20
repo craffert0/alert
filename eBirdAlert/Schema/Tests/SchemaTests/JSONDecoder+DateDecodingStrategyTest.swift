@@ -18,7 +18,7 @@ struct Wrapper: Codable {
             .date
     }
 
-    @Test func testFull() throws {
+    @Test func full() throws {
         let dates = [
             "2025-03-05 16:04",
             "2025-03-20 15:58",
@@ -35,7 +35,7 @@ struct Wrapper: Codable {
         }
     }
 
-    @Test func testDays() throws {
+    @Test func days() throws {
         let dates = [
             "2025-03-05",
             "2025-03-20",
