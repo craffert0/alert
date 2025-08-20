@@ -2,7 +2,7 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import Foundation
-import Schema
+import SwiftUtil
 
 class Taxonomy {
     static let global = Taxonomy()
@@ -19,7 +19,8 @@ class Taxonomy {
     }
 
     func find(for speciesCode: String) -> Taxon? {
-        let it = taxa.lowerBound(where: { $0.speciesCode < speciesCode })
+        let it = taxa.lowerBound(of: speciesCode,
+                                 comp: { $0.speciesCode < $1 })
         guard it != taxa.endIndex,
               taxa[it].speciesCode == speciesCode
         else {

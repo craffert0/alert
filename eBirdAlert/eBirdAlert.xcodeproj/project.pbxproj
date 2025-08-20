@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B59C3B92D9D7B2F00A695C7 /* Schema in Frameworks */ = {isa = PBXBuildFile; productRef = 3B59C3B82D9D7B2F00A695C7 /* Schema */; };
+		3B8A70812E5675DC0050D63F /* SwiftUtil in Frameworks */ = {isa = PBXBuildFile; productRef = 3B8A70802E5675DC0050D63F /* SwiftUtil */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B8A70812E5675DC0050D63F /* SwiftUtil in Frameworks */,
 				3B59C3B92D9D7B2F00A695C7 /* Schema in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +133,7 @@
 			name = eBirdAlert;
 			packageProductDependencies = (
 				3B59C3B82D9D7B2F00A695C7 /* Schema */,
+				3B8A70802E5675DC0050D63F /* SwiftUtil */,
 			);
 			productName = eBirdAlert;
 			productReference = 3BEF40982D9ADB5C00817F9C /* eBirdAlert.app */;
@@ -216,6 +219,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				3B59C3BC2D9D7DC300A695C7 /* XCLocalSwiftPackageReference "Schema" */,
+				3B8A707F2E5675DC0050D63F /* XCRemoteSwiftPackageReference "swiftutil" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3BEF40992D9ADB5C00817F9C /* Products */;
@@ -590,10 +594,26 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		3B8A707F2E5675DC0050D63F /* XCRemoteSwiftPackageReference "swiftutil" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@gitlab.com:craffert0/swiftutil.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		3B59C3B82D9D7B2F00A695C7 /* Schema */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Schema;
+		};
+		3B8A70802E5675DC0050D63F /* SwiftUtil */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B8A707F2E5675DC0050D63F /* XCRemoteSwiftPackageReference "swiftutil" */;
+			productName = SwiftUtil;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
