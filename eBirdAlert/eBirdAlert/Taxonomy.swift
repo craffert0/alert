@@ -2,6 +2,7 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import Foundation
+import Schema
 
 class Taxonomy {
     static let global = Taxonomy()
@@ -18,6 +19,12 @@ class Taxonomy {
     }
 
     func find(for speciesCode: String) -> Taxon? {
-        taxa.first { $0.speciesCode == speciesCode }
+        let it = taxa.lowerBound(where: { $0.speciesCode < speciesCode })
+        guard it != taxa.endIndex,
+              taxa[it].speciesCode == speciesCode
+        else {
+            return nil
+        }
+        return taxa[it]
     }
 }
