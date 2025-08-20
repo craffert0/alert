@@ -36,7 +36,8 @@ struct eBirdObservationView: View {
             }
             if case let .value(checklist) = checklist.status {
                 Divider()
-                eBirdChecklistView(checklist: checklist)
+                eBirdChecklistView(checklist: checklist,
+                                   species: e.speciesCode)
             }
         }
     }

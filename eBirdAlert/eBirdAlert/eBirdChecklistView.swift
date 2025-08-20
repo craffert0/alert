@@ -6,6 +6,7 @@ import SwiftUI
 
 struct eBirdChecklistView: View {
     @State var checklist: eBirdChecklist
+    let species: String
 
     var body: some View {
         Label("Checklist", systemImage: "globe.americas")
@@ -17,7 +18,9 @@ struct eBirdChecklistView: View {
             }
             LazyVStack {
                 ForEach(checklist.obs) { o in
-                    ObsView(obs: o)
+                    if o.speciesCode != species {
+                        ObsView(obs: o)
+                    }
                 }
             }
         }
