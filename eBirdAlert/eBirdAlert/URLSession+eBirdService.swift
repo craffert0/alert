@@ -7,7 +7,7 @@ import Schema
 
 let validStatus = 200 ... 299
 
-extension URLSession: Sendable, @retroactive eBirdService {
+extension URLSession: @retroactive eBirdService {
     func object<Output: Decodable>(
         for request: URLRequest
     ) async throws -> Output {
