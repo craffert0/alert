@@ -3,17 +3,14 @@
 
 import SwiftUI
 
-extension Double {
-    var reduced: Double { log(self) }
-    var expanded: Double { exp(self) }
-}
-
 struct DistancePreferencesView: View {
     @ObservedObject var preferences = PreferencesModel.global
     private var distValueReduced = Binding {
         PreferencesModel.global.distValue.reduced
     } set: { newValue in
-        PreferencesModel.global.distValue = newValue.expanded
+        Task { @MainActor in
+            PreferencesModel.global.distValue = newValue.expanded
+        }
     }
 
     var body: some View {
