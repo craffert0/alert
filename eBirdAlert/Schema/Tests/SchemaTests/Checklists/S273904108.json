@@ -1,0 +1,323 @@
+{
+  "projId": "EBIRD",
+  "subId": "S273904108",
+  "protocolId": "P22",
+  "locId": "L191106",
+  "groupId": "G15576907",
+  "durationHrs": 3.25,
+  "allObsReported": true,
+  "comments": "Mostly sunny, breezy, 67-69\u00b0 F. Light rain started at 11:30. Spent most of our time in The Ramble.",
+  "creationDt": "2025-09-17 12:35",
+  "lastEditedDt": "2025-09-17 12:36",
+  "obsDt": "2025-09-17 09:17",
+  "obsTimeValid": true,
+  "checklistId": "CL23872",
+  "numObservers": 2,
+  "effortDistanceKm": 2.536,
+  "effortDistanceEnteredUnit": "km",
+  "effortAreaEnteredUnit": "ha",
+  "subnational1Code": "US-NY",
+  "submissionMethodCode": "EBIRD_iOS",
+  "submissionMethodVersion": "3.4.11",
+  "deleteTrack": false,
+  "userDisplayName": "Jeff Marks",
+  "numSpecies": 32,
+  "submissionMethodVersionDisp": "3.4.11",
+  "subAux": [
+    {
+      "subId": "S273904108",
+      "fieldName": "nocturnal",
+      "entryMethodCode": "ebird_nocturnal",
+      "auxCode": "0"
+    }
+  ],
+  "subAuxAi": [
+    {
+      "subId": "S273904108",
+      "method": "concurrent",
+      "aiType": "sound",
+      "source": "merlin",
+      "eventId": 0
+    }
+  ],
+  "projectIds": [],
+  "obs": [
+    {
+      "speciesCode": "cangoo",
+      "howManyAtleast": 17,
+      "howManyAtmost": 17,
+      "present": false,
+      "obsId": "OBS3570006299",
+      "howManyStr": "17"
+    },
+    {
+      "speciesCode": "mallar3",
+      "howManyAtleast": 8,
+      "howManyAtmost": 8,
+      "present": false,
+      "obsId": "OBS3570006305",
+      "howManyStr": "8"
+    },
+    {
+      "speciesCode": "rocpig1",
+      "exoticCategory": "N",
+      "howManyAtleast": 75,
+      "howManyAtmost": 75,
+      "present": false,
+      "obsId": "OBS3570009629",
+      "howManyStr": "75"
+    },
+    {
+      "speciesCode": "moudov",
+      "howManyAtleast": 37,
+      "howManyAtmost": 37,
+      "comments": "Conservative count.",
+      "present": false,
+      "obsId": "OBS3570006307",
+      "howManyStr": "37"
+    },
+    {
+      "speciesCode": "rthhum",
+      "howManyAtleast": 6,
+      "howManyAtmost": 6,
+      "comments": "In jewelweed.",
+      "present": false,
+      "obsId": "OBS3570006308",
+      "howManyStr": "6"
+    },
+    {
+      "speciesCode": "bcnher",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "comments": "Adult.",
+      "present": false,
+      "obsId": "OBS3570006317",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "belkin1",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3570006311",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "rebwoo",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3570006322",
+      "howManyStr": "3"
+    },
+    {
+      "speciesCode": "dowwoo",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3570009628",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "yesfli",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3570006323",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "budger",
+      "exoticCategory": "X",
+      "userDoNotCount": "DNC",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "comments": "Ha! Unmistakable. On trail just south of Summit Rock.",
+      "present": false,
+      "obsId": "OBS3570006314",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "yebfly",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "comments": "Wide bill with yellow lower mandible, yellowish throat and venter, blackish wings, and prominent eye ring thickest behind eye. In The Ramble.",
+      "present": false,
+      "obsId": "OBS3570006320",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "reevir1",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3570006315",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "blujay",
+      "howManyAtleast": 13,
+      "howManyAtmost": 13,
+      "present": false,
+      "obsId": "OBS3570006303",
+      "howManyStr": "13"
+    },
+    {
+      "speciesCode": "whbnut2",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3570006312",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "eursta",
+      "exoticCategory": "N",
+      "howManyAtleast": 31,
+      "howManyAtmost": 31,
+      "present": false,
+      "obsId": "OBS3570006301",
+      "howManyStr": "31"
+    },
+    {
+      "speciesCode": "grycat",
+      "howManyAtleast": 7,
+      "howManyAtmost": 7,
+      "present": false,
+      "obsId": "OBS3570006324",
+      "howManyStr": "7"
+    },
+    {
+      "speciesCode": "brnthr",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3570006319",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "veery",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3570006313",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "woothr",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "present": false,
+      "obsId": "OBS3570006304",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "amerob",
+      "howManyAtleast": 90,
+      "howManyAtmost": 90,
+      "comments": "Conservative count.",
+      "present": false,
+      "obsId": "OBS3570009627",
+      "howManyStr": "90"
+    },
+    {
+      "speciesCode": "houspa",
+      "exoticCategory": "N",
+      "howManyAtleast": 145,
+      "howManyAtmost": 145,
+      "comments": "Conservative count.",
+      "present": false,
+      "obsId": "OBS3570006325",
+      "howManyStr": "145"
+    },
+    {
+      "speciesCode": "bnhcow",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "comments": "Juvenile.",
+      "present": false,
+      "obsId": "OBS3570009630",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "comgra",
+      "howManyAtleast": 16,
+      "howManyAtmost": 16,
+      "present": false,
+      "obsId": "OBS3570006318",
+      "howManyStr": "16"
+    },
+    {
+      "speciesCode": "ovenbi1",
+      "howManyAtleast": 3,
+      "howManyAtmost": 3,
+      "present": false,
+      "obsId": "OBS3570006321",
+      "howManyStr": "3"
+    },
+    {
+      "speciesCode": "bawwar",
+      "howManyAtleast": 4,
+      "howManyAtmost": 4,
+      "comments": "Female types.",
+      "present": false,
+      "obsId": "OBS3570006306",
+      "howManyStr": "4"
+    },
+    {
+      "speciesCode": "comyel",
+      "howManyAtleast": 6,
+      "howManyAtmost": 6,
+      "comments": "Female types and juvenile males.",
+      "present": false,
+      "obsId": "OBS3570009626",
+      "howManyStr": "6"
+    },
+    {
+      "speciesCode": "amered",
+      "howManyAtleast": 10,
+      "howManyAtmost": 10,
+      "comments": "All female types.",
+      "mediaCounts": {
+        "A": 1
+      },
+      "present": false,
+      "obsId": "OBS3570006309",
+      "howManyStr": "10"
+    },
+    {
+      "speciesCode": "yelwar1",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "comments": "HY female.",
+      "present": false,
+      "obsId": "OBS3570006300",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "btbwar",
+      "howManyAtleast": 2,
+      "howManyAtmost": 2,
+      "comments": "Female types.",
+      "present": false,
+      "obsId": "OBS3570006316",
+      "howManyStr": "2"
+    },
+    {
+      "speciesCode": "scatan",
+      "howManyAtleast": 1,
+      "howManyAtmost": 1,
+      "present": false,
+      "obsId": "OBS3570006302",
+      "howManyStr": "1"
+    },
+    {
+      "speciesCode": "norcar",
+      "howManyAtleast": 17,
+      "howManyAtmost": 17,
+      "present": false,
+      "obsId": "OBS3570006310",
+      "howManyStr": "17"
+    }
+  ]
+}

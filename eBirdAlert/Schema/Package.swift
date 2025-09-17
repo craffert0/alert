@@ -33,6 +33,7 @@ let package = Package(
                 .process("Checklists/S222144997.json"),
                 .process("Checklists/S222159728.json"),
                 .process("Checklists/S222245597.json"),
+                .process("Checklists/S273904108.json"),
             ]
         ),
     ]
