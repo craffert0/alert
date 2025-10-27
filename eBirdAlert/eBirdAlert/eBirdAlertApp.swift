@@ -13,7 +13,8 @@ struct eBirdAlertApp: App {
     @State var notableProvider: ObservationsProvider
 
     init() {
-        let modelContainer = try! ModelContainer(for: Checklist.self)
+        let modelContainer =
+            try! ModelContainer(for: Checklist.self, DebugLine.self)
         let client = NotableObservationsClient(service: URLSession.shared)
         let swiftDataService =
             SwiftDataService(modelContext: modelContainer.mainContext)
