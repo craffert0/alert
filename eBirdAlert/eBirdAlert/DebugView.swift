@@ -5,7 +5,7 @@ import SwiftData
 import SwiftUI
 
 struct DebugView: View {
-    @Environment(\.modelContext) private var modelContext
+    @Environment(SwiftDataService.self) private var swiftDataService
     @Query(sort: \DebugLine.ts, order: .reverse)
     private var lines: [DebugLine]
     @State private var now = TimeDataSource<Date>.currentDate
@@ -14,12 +14,10 @@ struct DebugView: View {
         VStack {
             HStack {
                 Button("Add", systemImage: "plus") {
-                    modelContext.insert(DebugLine(text: "some text"))
+                    swiftDataService.addLine(text: "some text!")
                 }
                 Button("Clear", systemImage: "xmark") {
-                    for line in lines {
-                        modelContext.delete(line)
-                    }
+                    swiftDataService.clearLines()
                 }
             }
             List(lines) { line in
@@ -29,12 +27,6 @@ struct DebugView: View {
                 }
             }
             ChecklistsView()
-        }
-    }
-
-    func removeLines(at indexSet: IndexSet) {
-        for index in indexSet {
-            modelContext.delete(lines[index])
         }
     }
 }

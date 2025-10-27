@@ -59,3 +59,19 @@ extension SwiftDataService: ChecklistDataService {
         return c
     }
 }
+
+extension SwiftDataService {
+    // Stuff for DebugLine!
+    func addLine(text: String) {
+        modelContext.insert(DebugLine(text: text))
+    }
+
+    func clearLines() {
+        guard let lines = try? modelContext.fetch(FetchDescriptor<DebugLine>()) else {
+            return
+        }
+        for line in lines {
+            modelContext.delete(line)
+        }
+    }
+}
