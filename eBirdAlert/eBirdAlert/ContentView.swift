@@ -16,8 +16,8 @@ struct ContentView: View {
             }
 
             if preferences.debugMode {
-                Tab("Checklists", systemImage: "checklist") {
-                    ChecklistsView()
+                Tab("Debug", systemImage: "ladybug.circle.fill") {
+                    DebugView()
                 }
             }
 
