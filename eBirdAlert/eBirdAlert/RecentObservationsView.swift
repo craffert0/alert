@@ -6,13 +6,12 @@ import SwiftUI
 struct RecentObservationsView: View {
     @Environment(LocationService.self) var locationService
     @State var provider: RecentObservationsProvider
-    @State private var error: eBirdServiceError?
-    @State private var showError = false
+    @State var model: ObservationsProviderModel
     @State var now = TimeDataSource<Date>.currentDate
-    @State var loading = false
 
     init(provider: RecentObservationsProvider) {
         self.provider = provider
+        model = ObservationsProviderModel(provider: provider)
     }
 
     var body: some View {
@@ -25,16 +24,16 @@ struct RecentObservationsView: View {
 
     private var mainView: some View {
         NavigationStack {
-            if !loading, provider.observations.isEmpty {
+            if !model.loading, provider.observations.isEmpty {
                 EmptyView()
             } else {
                 listView
             }
         }
         .task {
-            await load()
+            await model.load()
         }
-        .alert(isPresented: $showError, error: error) { _ in
+        .alert(isPresented: $model.showError, error: model.error) { _ in
         } message: { e in
             if case let .expandedArea(distance, units) = e {
                 Text("eBird could not find birds in the original range," +
@@ -52,24 +51,12 @@ struct RecentObservationsView: View {
                 Text(o.comName)
             }
         }
-    }
-}
-
-extension RecentObservationsView {
-    func load() async {
-        loading = true
-        do {
-            try await tryLoading()
-        } catch {
-            self.error = eBirdServiceError.from(error)
-            showError = true
+        .navigationTitle("Locals")
+        .navigationBarTitleDisplayMode(.large)
+        .listStyle(.automatic)
+        .refreshable {
+            await model.refresh()
         }
-        loading = false
-    }
-
-    private func tryLoading() async throws {
-        try await provider.load()
-        // TODO: all the other BS
     }
 }
 

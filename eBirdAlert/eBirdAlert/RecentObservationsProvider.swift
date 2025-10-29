@@ -43,3 +43,7 @@ class RecentObservationsProvider {
         lastLoadTime = Date.now
     }
 }
+
+extension RecentObservationsProvider: ObservationsProviderProtocol {
+    var isEmpty: Bool { observations.isEmpty }
+}

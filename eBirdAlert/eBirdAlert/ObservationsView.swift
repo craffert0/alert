@@ -5,28 +5,27 @@ import SwiftUI
 
 struct ObservationsView: View {
     @State var provider: ObservationsProvider
+    @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
-    @State private var error: eBirdServiceError?
-    @State private var showError = false
     @State var now = TimeDataSource<Date>.currentDate
-    @State var loading = false
 
     init(provider: ObservationsProvider) {
         self.provider = provider
+        model = ObservationsProviderModel(provider: provider)
     }
 
     var body: some View {
         NavigationStack {
-            if !loading, provider.observations.isEmpty {
+            if !model.loading, provider.observations.isEmpty {
                 EmptyView()
             } else {
                 listView
             }
         }
         .task {
-            await load()
+            await model.load()
         }
-        .alert(isPresented: $showError, error: error) { _ in
+        .alert(isPresented: $model.showError, error: model.error) { _ in
         } message: { e in
             if case let .expandedArea(distance, units) = e {
                 Text("eBird could not find birds in the original range," +
@@ -51,52 +50,8 @@ struct ObservationsView: View {
         .navigationBarTitleDisplayMode(.large)
         .listStyle(.automatic)
         .refreshable {
-            await refresh()
+            await model.refresh()
         }
-    }
-}
-
-extension ObservationsView {
-    func load() async {
-        loading = true
-        do {
-            try await tryLoading()
-        } catch {
-            self.error = eBirdServiceError.from(error)
-            showError = true
-        }
-        loading = false
-    }
-
-    private func tryLoading() async throws {
-        var retried = false
-        try await provider.load()
-        while provider.observations.isEmpty,
-              preferences.distValue < preferences.maxDistance
-        {
-            retried = true
-            preferences.distValue =
-                min(2 * preferences.distValue, preferences.maxDistance)
-            try await provider.load()
-        }
-
-        if !provider.observations.isEmpty, retried {
-            throw eBirdServiceError.expandedArea(
-                distance: preferences.distValue,
-                units: preferences.distUnits
-            )
-        }
-    }
-
-    func refresh() async {
-        loading = true
-        do {
-            try await provider.refresh()
-        } catch {
-            self.error = eBirdServiceError.from(error)
-            showError = true
-        }
-        loading = false
     }
 }
 
