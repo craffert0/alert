@@ -18,3 +18,24 @@ public struct eBirdRecentObservation: Codable, Sendable {
     public let locationPrivate: Bool
     public let subId: String
 }
+
+public extension eBirdRecentObservation {
+    static let fake = eBirdRecentObservation(
+        speciesCode: "species",
+        comName: "My Fancy Species",
+        sciName: "Specious Reasoning",
+        locId: "backyard",
+        locName: "My Backyard",
+        obsDt: Date.now,
+        howMany: 4,
+        lat: 40.7,
+        lng: -74.0,
+
+        locationPrivate: false,
+        subId: "subid"
+    )
+}
+
+public extension [eBirdRecentObservation] {
+    static let fake = [eBirdRecentObservation.fake]
+}

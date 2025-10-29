@@ -6,8 +6,6 @@ import SwiftUI
 
 struct BirdObservationsView: View {
     @State var o: BirdObservations
-    @State var showEBird: Bool = false
-    @State var showPhotos: Bool = false
     @State var now = TimeDataSource<Date>.currentDate
 
     init(_ o: BirdObservations) {
@@ -23,41 +21,12 @@ struct BirdObservationsView: View {
             Text(o.sciName)
             Spacer()
 
-            buttonsView
+            BirdButtonsView(speciesCode: o.speciesCode)
 
             observationsView
         }
         .navigationTitle(o.comName)
         .navigationBarTitleDisplayMode(.inline)
-    }
-
-    private var buttonsView: some View {
-        HStack {
-            Spacer()
-
-            Button("Identify", systemImage: "person.crop.badge.magnifyingglass") {
-                showEBird = true
-            }.sheet(isPresented: $showEBird) {
-                SafariView(code: o.speciesCode, site: .ebird)
-            }
-
-            Spacer()
-
-            Button("Photos", systemImage: "photo.artframe") {
-                showPhotos = true
-            }.sheet(isPresented: $showPhotos) {
-                SafariView(code: o.speciesCode, site: .macaulay)
-            }
-
-            if UIApplication.shared.canOpenURL(URL(eBird: "bawwar")) {
-                Spacer()
-                Button("eBird", systemImage: "checklist") {
-                    UIApplication.shared.open(URL(eBird: o.speciesCode))
-                }
-            }
-
-            Spacer()
-        }
     }
 
     private var observationsView: some View {
