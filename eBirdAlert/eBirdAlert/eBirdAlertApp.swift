@@ -11,6 +11,7 @@ struct eBirdAlertApp: App {
     @State var swiftDataService: SwiftDataService
     @State var locationService: LocationService
     @State var notableProvider: ObservationsProvider
+    @State var recentProvider: RecentObservationsProvider
 
     init() {
         let modelContainer =
@@ -24,10 +25,17 @@ struct eBirdAlertApp: App {
                                  checklistDataService: swiftDataService,
                                  locationService: locationService)
 
+        let recentProvider =
+            RecentObservationsProvider(
+                client: RecentObservationsClient(service: URLSession.shared),
+                locationService: locationService
+            )
+
         self.modelContainer = modelContainer
         self.swiftDataService = swiftDataService
         self.locationService = locationService
         self.notableProvider = notableProvider
+        self.recentProvider = recentProvider
 
         Timer.scheduledTimer(withTimeInterval: 3600, repeats: true) { _ in
             swiftDataService.garbageCollect(daysBack: 8)
@@ -41,6 +49,7 @@ struct eBirdAlertApp: App {
                 .environment(swiftDataService)
                 .environment(locationService)
                 .environment(\.eBirdNotable, notableProvider)
+                .environment(\.eBirdAll, recentProvider)
         }
     }
 }

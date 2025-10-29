@@ -18,7 +18,7 @@ struct ObservationsView: View {
     var body: some View {
         NavigationStack {
             if !loading, provider.observations.isEmpty {
-                emptyView
+                EmptyView()
             } else {
                 listView
             }
@@ -53,32 +53,6 @@ struct ObservationsView: View {
         .refreshable {
             await refresh()
         }
-    }
-
-    private var emptyView: some View {
-        Form {
-            Text(emptyText)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .font(.largeTitle)
-            Text("Consider expanding your range in your Settings")
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .font(.largeTitle)
-        }
-        .navigationTitle("No Rare Birds")
-        .navigationBarTitleDisplayMode(.large)
-    }
-
-    private var emptyText: String {
-        let daysBack = Int(preferences.daysBack)
-        let days = daysBack == 1 ? "day" : "\(daysBack) days"
-        let distance = preferences.distValue.formatted(.eBirdFormat)
-            + " "
-            + preferences.distUnits.rawValue
-
-        return "In the past \(days), there has been no" +
-            " rare bird sighting within \(distance)."
     }
 }
 
