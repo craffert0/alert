@@ -5,6 +5,7 @@ import SwiftUI
 
 struct EmptyView: View {
     @ObservedObject var preferences = PreferencesModel.global
+    let name: String
 
     var body: some View {
         Form {
@@ -17,7 +18,7 @@ struct EmptyView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .font(.largeTitle)
         }
-        .navigationTitle("No Rare Birds")
+        .navigationTitle("No \(name.capitalized) Birds")
         .navigationBarTitleDisplayMode(.large)
     }
 
@@ -29,12 +30,12 @@ struct EmptyView: View {
             + preferences.distUnits.rawValue
 
         return "In the past \(days), there has been no" +
-            " rare bird sighting within \(distance)."
+            " \(name) bird sighting within \(distance)."
     }
 }
 
 #Preview {
     VStack {
-        EmptyView()
+        EmptyView(name: "empty")
     }
 }

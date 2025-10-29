@@ -25,7 +25,7 @@ struct RecentObservationsView: View {
     private var mainView: some View {
         NavigationStack {
             if !model.loading, provider.observations.isEmpty {
-                EmptyView()
+                EmptyView(name: "local")
             } else {
                 listView
             }
@@ -46,7 +46,9 @@ struct RecentObservationsView: View {
 
     private var listView: some View {
         List(provider.observations) { o in
-            HStack {
+            NavigationLink {
+                EmptyView(name: "underlying")
+            } label: {
                 Text(o.obsDt, relativeTo: now)
                 Text(o.comName)
             }
