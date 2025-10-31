@@ -4,5 +4,5 @@
 import Schema
 
 extension eBirdRecentObservation: @retroactive Identifiable {
-    public var id: String { speciesCode }
+    public var id: String { "\(speciesCode).\(locId)" }
 }

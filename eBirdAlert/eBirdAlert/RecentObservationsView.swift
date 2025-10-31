@@ -47,7 +47,11 @@ struct RecentObservationsView: View {
     private var listView: some View {
         List(provider.observations) { o in
             NavigationLink {
-                RecentBirdView(o: o)
+                RecentBirdView(o: o,
+                               provider: BirdObservationsProvider(
+                                   for: o.speciesCode,
+                                   locationService: locationService
+                               ))
             } label: {
                 Text(o.obsDt, relativeTo: now)
                 Text(o.comName)
