@@ -39,7 +39,7 @@ class SwiftDataService {
 
 extension SwiftDataService: ChecklistDataService {
     @MainActor
-    func prepare(obs: eBirdObservation) {
+    func prepare(obs: ChecklistDataServiceObservation) {
         guard get(checklist: obs.subId) == nil else {
             return
         }
@@ -48,7 +48,7 @@ extension SwiftDataService: ChecklistDataService {
     }
 
     @MainActor
-    func load(obs: eBirdObservation) -> Checklist {
+    func load(obs: ChecklistDataServiceObservation) -> Checklist {
         let c = get(checklist: obs.subId) ?? {
             let c =
                 Checklist(for: obs.subId, date: obs.obsDt, status: .unloaded)
