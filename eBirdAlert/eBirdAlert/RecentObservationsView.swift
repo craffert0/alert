@@ -8,6 +8,7 @@ struct RecentObservationsView: View {
     @State var provider: RecentObservationsProvider
     @State var model: ObservationsProviderModel
     @State var now = TimeDataSource<Date>.currentDate
+    @State private var observationSort: ObservationSortOption = .byName
 
     init(provider: RecentObservationsProvider) {
         self.provider = provider
@@ -27,6 +28,7 @@ struct RecentObservationsView: View {
             if !model.loading, provider.observations.isEmpty {
                 EmptyView(name: "local")
             } else {
+                SortPickerView(observationSort: $observationSort)
                 listView
             }
         }
@@ -45,7 +47,7 @@ struct RecentObservationsView: View {
     }
 
     private var listView: some View {
-        List(provider.observations) { o in
+        List(observationSort.sort(provider.observations)) { o in
             NavigationLink {
                 RecentBirdView(o: o,
                                provider: BirdObservationsProvider(
