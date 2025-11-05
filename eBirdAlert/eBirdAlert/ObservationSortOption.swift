@@ -13,9 +13,7 @@ extension ObservationSortOption: CaseIterable, Identifiable {
 }
 
 extension ObservationSortOption {
-    func sort(_ observations: [eBirdRecentObservation])
-        -> [eBirdRecentObservation]
-    {
+    func sort<T: ObservationSortable>(_ observations: [T]) -> [T] {
         if self == .byName {
             observations.sorted { a, b in
                 a.comName < b.comName

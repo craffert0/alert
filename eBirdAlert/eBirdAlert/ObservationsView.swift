@@ -8,6 +8,7 @@ struct ObservationsView: View {
     @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
+    @State private var observationSort: ObservationSortOption = .byTime
 
     init(provider: ObservationsProvider) {
         self.provider = provider
@@ -19,6 +20,7 @@ struct ObservationsView: View {
             if !model.loading, provider.observations.isEmpty {
                 EmptyView(name: "rare")
             } else {
+                SortPickerView(observationSort: $observationSort)
                 listView
             }
         }
@@ -37,7 +39,7 @@ struct ObservationsView: View {
     }
 
     private var listView: some View {
-        List(provider.observations) { o in
+        List(observationSort.sort(provider.observations)) { o in
             NavigationLink {
                 BirdObservationsView(o)
             } label: {
