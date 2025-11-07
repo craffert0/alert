@@ -11,6 +11,4 @@ extension eBirdRecentObservation: ObservationSortable {}
 
 extension eBirdRecentObservation: ChecklistDataServiceObservation {}
 
-extension eBirdRecentObservation: eBirdObservationProtocol {
-    var userDisplayName: String { "TODO: better name" }
-}
+extension eBirdRecentObservation: eBirdObservationProtocol {}

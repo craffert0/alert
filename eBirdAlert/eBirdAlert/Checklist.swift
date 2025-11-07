@@ -20,6 +20,13 @@ final class Checklist {
         self.status = status
     }
 
+    var userDisplayName: String? {
+        guard case let .value(checklist) = status else {
+            return nil
+        }
+        return checklist.userDisplayName
+    }
+
     func observation(for speciesCode: String) -> eBirdChecklist.Obs? {
         guard case let .value(checklist) = status else {
             return nil

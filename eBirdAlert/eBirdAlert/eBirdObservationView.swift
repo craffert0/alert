@@ -43,7 +43,7 @@ struct eBirdObservationView: View {
     }
 
     private var userView: some View {
-        Button(e.userDisplayName) {
+        Button(checklist.userDisplayName ?? "Checklist") {
             showChecklist = true
         }.sheet(isPresented: $showChecklist) {
             SafariView(code: checklist.id, site: .checklist)
