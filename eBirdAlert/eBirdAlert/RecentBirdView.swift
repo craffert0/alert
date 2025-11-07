@@ -5,6 +5,7 @@ import Schema
 import SwiftUI
 
 struct RecentBirdView: View {
+    @Environment(SwiftDataService.self) var swiftDataService
     let o: eBirdRecentObservation
     @State var provider: BirdObservationsProvider
     @State var model: ObservationsProviderModel
@@ -33,7 +34,10 @@ struct RecentBirdView: View {
 
     private var listView: some View {
         List(provider.observations) { obs in
-            HStack {
+            let c = swiftDataService.load(obs: obs)
+            NavigationLink {
+                eBirdObservationView(obs, in: c)
+            } label: {
                 Text(obs.obsDt, relativeTo: now)
                 Text(obs.locName)
             }

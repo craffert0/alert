@@ -6,3 +6,5 @@ import Schema
 extension eBirdObservation: LocationProtocol {}
 
 extension eBirdObservation: ChecklistDataServiceObservation {}
+
+extension eBirdObservation: eBirdObservationProtocol {}

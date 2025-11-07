@@ -28,6 +28,7 @@ struct eBirdAlertApp: App {
         let recentProvider =
             RecentObservationsProvider(
                 client: RecentObservationsClient(service: URLSession.shared),
+                checklistDataService: swiftDataService,
                 locationService: locationService
             )
 

@@ -9,13 +9,16 @@ import Schema
 class RecentObservationsProvider {
     var observations: [eBirdRecentObservation] = []
     private let client: RecentObservationsClient
+    private let checklistDataService: ChecklistDataService
     private let locationService: LocationService
     private var lastLoadTime: Date?
 
     init(client: RecentObservationsClient,
+         checklistDataService: ChecklistDataService,
          locationService: LocationService)
     {
         self.client = client
+        self.checklistDataService = checklistDataService
         self.locationService = locationService
     }
 
@@ -33,13 +36,9 @@ class RecentObservationsProvider {
             throw eBirdServiceError.noLocation
         }
         observations = try await client.get(near: location)
-        // for o in observations {
-        //     for l in o.locations {
-        //         for e in l.observations {
-        //             await checklistDataService.prepare(obs: e)
-        //         }
-        //     }
-        // }
+        for o in observations {
+            await checklistDataService.prepare(obs: o)
+        }
         lastLoadTime = Date.now
     }
 }

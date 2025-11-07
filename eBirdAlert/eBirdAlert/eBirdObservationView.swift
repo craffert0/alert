@@ -5,13 +5,13 @@ import Schema
 import SwiftUI
 
 struct eBirdObservationView: View {
-    @State var e: eBirdObservation
+    @State var e: eBirdObservationProtocol
     @State var checklist: Checklist
     @State var showChecklist: Bool = false
     @State var showSpecies: Bool = false
     @State var showPhotos: Bool = false
 
-    init(_ e: eBirdObservation,
+    init(_ e: eBirdObservationProtocol,
          in checklist: Checklist)
     {
         self.e = e
@@ -68,7 +68,10 @@ struct eBirdObservationView: View {
 }
 
 #Preview {
-    eBirdObservationView(.fake, in: Checklist(for: "fake",
-                                              date: Date.now,
-                                              status: .unloaded))
+    eBirdObservationView(
+        eBirdObservation.fake,
+        in: Checklist(for: "fake",
+                      date: Date.now,
+                      status: .unloaded)
+    )
 }
