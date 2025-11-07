@@ -4,7 +4,6 @@
 import Foundation
 
 protocol eBirdObservationProtocol: LocationProtocol {
-    var obsId: String { get }
     var obsDt: Date { get }
     var speciesCode: String { get }
     var comName: String { get }

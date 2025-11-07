@@ -20,11 +20,11 @@ final class Checklist {
         self.status = status
     }
 
-    func observation(for obsId: String) -> eBirdChecklist.Obs? {
+    func observation(for speciesCode: String) -> eBirdChecklist.Obs? {
         guard case let .value(checklist) = status else {
             return nil
         }
-        return checklist.obs.first { $0.obsId == obsId }
+        return checklist.obs.first { $0.speciesCode == speciesCode }
     }
 
     func load() {

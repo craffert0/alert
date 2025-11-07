@@ -20,7 +20,9 @@ struct LocationObservationsView: View {
             LocationButton(location: l)
             List(l.observations) { e in
                 let c = swiftDataService.load(obs: e)
-                if let comments = c.observation(for: e.obsId)?.comments {
+                if let comments =
+                    c.observation(for: e.speciesCode)?.comments
+                {
                     NavigationLink {
                         eBirdObservationView(e, in: c)
                     } label: {
