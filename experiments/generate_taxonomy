@@ -1,0 +1,28 @@
+#! /opt/homebrew/bin/python3
+
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
+
+import json
+from server import Server
+
+
+def main():
+    server = Server()
+    taxon = [
+        {
+            "speciesCode": x["speciesCode"],
+            "comName": x["comName"],
+        }
+        for x in server.get("ref/taxonomy/ebird")
+    ]
+    print(
+        json.dumps(
+            sorted(taxon, key=lambda x: x["speciesCode"]),
+            separators=(",", ":"),
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()
