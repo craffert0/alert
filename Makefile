@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-.PHONY: all lint test test_schema
+.PHONY: all lint test test_schema, regen
 
 all: test
 
@@ -12,3 +12,6 @@ test_schema:
 
 lint:
 	swiftformat -q --swiftversion 6 .
+
+regen:
+	cd experiments ; ./generate_taxonomy > ../eBirdAlert/eBirdAlert/Assets/taxonomy.json

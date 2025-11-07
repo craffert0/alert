@@ -6,10 +6,8 @@
 # https://documenter.getpostman.com/view/664302/S1ENwy59?version=latest
 
 import json
-import os.path
 import re
-from http.client import *
-from pathlib import Path
+import server
 
 
 lat = 40.67
@@ -22,20 +20,7 @@ def generate_unique_id(x):
     return x
 
 
-class Server:
-    def __init__(self):
-        rc = json.loads(Path(os.path.expanduser("~/.ebirdrc")).read_text())
-        self.headers = {"x-ebirdapitoken": rc["apikey"]}
-        self.conn = HTTPSConnection("api.ebird.org")
-
-    def get(self, path, params=""):
-        fullpath = "/v2/" + path + "?fmt=json" + params
-        req = self.conn.request("GET", fullpath, headers=self.headers)
-        response = self.conn.getresponse()
-        if response.status != 200:
-            raise RuntimeError(f"{response.status}: {response.reason}")
-        return json.loads(response.read())
-
+class Server(server.Server):
     def hotspots(self):
         return self.get("ref/hotspot/geo", f"&lat={lat}&lng={lng}&dist=3.7")
 
