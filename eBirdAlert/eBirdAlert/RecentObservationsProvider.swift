@@ -6,14 +6,14 @@ import Observation
 import Schema
 
 @Observable
-class ObservationsProvider {
-    var observations: [BirdObservations] = []
-    private let client: ObservationsClient
-    private let locationService: LocationService
+class RecentObservationsProvider {
+    var observations: [eBirdRecentObservation] = []
+    private let client: RecentObservationsClient
     private let checklistDataService: ChecklistDataService
+    private let locationService: LocationService
     private var lastLoadTime: Date?
 
-    init(client: ObservationsClient,
+    init(client: RecentObservationsClient,
          checklistDataService: ChecklistDataService,
          locationService: LocationService)
     {
@@ -35,18 +35,14 @@ class ObservationsProvider {
         guard let location = locationService.location else {
             throw eBirdServiceError.noLocation
         }
-        observations = try await client.observations(near: location).collate()
+        observations = try await client.get(near: location)
         for o in observations {
-            for l in o.locations {
-                for e in l.observations {
-                    await checklistDataService.prepare(obs: e)
-                }
-            }
+            await checklistDataService.prepare(obs: o)
         }
         lastLoadTime = Date.now
     }
 }
 
-extension ObservationsProvider: ObservationsProviderProtocol {
+extension RecentObservationsProvider: ObservationsProviderProtocol {
     var isEmpty: Bool { observations.isEmpty }
 }

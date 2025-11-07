@@ -6,10 +6,10 @@ import Schema
 
 class FakeChecklistDataService: ChecklistDataService {
     @MainActor
-    func prepare(obs _: eBirdObservation) {}
+    func prepare(obs _: ChecklistDataServiceObservation) {}
 
     @MainActor
-    func load(obs _: eBirdObservation) -> Checklist {
+    func load(obs _: ChecklistDataServiceObservation) -> Checklist {
         Checklist(for: UUID().uuidString,
                   date: Date.now,
                   status: .unloaded)

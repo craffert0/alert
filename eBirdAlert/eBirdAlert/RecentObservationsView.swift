@@ -3,22 +3,30 @@
 
 import SwiftUI
 
-struct ObservationsView: View {
-    @State var provider: ObservationsProvider
+struct RecentObservationsView: View {
+    @Environment(LocationService.self) var locationService
+    @State var provider: RecentObservationsProvider
     @State var model: ObservationsProviderModel
-    @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
-    @State private var observationSort: ObservationSortOption = .byTime
+    @State private var observationSort: ObservationSortOption = .byName
 
-    init(provider: ObservationsProvider) {
+    init(provider: RecentObservationsProvider) {
         self.provider = provider
         model = ObservationsProviderModel(provider: provider)
     }
 
     var body: some View {
+        if locationService.location == nil {
+            Text("no location 😢")
+        } else {
+            mainView
+        }
+    }
+
+    private var mainView: some View {
         NavigationStack {
             if !model.loading, provider.observations.isEmpty {
-                EmptyView(name: "rare")
+                EmptyView(name: "local")
             } else {
                 SortPickerView(observationSort: $observationSort)
                 listView
@@ -41,11 +49,14 @@ struct ObservationsView: View {
     private var listView: some View {
         List(observationSort.sort(provider.observations)) { o in
             NavigationLink {
-                BirdObservationsView(o)
+                RecentBirdView(o: o,
+                               provider: BirdObservationsProvider(
+                                   for: o.speciesCode,
+                                   locationService: locationService
+                               ))
             } label: {
-                Text(o.latestSighting, relativeTo: now)
+                Text(o.obsDt, relativeTo: now)
                 Text(o.comName)
-                Text("(\(o.locations.total_count))")
             }
         }
         .listStyle(.automatic)
@@ -55,25 +66,8 @@ struct ObservationsView: View {
     }
 }
 
-#Preview {
-    let checklistDataService = FakeChecklistDataService()
-    let locationService = FixedLocationService(latitude: 41, longitude: -74)
-    TabView {
-        Tab("None", systemImage: "bird.circle.fill") {
-            let provider = ObservationsProvider(
-                client: FakeObservationsClient(observations: []),
-                checklistDataService: checklistDataService,
-                locationService: locationService
-            )
-            ObservationsView(provider: provider)
-        }
-        Tab("Some", systemImage: "bird.circle") {
-            let provider = ObservationsProvider(
-                client: FakeObservationsClient(observations: .fake),
-                checklistDataService: checklistDataService,
-                locationService: locationService
-            )
-            ObservationsView(provider: provider)
-        }
-    }
-}
+// #Preview {
+//     VStack {
+//         RecentObservationsView()
+//     }
+// }

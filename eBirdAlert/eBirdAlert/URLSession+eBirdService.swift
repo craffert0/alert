@@ -39,10 +39,22 @@ extension URLSession: @retroactive eBirdService {
     }
 
     public func getAll(near location: CLLocation) async throws
-        -> [Schema.eBirdObservation]
+        -> [Schema.eBirdRecentObservation]
     {
         let request = try URLRequest(
             eBirdPath: "data/obs/geo/recent",
+            queryItems: PreferencesModel.global.geoQueryItems,
+            withLocation: location
+        )
+        return try await object(for: request)
+    }
+
+    public func getBird(near location: CLLocation,
+                        for speciesCode: String) async throws
+        -> [Schema.eBirdRecentObservation]
+    {
+        let request = try URLRequest(
+            eBirdPath: "data/obs/geo/recent/\(speciesCode)",
             queryItems: PreferencesModel.global.geoQueryItems,
             withLocation: location
         )

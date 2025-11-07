@@ -5,5 +5,5 @@ import SwiftUI
 
 extension EnvironmentValues {
     @Entry var eBirdNotable: ObservationsProvider?
-    @Entry var eBirdAll: ObservationsProvider?
+    @Entry var eBirdAll: RecentObservationsProvider?
 }

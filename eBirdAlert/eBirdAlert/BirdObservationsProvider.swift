@@ -6,19 +6,16 @@ import Observation
 import Schema
 
 @Observable
-class ObservationsProvider {
-    var observations: [BirdObservations] = []
-    private let client: ObservationsClient
+class BirdObservationsProvider {
+    var observations: [eBirdRecentObservation] = []
+    private let speciesCode: String
     private let locationService: LocationService
-    private let checklistDataService: ChecklistDataService
     private var lastLoadTime: Date?
 
-    init(client: ObservationsClient,
-         checklistDataService: ChecklistDataService,
+    init(for speciesCode: String,
          locationService: LocationService)
     {
-        self.client = client
-        self.checklistDataService = checklistDataService
+        self.speciesCode = speciesCode
         self.locationService = locationService
     }
 
@@ -35,18 +32,13 @@ class ObservationsProvider {
         guard let location = locationService.location else {
             throw eBirdServiceError.noLocation
         }
-        observations = try await client.observations(near: location).collate()
-        for o in observations {
-            for l in o.locations {
-                for e in l.observations {
-                    await checklistDataService.prepare(obs: e)
-                }
-            }
-        }
-        lastLoadTime = Date.now
+        observations =
+            try await URLSession.shared.getBird(
+                near: location, for: speciesCode
+            )
     }
 }
 
-extension ObservationsProvider: ObservationsProviderProtocol {
+extension BirdObservationsProvider: ObservationsProviderProtocol {
     var isEmpty: Bool { observations.isEmpty }
 }

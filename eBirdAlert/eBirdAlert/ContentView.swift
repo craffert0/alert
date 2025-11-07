@@ -8,11 +8,16 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @Environment(\.eBirdNotable) var notableProvider: ObservationsProvider?
+    @Environment(\.eBirdAll) var recentObservationsProvider: RecentObservationsProvider?
 
     var body: some View {
         TabView {
-            Tab("Rarities", systemImage: "bird.circle") {
+            Tab("Rarities", systemImage: "environments.circle") {
                 MainView(provider: notableProvider!)
+            }
+
+            Tab("Locals", systemImage: "bird.circle") {
+                RecentObservationsView(provider: recentObservationsProvider!)
             }
 
             if preferences.debugMode {

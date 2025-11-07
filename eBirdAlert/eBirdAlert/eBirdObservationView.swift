@@ -5,20 +5,20 @@ import Schema
 import SwiftUI
 
 struct eBirdObservationView: View {
-    @State var e: eBirdObservation
+    @State var e: eBirdObservationProtocol
     @State var checklist: Checklist
     @State var showChecklist: Bool = false
     @State var showSpecies: Bool = false
     @State var showPhotos: Bool = false
 
-    init(_ e: eBirdObservation,
+    init(_ e: eBirdObservationProtocol,
          in checklist: Checklist)
     {
         self.e = e
         self.checklist = checklist
     }
 
-    var obs: eBirdChecklist.Obs? { checklist.observation(for: e.obsId) }
+    var obs: eBirdChecklist.Obs? { checklist.observation(for: e.speciesCode) }
 
     var body: some View {
         VStack {
@@ -43,7 +43,7 @@ struct eBirdObservationView: View {
     }
 
     private var userView: some View {
-        Button(e.userDisplayName) {
+        Button(checklist.userDisplayName ?? "Checklist") {
             showChecklist = true
         }.sheet(isPresented: $showChecklist) {
             SafariView(code: checklist.id, site: .checklist)
@@ -68,7 +68,10 @@ struct eBirdObservationView: View {
 }
 
 #Preview {
-    eBirdObservationView(.fake, in: Checklist(for: "fake",
-                                              date: Date.now,
-                                              status: .unloaded))
+    eBirdObservationView(
+        eBirdObservation.fake,
+        in: Checklist(for: "fake",
+                      date: Date.now,
+                      status: .unloaded)
+    )
 }
