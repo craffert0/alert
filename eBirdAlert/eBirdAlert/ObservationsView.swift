@@ -48,8 +48,6 @@ struct ObservationsView: View {
                 Text("(\(o.locations.total_count))")
             }
         }
-        .navigationTitle("Rarities")
-        .navigationBarTitleDisplayMode(.large)
         .listStyle(.automatic)
         .refreshable {
             await model.refresh()

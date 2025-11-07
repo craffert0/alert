@@ -59,8 +59,6 @@ struct RecentObservationsView: View {
                 Text(o.comName)
             }
         }
-        .navigationTitle("Locals")
-        .navigationBarTitleDisplayMode(.large)
         .listStyle(.automatic)
         .refreshable {
             await model.refresh()
