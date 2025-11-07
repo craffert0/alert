@@ -1,0 +1,69 @@
+#! /opt/homebrew/bin/python3
+
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
+
+import argparse
+import csv
+import json
+import server
+import sys
+
+kValeOfCashmere = "L1149386"
+
+
+class Server(server.Server):
+    def __init__(self, hotspot):
+        self.hotspot = hotspot
+        super(Server, self).__init__()
+
+    def species(self):
+        return self.get(f"product/spplist/{self.hotspot}")
+
+    def info(self):
+        return self.get(f"ref/region/info/{self.hotspot}")
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(prog="intersect")
+    parser.add_argument("-l", "--location", default=kValeOfCashmere)
+    parser.add_argument("csvfile", type=argparse.FileType("r"))
+    return parser.parse_args(sys.argv[1:])
+
+
+def comNames(csvfile, location):
+    birds = set()
+    for row in csv.DictReader(csvfile, delimiter=","):
+        if row["Location ID"] == location:
+            birds.add(row["Common Name"])
+    return [x for x in birds]
+
+
+def species_mapping():
+    with open("../eBirdAlert/eBirdAlert/Assets/taxonomy.json", "r") as taxon:
+        return dict(
+            [[x["speciesCode"], x["comName"]] for x in json.load(taxon)]
+        )
+
+
+def main():
+    args = parse_args()
+    my_comNames = comNames(args.csvfile, args.location)
+    server = Server(args.location)
+    all_speciesCodes = server.species()
+    mapping = species_mapping()
+    all_comNames = [mapping[x] for x in all_speciesCodes]
+    print(server.info()["result"])
+    print("\n==== What I've Seen ====\n")
+    for a in sorted(my_comNames):
+        print(a)
+    print("\n==== What I'm Missing ====\n")
+    for a in sorted(set(all_comNames) - set(my_comNames)):
+        print(a)
+    print("\n==== What They're Missing ====\n")
+    for a in sorted(set(my_comNames) - set(all_comNames)):
+        print(a)
+
+
+if __name__ == "__main__":
+    main()
