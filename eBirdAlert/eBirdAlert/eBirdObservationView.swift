@@ -59,7 +59,7 @@ struct eBirdObservationView: View {
     }
 
     private var photosView: some View {
-        Button("Checklist photos") {
+        Button("📸 photos 📸") {
             showPhotos = true
         }.sheet(isPresented: $showPhotos) {
             SafariView(code: checklist.id, site: .photos)
