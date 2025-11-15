@@ -25,6 +25,7 @@ struct RecentObservationsView: View {
 
     private var mainView: some View {
         NavigationStack {
+            RangeView()
             if !model.loading, provider.observations.isEmpty {
                 EmptyView(name: "local")
             } else {

@@ -8,6 +8,7 @@ class PreferencesModel: ObservableObject {
     static let global = PreferencesModel()
 
     @AppStorage("settings.daysBack") var daysBack: Int = 2
+    @AppStorage("settings.rangeOption") var rangeOption: RangeOption = .radius
     @AppStorage("settings.distValue") var distValue: Double = 3
     @AppStorage("settings.distUnits") var distUnits: DistanceUnits = .miles
     @AppStorage("settings.mapType") var mapType: MapOption = .apple

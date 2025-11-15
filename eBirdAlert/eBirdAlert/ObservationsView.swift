@@ -17,6 +17,7 @@ struct ObservationsView: View {
 
     var body: some View {
         NavigationStack {
+            RangeView()
             if !model.loading, provider.observations.isEmpty {
                 EmptyView(name: "rare")
             } else {
