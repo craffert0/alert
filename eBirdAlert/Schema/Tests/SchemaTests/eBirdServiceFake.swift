@@ -35,9 +35,15 @@ extension eBirdServiceFake: eBirdService {
         return try get(name: notableName)
     }
 
-    func getAll(near _: CLLocation) async throws -> [eBirdObservation] {
+    func getAll(near _: CLLocation) async throws -> [eBirdRecentObservation] {
         guard let allName else { throw eBirdServiceFakeError.noName }
         return try get(name: allName)
+    }
+
+    func getBird(near _: CLLocation,
+                 for _: String) async throws -> [eBirdRecentObservation]
+    {
+        throw eBirdServiceFakeError.noName
     }
 
     func getChecklist(subId: String) async throws -> eBirdChecklist {
