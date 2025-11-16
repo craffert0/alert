@@ -20,6 +20,12 @@ struct ContentView: View {
                 RecentObservationsView(provider: recentObservationsProvider!)
             }
 
+            Tab("Region", systemImage: "map.circle.fill") {
+                NavigationStack {
+                    DebugRegionView(service: URLSession.cached)
+                }
+            }
+
             if preferences.debugMode {
                 Tab("Debug", systemImage: "ladybug.circle.fill") {
                     DebugView()
