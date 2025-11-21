@@ -2,6 +2,7 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import Combine
+import Schema
 import SwiftUI
 
 class PreferencesModel: ObservableObject {
@@ -16,6 +17,9 @@ class PreferencesModel: ObservableObject {
     var directionsType: MapDirectionsOption = .none
     @Published var debugMode: Bool = false
     let maxDistance: Double = 250
+
+    // TODO: implement me.
+    @Published var region: eBirdRegion? = .kings
 }
 
 extension PreferencesModel {

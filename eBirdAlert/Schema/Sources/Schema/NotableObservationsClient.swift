@@ -18,4 +18,10 @@ extension NotableObservationsClient: ObservationsClient {
     {
         try await service.getNotable(near: location)
     }
+
+    public func get(in region: eBirdRegion) async throws
+        -> [eBirdObservation]
+    {
+        try await service.getNotable(in: region)
+    }
 }

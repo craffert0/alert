@@ -21,8 +21,3 @@ extension eBirdRegion: Comparable {
         a.code < b.code
     }
 }
-
-// {
-//     "code": "US-NY-047",
-//     "name": "Kings"
-// }

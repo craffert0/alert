@@ -8,6 +8,7 @@ import Schema
 @Observable
 class BirdObservationsProvider {
     var observations: [eBirdRecentObservation] = []
+    private let preferences = PreferencesModel.global
     private let speciesCode: String
     private let locationService: LocationService
     private var lastLoadTime: Date?
@@ -29,13 +30,24 @@ class BirdObservationsProvider {
     }
 
     func refresh() async throws {
-        guard let location = locationService.location else {
-            throw eBirdServiceError.noLocation
+        switch preferences.rangeOption {
+        case .radius:
+            guard let location = locationService.location else {
+                throw eBirdServiceError.noLocation
+            }
+            observations =
+                try await URLSession.shared.getBird(
+                    near: location, for: speciesCode
+                )
+        case .region:
+            guard let region = preferences.region else {
+                throw eBirdServiceError.noRegion
+            }
+            observations =
+                try await URLSession.shared.getBird(
+                    in: region, for: speciesCode
+                )
         }
-        observations =
-            try await URLSession.shared.getBird(
-                near: location, for: speciesCode
-            )
     }
 }
 

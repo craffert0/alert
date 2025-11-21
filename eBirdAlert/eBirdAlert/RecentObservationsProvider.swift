@@ -8,6 +8,7 @@ import Schema
 @Observable
 class RecentObservationsProvider {
     var observations: [eBirdRecentObservation] = []
+    private let preferences = PreferencesModel.global
     private let client: RecentObservationsClient
     private let checklistDataService: ChecklistDataService
     private let locationService: LocationService
@@ -32,10 +33,18 @@ class RecentObservationsProvider {
     }
 
     func refresh() async throws {
-        guard let location = locationService.location else {
-            throw eBirdServiceError.noLocation
+        switch preferences.rangeOption {
+        case .radius:
+            guard let location = locationService.location else {
+                throw eBirdServiceError.noLocation
+            }
+            observations = try await client.get(near: location)
+        case .region:
+            guard let region = preferences.region else {
+                throw eBirdServiceError.noRegion
+            }
+            observations = try await client.get(in: region)
         }
-        observations = try await client.get(near: location)
         for o in observations {
             await checklistDataService.prepare(obs: o)
         }

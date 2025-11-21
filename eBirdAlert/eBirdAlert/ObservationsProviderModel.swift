@@ -30,6 +30,7 @@ class ObservationsProviderModel {
         var retried = false
         try await provider.load()
         while provider.isEmpty,
+              preferences.rangeOption == .radius,
               preferences.distValue < preferences.maxDistance
         {
             retried = true

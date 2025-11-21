@@ -21,4 +21,13 @@ extension FakeObservationsClient: ObservationsClient {
         }
         return observations
     }
+
+    public func get(in _: eBirdRegion) async throws
+        -> [eBirdObservation]
+    {
+        guard let observations else {
+            throw eBirdServiceError.noLocation
+        }
+        return observations
+    }
 }

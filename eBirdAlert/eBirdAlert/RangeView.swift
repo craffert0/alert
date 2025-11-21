@@ -23,7 +23,7 @@ struct RangeView: View {
 
     private var regionView: some View {
         HStack {
-            Text("In Region")
+            Text(preferences.region?.name ?? "In Region")
         }
     }
 }

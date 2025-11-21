@@ -5,3 +5,7 @@ enum RangeOption: String {
     case radius
     case region
 }
+
+extension RangeOption: CaseIterable, Identifiable {
+    var id: Self { self }
+}

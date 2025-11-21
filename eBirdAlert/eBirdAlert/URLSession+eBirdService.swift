@@ -19,6 +19,16 @@ extension URLSession: @retroactive eBirdService {
         return try await object(for: request)
     }
 
+    public func getNotable(in region: eBirdRegion) async throws
+        -> [Schema.eBirdObservation]
+    {
+        let request = try URLRequest(
+            eBirdPath: "data/obs/\(region.code)/recent/notable",
+            queryItems: PreferencesModel.global.geoQueryItems
+        )
+        return try await object(for: request)
+    }
+
     public func getAll(near location: CLLocation) async throws
         -> [Schema.eBirdRecentObservation]
     {
@@ -26,6 +36,16 @@ extension URLSession: @retroactive eBirdService {
             eBirdPath: "data/obs/geo/recent",
             queryItems: PreferencesModel.global.geoQueryItems,
             withLocation: location
+        )
+        return try await object(for: request)
+    }
+
+    public func getAll(in region: eBirdRegion) async throws
+        -> [Schema.eBirdRecentObservation]
+    {
+        let request = try URLRequest(
+            eBirdPath: "data/obs/\(region.code)/recent",
+            queryItems: PreferencesModel.global.geoQueryItems
         )
         return try await object(for: request)
     }
@@ -38,6 +58,17 @@ extension URLSession: @retroactive eBirdService {
             eBirdPath: "data/obs/geo/recent/\(speciesCode)",
             queryItems: PreferencesModel.global.geoQueryItems,
             withLocation: location
+        )
+        return try await object(for: request)
+    }
+
+    public func getBird(in region: eBirdRegion,
+                        for speciesCode: String) async throws
+        -> [Schema.eBirdRecentObservation]
+    {
+        let request = try URLRequest(
+            eBirdPath: "data/obs/\(region.code)/recent/\(speciesCode)",
+            queryItems: PreferencesModel.global.geoQueryItems
         )
         return try await object(for: request)
     }

@@ -16,4 +16,10 @@ public class RecentObservationsClient {
     {
         try await service.getAll(near: location)
     }
+
+    public func get(in region: eBirdRegion) async throws
+        -> [eBirdRecentObservation]
+    {
+        try await service.getAll(in: region)
+    }
 }

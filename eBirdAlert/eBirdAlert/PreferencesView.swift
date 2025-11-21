@@ -16,8 +16,8 @@ struct PreferencesView: View {
         NavigationStack {
             Form {
                 Section("Range") {
+                    locationView
                     daysView
-                    DistancePreferencesView()
                 }
 
                 Section("Map") {
@@ -42,6 +42,26 @@ struct PreferencesView: View {
                 "\(Int(daysBack)) day" +
                     (Int(daysBack) == 1 ? "" : "s")
             )
+        }
+    }
+
+    private var locationView: some View {
+        VStack {
+            Picker("Location", selection: preferences.$rangeOption) {
+                ForEach(RangeOption.allCases) { option in
+                    Text(option.rawValue.capitalized)
+                }
+            }
+            switch preferences.rangeOption {
+            case .radius:
+                DistancePreferencesView()
+            case .region:
+                if let region = preferences.region {
+                    Text(region.name)
+                } else {
+                    Text("dang!")
+                }
+            }
         }
     }
 
