@@ -20,6 +20,7 @@ class PreferencesModel: ObservableObject {
 
     // TODO: implement me.
     @Published var region: eBirdRegion? = .kings
+    @Published var regionInfo: eBirdRegionInfo? = .kings
 }
 
 extension PreferencesModel {
