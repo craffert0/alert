@@ -22,7 +22,7 @@ extension FakeObservationsClient: ObservationsClient {
         return observations
     }
 
-    public func get(in _: eBirdRegion) async throws
+    public func get(in _: RegionCodeProvider) async throws
         -> [eBirdObservation]
     {
         guard let observations else {

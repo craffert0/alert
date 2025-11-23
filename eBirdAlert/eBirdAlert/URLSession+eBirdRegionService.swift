@@ -6,7 +6,7 @@ import Schema
 
 extension URLSession: @retroactive eBirdRegionService {
     public func getSubRegions(
-        of region: eBirdRegion,
+        of region: RegionCodeProvider,
         as type: eBirdRegionType
     ) async throws -> [Schema.eBirdRegion] {
         let request = try URLRequest(
@@ -15,7 +15,7 @@ extension URLSession: @retroactive eBirdRegionService {
         return try await object(for: request)
     }
 
-    public func getInfo(of region: eBirdRegion)
+    public func getInfo(of region: RegionCodeProvider)
         async throws -> eBirdRegionInfo
     {
         let request = try URLRequest(

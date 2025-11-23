@@ -40,10 +40,10 @@ class ObservationsProvider {
             }
             observations = try await client.observations(near: location).collate()
         case .region:
-            guard let region = preferences.region else {
+            guard let regionInfo = preferences.regionInfo else {
                 throw eBirdServiceError.noRegion
             }
-            observations = try await client.observations(in: region).collate()
+            observations = try await client.observations(in: regionInfo).collate()
         }
         for o in observations {
             for l in o.locations {

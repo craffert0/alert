@@ -19,7 +19,6 @@ class PreferencesModel: ObservableObject {
     let maxDistance: Double = 250
 
     // TODO: implement me.
-    @Published var region: eBirdRegion? = .kings
     @Published var regionInfo: eBirdRegionInfo? = .kings
 }
 

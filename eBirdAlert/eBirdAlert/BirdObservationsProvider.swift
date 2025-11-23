@@ -40,12 +40,12 @@ class BirdObservationsProvider {
                     near: location, for: speciesCode
                 )
         case .region:
-            guard let region = preferences.region else {
+            guard let regionInfo = preferences.regionInfo else {
                 throw eBirdServiceError.noRegion
             }
             observations =
                 try await URLSession.shared.getBird(
-                    in: region, for: speciesCode
+                    in: regionInfo, for: speciesCode
                 )
         }
     }

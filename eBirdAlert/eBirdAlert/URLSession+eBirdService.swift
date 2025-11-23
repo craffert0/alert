@@ -19,7 +19,7 @@ extension URLSession: @retroactive eBirdService {
         return try await object(for: request)
     }
 
-    public func getNotable(in region: eBirdRegion) async throws
+    public func getNotable(in region: RegionCodeProvider) async throws
         -> [Schema.eBirdObservation]
     {
         let request = try URLRequest(
@@ -40,7 +40,7 @@ extension URLSession: @retroactive eBirdService {
         return try await object(for: request)
     }
 
-    public func getAll(in region: eBirdRegion) async throws
+    public func getAll(in region: RegionCodeProvider) async throws
         -> [Schema.eBirdRecentObservation]
     {
         let request = try URLRequest(
@@ -62,7 +62,7 @@ extension URLSession: @retroactive eBirdService {
         return try await object(for: request)
     }
 
-    public func getBird(in region: eBirdRegion,
+    public func getBird(in region: RegionCodeProvider,
                         for speciesCode: String) async throws
         -> [Schema.eBirdRecentObservation]
     {

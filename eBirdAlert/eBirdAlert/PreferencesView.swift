@@ -56,8 +56,8 @@ struct PreferencesView: View {
             case .radius:
                 DistancePreferencesView()
             case .region:
-                if let region = preferences.region {
-                    Text(region.name)
+                if let region = preferences.regionInfo {
+                    Text(region.result)
                 } else {
                     Text("dang!")
                 }

@@ -37,23 +37,23 @@ extension FakeRegionService: eBirdRegionService {
         case noInfo
     }
 
-    public func getSubRegions(of region: eBirdRegion,
+    public func getSubRegions(of region: RegionCodeProvider,
                               as type: eBirdRegionType)
         async throws -> [eBirdRegion]
     {
         for s in subregion {
-            if s.region == region, s.type == type {
+            if s.region.code == region.code, s.type == type {
                 return s.result
             }
         }
         throw ServiceError.noSubregions
     }
 
-    public func getInfo(of region: eBirdRegion)
+    public func getInfo(of region: RegionCodeProvider)
         async throws -> eBirdRegionInfo
     {
         for i in info {
-            if i.region == region {
+            if i.region.code == region.code {
                 return i.result
             }
         }

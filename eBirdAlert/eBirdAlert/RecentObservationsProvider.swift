@@ -40,10 +40,10 @@ class RecentObservationsProvider {
             }
             observations = try await client.get(near: location)
         case .region:
-            guard let region = preferences.region else {
+            guard let regionInfo = preferences.regionInfo else {
                 throw eBirdServiceError.noRegion
             }
-            observations = try await client.get(in: region)
+            observations = try await client.get(in: regionInfo)
         }
         for o in observations {
             await checklistDataService.prepare(obs: o)
