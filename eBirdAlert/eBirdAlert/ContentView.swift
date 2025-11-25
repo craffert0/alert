@@ -26,6 +26,12 @@ struct ContentView: View {
                 }
             }
 
+            Tab("Census", systemImage: "map.circle.fill") {
+                NavigationStack {
+                    CensusView(service: URLSession.shared)
+                }
+            }
+
             if preferences.debugMode {
                 Tab("Debug", systemImage: "ladybug.circle.fill") {
                     DebugView()
