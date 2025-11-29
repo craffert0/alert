@@ -5,13 +5,13 @@ import SwiftUI
 
 struct MainView: View {
     @Environment(LocationService.self) var locationService
-    @State var provider: ObservationsProvider
+    @State var provider: NotableObservationsProvider
 
     var body: some View {
         if locationService.location == nil {
             Text("no location 😢")
         } else {
-            ObservationsView(provider: provider)
+            NotableObservationsView(provider: provider)
         }
     }
 }
@@ -22,13 +22,17 @@ struct MainView: View {
         FixedLocationService(latitude: 41, longitude: -74)
     let noLocationService = LocationService()
     let fixedProvider =
-        ObservationsProvider(client: client,
-                             checklistDataService: FakeChecklistDataService(),
-                             locationService: fixedLocationService)
+        NotableObservationsProvider(
+            client: client,
+            checklistDataService: FakeChecklistDataService(),
+            locationService: fixedLocationService
+        )
     let noProvider =
-        ObservationsProvider(client: client,
-                             checklistDataService: FakeChecklistDataService(),
-                             locationService: noLocationService)
+        NotableObservationsProvider(
+            client: client,
+            checklistDataService: FakeChecklistDataService(),
+            locationService: noLocationService
+        )
     TabView {
         Tab("With", systemImage: "location") {
             MainView(provider: fixedProvider)

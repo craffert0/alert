@@ -7,45 +7,26 @@ import Schema
 
 @Observable
 class RecentObservationsProvider {
-    var observations: [eBirdRecentObservation] = []
-    var loadedRange: RangeType?
-    private let preferences = PreferencesModel.global
-    private let client: RecentObservationsClient
+    var observations: [eBirdRecentObservation] { provider.observations }
+    private var provider: ObservationsProvider<eBirdRecentObservation>
     private let checklistDataService: ChecklistDataService
-    private let locationService: LocationService
-    private var lastLoadTime: Date?
 
     init(client: RecentObservationsClient,
          checklistDataService: ChecklistDataService,
          locationService: LocationService)
     {
-        self.client = client
+        provider = ObservationsProvider(locationService: locationService) { range in
+            try await client.get(in: range)
+        }
         self.checklistDataService = checklistDataService
-        self.locationService = locationService
     }
 
     func load() async throws {
-        let lastLoadTime = lastLoadTime ?? Date.distantPast
-        if observations.isEmpty ||
-            rangeChanged ||
-            Date.now.timeIntervalSince(lastLoadTime) > 3600
-        {
-            try await refresh()
-        }
-    }
-
-    private var rangeChanged: Bool {
-        guard let loadedRange,
-              let range = try? preferences.range(for: locationService.location)
-        else { return false }
-        return loadedRange != range
+        try await provider.load()
     }
 
     func refresh() async throws {
-        let range = try preferences.range(for: locationService.location)
-        observations = try await client.get(in: range)
-        loadedRange = range
-        lastLoadTime = Date.now
+        try await provider.refresh()
     }
 }
 

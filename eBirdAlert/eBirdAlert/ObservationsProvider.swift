@@ -1,61 +1,50 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import CoreLocation
 import Foundation
 import Observation
 import Schema
 
 @Observable
-class ObservationsProvider {
-    var observations: [BirdObservations] = []
+class ObservationsProvider<T>: ObservationsProviderProtocol {
+    var observations: [T] = []
     var loadedRange: RangeType?
-    private let preferences = PreferencesModel.global
-    private let client: ObservationsClient
     private let locationService: LocationService
-    private let checklistDataService: ChecklistDataService
+    private let loader: (RangeType) async throws -> [T]
+    private let preferences = PreferencesModel.global
     private var lastLoadTime: Date?
 
-    init(client: ObservationsClient,
-         checklistDataService: ChecklistDataService,
-         locationService: LocationService)
+    init(locationService: LocationService,
+         loader: @escaping (RangeType) async throws -> [T])
     {
-        self.client = client
-        self.checklistDataService = checklistDataService
         self.locationService = locationService
+        self.loader = loader
     }
+
+    var isEmpty: Bool { observations.isEmpty }
 
     func load() async throws {
-        let lastLoadTime = lastLoadTime ?? Date.distantPast
-        if observations.isEmpty ||
-            rangeChanged ||
-            Date.now.timeIntervalSince(lastLoadTime) > 3600
+        let location = locationService.location
+        let range = try? preferences.range(for: location)
+        if loadedRange == nil ||
+            lastLoadTime == nil ||
+            observations.isEmpty ||
+            range != loadedRange! ||
+            Date.now.timeIntervalSince(lastLoadTime!) > 3600
         {
-            try await refresh()
+            try await forceLoad(in: range ?? preferences.range(for: location))
         }
-    }
-
-    private var rangeChanged: Bool {
-        guard let loadedRange,
-              let range = try? preferences.range(for: locationService.location)
-        else { return false }
-        return loadedRange != range
     }
 
     func refresh() async throws {
-        let range = try preferences.range(for: locationService.location)
-        observations = try await client.observations(in: range).collate()
-        for o in observations {
-            for l in o.locations {
-                for e in l.observations {
-                    await checklistDataService.prepare(obs: e)
-                }
-            }
-        }
+        let location = locationService.location
+        try await forceLoad(in: preferences.range(for: location))
+    }
+
+    private func forceLoad(in range: RangeType) async throws {
+        observations = try await loader(range)
         loadedRange = range
         lastLoadTime = Date.now
     }
-}
-
-extension ObservationsProvider: ObservationsProviderProtocol {
-    var isEmpty: Bool { observations.isEmpty }
 }

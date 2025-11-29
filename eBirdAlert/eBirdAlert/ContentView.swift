@@ -7,7 +7,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var preferences = PreferencesModel.global
-    @Environment(\.eBirdNotable) var notableProvider: ObservationsProvider?
+    @Environment(\.eBirdNotable) var notableProvider: NotableObservationsProvider?
     @Environment(\.eBirdAll) var recentObservationsProvider: RecentObservationsProvider?
 
     var body: some View {
@@ -50,9 +50,9 @@ struct ContentView: View {
         FixedLocationService(latitude: 41, longitude: -74)
     let client = FakeObservationsClient(observations: .fake)
     let provider =
-        ObservationsProvider(client: client,
-                             checklistDataService: FakeChecklistDataService(),
-                             locationService: locationService)
+        NotableObservationsProvider(client: client,
+                                    checklistDataService: FakeChecklistDataService(),
+                                    locationService: locationService)
     ContentView()
         .modelContainer(for: Checklist.self, inMemory: true)
         .environment(locationService)

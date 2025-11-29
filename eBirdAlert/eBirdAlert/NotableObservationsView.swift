@@ -3,14 +3,14 @@
 
 import SwiftUI
 
-struct ObservationsView: View {
-    @State var provider: ObservationsProvider
+struct NotableObservationsView: View {
+    @State var provider: NotableObservationsProvider
     @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
     @State private var observationSort: ObservationSortOption = .byTime
 
-    init(provider: ObservationsProvider) {
+    init(provider: NotableObservationsProvider) {
         self.provider = provider
         model = ObservationsProviderModel(provider: provider)
     }
@@ -61,20 +61,20 @@ struct ObservationsView: View {
     let locationService = FixedLocationService(latitude: 41, longitude: -74)
     TabView {
         Tab("None", systemImage: "bird.circle.fill") {
-            let provider = ObservationsProvider(
+            let provider = NotableObservationsProvider(
                 client: FakeObservationsClient(observations: []),
                 checklistDataService: checklistDataService,
                 locationService: locationService
             )
-            ObservationsView(provider: provider)
+            NotableObservationsView(provider: provider)
         }
         Tab("Some", systemImage: "bird.circle") {
-            let provider = ObservationsProvider(
+            let provider = NotableObservationsProvider(
                 client: FakeObservationsClient(observations: .fake),
                 checklistDataService: checklistDataService,
                 locationService: locationService
             )
-            ObservationsView(provider: provider)
+            NotableObservationsView(provider: provider)
         }
     }
 }
