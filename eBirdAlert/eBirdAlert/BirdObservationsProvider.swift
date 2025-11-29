@@ -24,10 +24,18 @@ class BirdObservationsProvider {
     func load() async throws {
         let lastLoadTime = lastLoadTime ?? Date.distantPast
         if observations.isEmpty ||
+            rangeChanged ||
             Date.now.timeIntervalSince(lastLoadTime) > 3600
         {
             try await refresh()
         }
+    }
+
+    private var rangeChanged: Bool {
+        guard let loadedRange,
+              let range = try? preferences.range(for: locationService.location)
+        else { return false }
+        return loadedRange != range
     }
 
     func refresh() async throws {

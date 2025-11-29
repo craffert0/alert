@@ -4,6 +4,21 @@
 import Foundation
 import Schema
 
+extension RangeType: @retroactive Equatable {
+    public static func == (lhs: RangeType, rhs: RangeType) -> Bool {
+        switch (lhs, rhs) {
+        case let (.region(a), .region(b)):
+            a.code == b.code
+        case let (.radius(a), .radius(b)):
+            a.location == b.location &&
+                a.radius == b.radius &&
+                a.units == b.units
+        default:
+            false
+        }
+    }
+}
+
 extension RangeType {
     var notableRequest: URLRequest {
         switch self {
