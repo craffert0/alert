@@ -2,62 +2,67 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import MapKit
+import Schema
 import SwiftUI
 
 struct RangeView: View {
+    let range: RangeType?
     let onDismiss: () -> Void
-
-    @Environment(LocationService.self) var locationService
-    @ObservedObject var preferences = PreferencesModel.global
     @State var showMap: Bool = false
 
-    init(onDismiss: @escaping (() -> Void)) {
+    init(range: RangeType?,
+         onDismiss: @escaping (() -> Void))
+    {
+        self.range = range
         self.onDismiss = onDismiss
     }
 
     var body: some View {
         HStack {
-            Button {
-                showMap = true
-            } label: {
-                switch preferences.rangeOption {
-                case .radius: radiusView
-                case .region: regionView
+            if let range {
+                Button {
+                    showMap = true
+                } label: {
+                    switch range {
+                    case let .radius(circle): radiusView(circle)
+                    case let .region(regionInfo): regionView(regionInfo)
+                    }
                 }
+            } else {
+                Text("no birds")
             }
         }.sheet(isPresented: $showMap,
                 onDismiss: onDismiss)
         {
-            switch preferences.rangeOption {
-            case .radius: radiusMap
-            case .region: regionMap
+            switch range! {
+            case let .radius(circle): radiusMap(circle)
+            case let .region(regionInfo): regionMap(regionInfo)
             }
         }
     }
 
-    private var radiusView: some View {
+    private func radiusView(_ circle: CircleModel) -> some View {
         HStack {
             Text("Within")
-            Text(preferences.distValue.formatted(.eBirdFormat))
-            Text(preferences.distUnits.rawValue)
+            Text(circle.radius.formatted(.eBirdFormat))
+            Text(circle.units.rawValue)
         }
     }
 
-    private var regionView: some View {
-        Text(preferences.regionInfo?.result ?? "In Region")
+    private func regionView(_ regionInfo: eBirdRegionInfo) -> some View {
+        Text(regionInfo.result)
     }
 
-    private var radiusMap: some View {
+    private func radiusMap(_ circle: CircleModel) -> some View {
         VStack {
             Text("Range")
             DistancePreferencesView(isInForm: false)
             Map {
-                let coordinate = locationService.location!.coordinate
+                let coordinate = circle.location.coordinate
                 Marker(coordinate: coordinate) {}
                 MapCircle(
                     center: coordinate,
-                    radius: 1000 * preferences.distUnits.asKilometers(
-                        preferences.distValue)
+                    radius: 1000 * circle.units.asKilometers(circle.radius)
                 )
                 .foregroundStyle(.clear)
                 .stroke(.blue, lineWidth: 5)
@@ -65,13 +70,12 @@ struct RangeView: View {
         }
     }
 
-    private var regionMap: some View {
+    private func regionMap(_ regionInfo: eBirdRegionInfo) -> some View {
         VStack {
-            regionView
+            regionView(regionInfo)
             Map {
-                let info = preferences.regionInfo!
-                Marker(coordinate: info.coordinate) {}
-                if let bounds = info.bounds {
+                Marker(coordinate: regionInfo.coordinate) {}
+                if let bounds = regionInfo.bounds {
                     MapPolyline(coordinates: bounds.coordinates)
                         .stroke(.blue, lineWidth: 5)
                 }
@@ -81,7 +85,22 @@ struct RangeView: View {
 }
 
 #Preview {
-    VStack {
-        RangeView { print("closed") }
+    let none: RangeType? = nil
+    let region = RangeType.region(.kings)
+    let radius = RangeType.radius(
+        CircleModel(location: CLLocation(latitude: 40.67,
+                                         longitude: -73.97),
+                    radius: 2.3,
+                    units: .miles))
+    TabView {
+        Tab("None", systemImage: "environments.circle") {
+            RangeView(range: none) {}
+        }
+        Tab("Region", systemImage: "environments.circle") {
+            RangeView(range: region) {}
+        }
+        Tab("Radius", systemImage: "environments.circle") {
+            RangeView(range: radius) {}
+        }
     }
 }

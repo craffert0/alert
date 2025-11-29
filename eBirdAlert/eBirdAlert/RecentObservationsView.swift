@@ -25,7 +25,7 @@ struct RecentObservationsView: View {
 
     private var mainView: some View {
         NavigationStack {
-            RangeView {
+            RangeView(range: provider.loadedRange) {
                 Task { @MainActor in
                     await model.load()
                 }

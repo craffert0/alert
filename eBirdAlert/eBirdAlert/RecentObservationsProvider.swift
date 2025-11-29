@@ -8,6 +8,7 @@ import Schema
 @Observable
 class RecentObservationsProvider {
     var observations: [eBirdRecentObservation] { provider.observations }
+    var loadedRange: RangeType? { provider.loadedRange }
     private var provider: ObservationsProvider<eBirdRecentObservation>
     private let checklistDataService: ChecklistDataService
 

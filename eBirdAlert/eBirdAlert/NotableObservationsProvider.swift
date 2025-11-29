@@ -8,6 +8,7 @@ import Schema
 @Observable
 class NotableObservationsProvider {
     var observations: [BirdObservations] { provider.observations }
+    var loadedRange: RangeType? { provider.loadedRange }
     private var provider: ObservationsProvider<BirdObservations>
 
     init(client: ObservationsClient,
