@@ -9,7 +9,7 @@ extension URLSession: @retroactive eBirdRegionService {
         of region: RegionCodeProvider,
         as type: eBirdRegionType
     ) async throws -> [Schema.eBirdRegion] {
-        let request = try URLRequest(
+        let request = URLRequest(
             eBirdPath: "ref/region/list/\(type)/\(region.code)"
         )
         return try await object(for: request)
@@ -18,7 +18,7 @@ extension URLSession: @retroactive eBirdRegionService {
     public func getInfo(of region: RegionCodeProvider)
         async throws -> eBirdRegionInfo
     {
-        let request = try URLRequest(
+        let request = URLRequest(
             eBirdPath: "ref/region/info/\(region.code)"
         )
         return try await object(for: request)

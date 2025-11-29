@@ -2,6 +2,7 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import Combine
+import CoreLocation
 import Schema
 import SwiftUI
 
@@ -23,13 +24,29 @@ class PreferencesModel: ObservableObject {
 }
 
 extension PreferencesModel {
-    var geoQueryItems: [URLQueryItem] {
+    var queryItems: [URLQueryItem] {
         [
             URLQueryItem(name: "detail", value: "full"),
             URLQueryItem(name: "hotspot", value: "false"),
             URLQueryItem(name: "back", value: "\(daysBack)"),
-            URLQueryItem(name: "dist",
-                         value: "\(distUnits.asKilometers(distValue))"),
         ]
+    }
+
+    var geoQueryItems: [URLQueryItem] {
+        queryItems + [URLQueryItem(name: "dist",
+                                   value: "\(distUnits.asKilometers(distValue))")]
+    }
+
+    func range(for location: CLLocation?) throws -> RangeType {
+        switch rangeOption {
+        case .radius:
+            guard let location else { throw eBirdServiceError.noLocation }
+            return .radius(CircleModel(location: location,
+                                       radius: distValue,
+                                       units: distUnits))
+        case .region:
+            guard let regionInfo else { throw eBirdServiceError.noRegion }
+            return .region(regionInfo)
+        }
     }
 }

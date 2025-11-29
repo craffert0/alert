@@ -7,7 +7,7 @@ import Foundation
 extension URLRequest {
     init(eBirdPath path: String,
          queryItems: [URLQueryItem] = [],
-         withLocation location: CLLocation? = nil) throws
+         withLocation location: CLLocation? = nil)
     {
         let applicationKey = KeyService.global.applicationKey
 

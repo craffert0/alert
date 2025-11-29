@@ -6,23 +6,14 @@ import Foundation
 
 public protocol ObservationsClient {
     // Get all the observations from the server, including duplicates.
-    func get(near location: CLLocation) async throws -> [eBirdObservation]
-
-    func get(in region: RegionCodeProvider) async throws -> [eBirdObservation]
+    func get(in range: RangeType) async throws -> [eBirdObservation]
 }
 
 public extension ObservationsClient {
-    func observations(near location: CLLocation) async throws
+    func observations(in range: RangeType) async throws
         -> [eBirdObservation]
     {
         // remove duplicates
-        try await Array(Set(get(near: location)))
-    }
-
-    func observations(in region: RegionCodeProvider) async throws
-        -> [eBirdObservation]
-    {
-        // remove duplicates
-        try await Array(Set(get(in: region)))
+        try await Array(Set(get(in: range)))
     }
 }

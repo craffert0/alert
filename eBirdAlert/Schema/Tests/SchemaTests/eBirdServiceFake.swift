@@ -30,12 +30,7 @@ class eBirdServiceFake {
 }
 
 extension eBirdServiceFake: eBirdService {
-    func getNotable(near _: CLLocation) async throws -> [eBirdObservation] {
-        guard let notableName else { throw eBirdServiceFakeError.noName }
-        return try get(name: notableName)
-    }
-
-    func getNotable(in _: RegionCodeProvider) async throws -> [eBirdObservation] {
+    func getNotable(in _: RangeType) async throws -> [eBirdObservation] {
         guard let notableName else { throw eBirdServiceFakeError.noName }
         return try get(name: notableName)
     }
