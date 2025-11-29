@@ -8,6 +8,7 @@ import Schema
 @Observable
 class RecentObservationsProvider {
     var observations: [eBirdRecentObservation] = []
+    var loadedRange: RangeType?
     private let preferences = PreferencesModel.global
     private let client: RecentObservationsClient
     private let checklistDataService: ChecklistDataService
@@ -33,21 +34,9 @@ class RecentObservationsProvider {
     }
 
     func refresh() async throws {
-        switch preferences.rangeOption {
-        case .radius:
-            guard let location = locationService.location else {
-                throw eBirdServiceError.noLocation
-            }
-            observations = try await client.get(near: location)
-        case .region:
-            guard let regionInfo = preferences.regionInfo else {
-                throw eBirdServiceError.noRegion
-            }
-            observations = try await client.get(in: regionInfo)
-        }
-        for o in observations {
-            await checklistDataService.prepare(obs: o)
-        }
+        let range = try preferences.range(for: locationService.location)
+        observations = try await client.get(in: range)
+        loadedRange = range
         lastLoadTime = Date.now
     }
 }

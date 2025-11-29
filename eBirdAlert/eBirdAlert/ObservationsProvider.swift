@@ -22,7 +22,6 @@ class ObservationsProvider {
         self.client = client
         self.checklistDataService = checklistDataService
         self.locationService = locationService
-        loadedRange = try? preferences.range(for: locationService.location)
     }
 
     func load() async throws {
