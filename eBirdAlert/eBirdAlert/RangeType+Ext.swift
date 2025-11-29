@@ -42,4 +42,22 @@ extension RangeType {
             )
         }
     }
+
+    func birdRequest(for speciesCode: String) -> URLRequest {
+        switch self {
+        case let .region(region):
+            URLRequest(
+                eBirdPath: "data/obs/\(region.code)/recent/\(speciesCode)",
+                queryItems: PreferencesModel.global.queryItems
+            )
+        case let .radius(circle):
+            URLRequest(
+                eBirdPath: "data/obs/geo/recent/\(speciesCode)",
+                queryItems: PreferencesModel.global.queryItems + [
+                    URLQueryItem(name: "dist", value: "\(circle.units.asKilometers(circle.radius))"),
+                ],
+                withLocation: circle.location
+            )
+        }
+    }
 }

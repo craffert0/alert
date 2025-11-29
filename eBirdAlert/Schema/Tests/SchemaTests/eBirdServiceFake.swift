@@ -40,13 +40,7 @@ extension eBirdServiceFake: eBirdService {
         return try get(name: allName)
     }
 
-    func getBird(near _: CLLocation,
-                 for _: String) async throws -> [eBirdRecentObservation]
-    {
-        throw eBirdServiceFakeError.noName
-    }
-
-    func getBird(in _: RegionCodeProvider,
+    func getBird(in _: RangeType,
                  for _: String) async throws -> [eBirdRecentObservation]
     {
         throw eBirdServiceFakeError.noName
