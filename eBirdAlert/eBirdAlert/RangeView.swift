@@ -5,9 +5,15 @@ import MapKit
 import SwiftUI
 
 struct RangeView: View {
+    let onDismiss: () -> Void
+
     @Environment(LocationService.self) var locationService
     @ObservedObject var preferences = PreferencesModel.global
     @State var showMap: Bool = false
+
+    init(onDismiss: @escaping (() -> Void)) {
+        self.onDismiss = onDismiss
+    }
 
     var body: some View {
         HStack {
@@ -19,7 +25,9 @@ struct RangeView: View {
                 case .region: regionView
                 }
             }
-        }.sheet(isPresented: $showMap) {
+        }.sheet(isPresented: $showMap,
+                onDismiss: onDismiss)
+        {
             switch preferences.rangeOption {
             case .radius: radiusMap
             case .region: regionMap
@@ -41,7 +49,8 @@ struct RangeView: View {
 
     private var radiusMap: some View {
         VStack {
-            radiusView
+            Text("Range")
+            DistancePreferencesView(isInForm: false)
             Map {
                 let coordinate = locationService.location!.coordinate
                 Marker(coordinate: coordinate) {}
@@ -73,6 +82,6 @@ struct RangeView: View {
 
 #Preview {
     VStack {
-        RangeView()
+        RangeView { print("closed") }
     }
 }

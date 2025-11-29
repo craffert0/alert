@@ -25,7 +25,11 @@ struct RecentObservationsView: View {
 
     private var mainView: some View {
         NavigationStack {
-            RangeView()
+            RangeView {
+                Task { @MainActor in
+                    await model.load()
+                }
+            }
             if !model.loading, provider.observations.isEmpty {
                 EmptyView(name: "local")
             } else {

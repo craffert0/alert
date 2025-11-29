@@ -54,7 +54,7 @@ struct PreferencesView: View {
             }
             switch preferences.rangeOption {
             case .radius:
-                DistancePreferencesView()
+                DistancePreferencesView(isInForm: true)
             case .region:
                 if let region = preferences.regionInfo {
                     Text(region.result)
