@@ -17,7 +17,7 @@ extension RangeType {
             URLRequest(
                 eBirdPath: "data/obs/geo/recent/notable",
                 queryItems: PreferencesModel.global.queryItems + [
-                    URLQueryItem(name: "dist", value: "\(circle.units.asKilometers(circle.radius))"),
+                    circle.queryItem,
                 ],
                 withLocation: circle.location
             )
@@ -36,7 +36,7 @@ extension RangeType {
             URLRequest(
                 eBirdPath: "data/obs/geo/recent",
                 queryItems: PreferencesModel.global.queryItems + [
-                    URLQueryItem(name: "dist", value: "\(circle.units.asKilometers(circle.radius))"),
+                    circle.queryItem,
                 ],
                 withLocation: circle.location
             )
@@ -54,7 +54,7 @@ extension RangeType {
             URLRequest(
                 eBirdPath: "data/obs/geo/recent/\(speciesCode)",
                 queryItems: PreferencesModel.global.queryItems + [
-                    URLQueryItem(name: "dist", value: "\(circle.units.asKilometers(circle.radius))"),
+                    circle.queryItem,
                 ],
                 withLocation: circle.location
             )
