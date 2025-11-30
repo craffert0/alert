@@ -39,6 +39,14 @@ public final class eBirdRegionInfo: Codable, Sendable {
     }
 }
 
+public extension eBirdRegionInfo {
+    static let world = eBirdRegionInfo(
+        result: "World",
+        code: "world",
+        type: .custom
+    )
+}
+
 extension eBirdRegionInfo: Identifiable {
     public var id: String { code }
 }

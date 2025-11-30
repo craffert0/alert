@@ -4,9 +4,10 @@
 import Foundation
 
 extension URLSessionConfiguration {
-    static let cached = {
+    static let region = {
         var d = URLSessionConfiguration.default
         d.requestCachePolicy = .returnCacheDataElseLoad
+        d.urlCache = .region
         return d
     }()
 }

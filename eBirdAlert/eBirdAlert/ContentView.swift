@@ -22,7 +22,7 @@ struct ContentView: View {
 
             Tab("Region", systemImage: "map.circle.fill") {
                 NavigationStack {
-                    DebugRegionView(service: URLSession.cached)
+                    DebugRegionView(service: URLSession.region)
                 }
             }
 

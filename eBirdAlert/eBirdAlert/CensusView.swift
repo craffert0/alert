@@ -34,7 +34,7 @@ struct CensusView: View {
             guard let location = locationService.location else {
                 throw eBirdServiceError.noLocation
             }
-            info = try await URLSession.cached.getInfo(
+            info = try await URLSession.region.getInfo(
                 of: service.getCensusTract(for: location)
             )
         } catch {

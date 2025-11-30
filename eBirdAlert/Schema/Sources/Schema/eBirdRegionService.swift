@@ -10,24 +10,25 @@ public protocol eBirdRegionService {
 }
 
 public extension eBirdRegionService {
-    func getRegions(near location: CLLocation) async throws -> [eBirdRegion] {
-        try await getRegions(location, .world, .custom)
+    func getRegions(near location: CLLocation) async throws -> [eBirdRegionInfo] {
+        try await getRegions(location, .world, .world, .custom)
     }
 
     private func getRegions(_ location: CLLocation,
                             _ region: eBirdRegion,
+                            _ info: eBirdRegionInfo,
                             _ type: eBirdRegionType)
-        async throws -> [eBirdRegion]
+        async throws -> [eBirdRegionInfo]
     {
         guard let subtype = type.subtype else {
-            return [region]
+            return [info]
         }
-        var result: [eBirdRegion] = []
+        var result: [eBirdRegionInfo] = []
         for subregion in try await getSubRegions(of: region, as: subtype) {
             let info = try await getInfo(of: subregion)
             if info.contains(location) {
                 result += try await getRegions(
-                    location, subregion, subtype
+                    location, subregion, info, subtype
                 )
             }
         }
