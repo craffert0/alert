@@ -20,21 +20,26 @@ struct RangeView: View {
     var body: some View {
         HStack {
             if let range {
-                Button {
-                    showMap = true
-                } label: {
-                    switch range {
-                    case let .radius(circle): radiusView(circle)
-                    case let .region(regionInfo): regionView(regionInfo)
-                    }
-                }
+                buttonView(range)
             } else {
                 Text("no birds")
             }
-        }.sheet(isPresented: $showMap,
-                onDismiss: onDismiss)
+        }
+    }
+
+    private func buttonView(_ range: RangeType) -> some View {
+        Button {
+            showMap = true
+        } label: {
+            switch range {
+            case let .radius(circle): radiusView(circle)
+            case let .region(regionInfo): regionView(regionInfo)
+            }
+        }
+        .sheet(isPresented: $showMap,
+               onDismiss: onDismiss)
         {
-            switch range! {
+            switch range {
             case let .radius(circle): radiusMap(circle)
             case let .region(regionInfo): regionMap(regionInfo)
             }
@@ -55,8 +60,7 @@ struct RangeView: View {
 
     private func radiusMap(_ circle: CircleModel) -> some View {
         VStack {
-            Text("Range")
-            DistancePreferencesView(isInForm: false)
+            radiusView(circle)
             Map {
                 let coordinate = circle.location.coordinate
                 Marker(coordinate: coordinate) {}
