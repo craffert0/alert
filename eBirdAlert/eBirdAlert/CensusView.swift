@@ -20,7 +20,7 @@ struct CensusView: View {
             } else if locationService.location == nil {
                 Text("no location 😢")
             } else {
-                Text("waiting...")
+                Text("loading...")
                     .task {
                         await load()
                     }

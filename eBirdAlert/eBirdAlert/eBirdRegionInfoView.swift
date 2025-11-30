@@ -21,17 +21,17 @@ struct eBirdRegionInfoView: View {
             Text(info.thread.map(\.code).reversed().joined(separator: " => "))
                 .font(.subheadline)
             Text(info.type.rawValue).font(.subheadline)
-            mapView
+            if let bounds = info.bounds {
+                mapView(bounds)
+            }
         }
     }
 
-    private var mapView: some View {
+    private func mapView(_ bounds: eBirdRegionInfo.Bounds) -> some View {
         Map {
             Marker(coordinate: info.coordinate) {}
-            if let bounds = info.bounds {
-                MapPolyline(coordinates: bounds.coordinates)
-                    .stroke(.blue, lineWidth: 5)
-            }
+            MapPolyline(coordinates: bounds.coordinates)
+                .stroke(.blue, lineWidth: 5)
         }
     }
 }
