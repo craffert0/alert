@@ -2,10 +2,13 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import Foundation
+import Schema
 
 enum eBirdServiceError: Error {
     case noKey
     case noLocation
+    case noRegion
+    case noTract
     case networkError
     case httpError(statusCode: Int)
     case urlError(error: URLError)
@@ -29,6 +32,8 @@ extension eBirdServiceError: LocalizedError {
         switch self {
         case .noKey: "no api key"
         case .noLocation: "could not get location"
+        case .noRegion: "must specify a region"
+        case .noTract: "not in the US"
         case .networkError: "network error?"
         case let .httpError(statusCode):
             HTTPURLResponse.localizedString(forStatusCode: statusCode)

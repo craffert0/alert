@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import Schema
 import SwiftUI
 
 struct DistancePreferencesView: View {
+    let isInForm: Bool
+
     @ObservedObject var preferences = PreferencesModel.global
     private var distValueReduced = Binding {
         PreferencesModel.global.distValue.reduced
@@ -13,15 +16,26 @@ struct DistancePreferencesView: View {
         }
     }
 
+    init(isInForm: Bool) {
+        self.isInForm = isInForm
+    }
+
     var body: some View {
         HStack {
             Label("", systemImage: "figure.walk.circle")
 
+            if !isInForm {
+                slider
+            }
             Picker(selection: preferences.$distUnits) {
                 Text("miles").tag(DistanceUnits.miles)
                 Text("km").tag(DistanceUnits.kilometers)
             } label: {
-                slider
+                if isInForm {
+                    slider
+                } else {
+                    Text("")
+                }
             }
         }
     }
@@ -37,7 +51,7 @@ struct DistancePreferencesView: View {
 
 #Preview {
     Form {
-        DistancePreferencesView()
+        DistancePreferencesView(isInForm: true)
         TextField("distance",
                   value: PreferencesModel.global.$distValue,
                   formatter: {

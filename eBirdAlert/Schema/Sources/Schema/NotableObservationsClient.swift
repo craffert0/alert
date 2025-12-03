@@ -13,9 +13,7 @@ public class NotableObservationsClient {
 }
 
 extension NotableObservationsClient: ObservationsClient {
-    public func get(near location: CLLocation) async throws
-        -> [eBirdObservation]
-    {
-        try await service.getNotable(near: location)
+    public func get(in range: RangeType) async throws -> [eBirdObservation] {
+        try await service.getNotable(in: range)
     }
 }

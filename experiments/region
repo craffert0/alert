@@ -1,0 +1,68 @@
+#! /opt/homebrew/bin/python3
+
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
+
+# Get all subnational2s that contain lat/lng.
+
+import json
+import server
+
+lat = 40.67
+lng = -73.97
+
+kBaseRegion = {"code": "world", "name": "World"}
+kRegionTypes = ["country", "subnational1", "subnational2"]
+
+
+class Server(server.Server):
+    def subregions(self, type, region):
+        js = {
+            'type': type,
+            'region': region,
+            'result': self.get(f"ref/region/list/{type}/{region["code"]}"),
+        }
+        print(json.dumps(js))
+        return js['result']
+
+    def info(self, region):
+        js = {
+            'region': region,
+            'result': self.get(f"ref/region/info/{region["code"]}"),
+        }
+        print(json.dumps(js))
+        return js['result']
+
+
+def contains(info):
+    b = info.get("bounds")
+    if b is None:
+        return True
+    return (
+        b["minX"] <= lng + 0.14
+        and lng - 0.14 <= b["maxX"]
+        and b["minY"] <= lat + 0.14
+        and lat - 0.14 <= b["maxY"]
+    )
+
+
+def regions(server, region=kBaseRegion, regionTypes=kRegionTypes):
+    if len(regionTypes) == 0:
+        return [region]
+    result = []
+    for subregion in server.subregions(regionTypes[0], region):
+        # print(f"try {subregion}")
+        info = server.info(subregion)
+        if contains(info):
+            # print(f"regions {subregion}")
+            result = result + regions(server, subregion, regionTypes[1:])
+    return result
+
+
+def main():
+    server = Server()
+    print(regions(server))
+
+
+if __name__ == "__main__":
+    main()

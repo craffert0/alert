@@ -10,7 +10,7 @@ struct eBirdAlertApp: App {
     let modelContainer: ModelContainer
     @State var swiftDataService: SwiftDataService
     @State var locationService: LocationService
-    @State var notableProvider: ObservationsProvider
+    @State var notableProvider: NotableObservationsProvider
     @State var recentProvider: RecentObservationsProvider
 
     init() {
@@ -21,9 +21,9 @@ struct eBirdAlertApp: App {
             SwiftDataService(modelContext: modelContainer.mainContext)
         let locationService = CoreLocationService()
         let notableProvider =
-            ObservationsProvider(client: client,
-                                 checklistDataService: swiftDataService,
-                                 locationService: locationService)
+            NotableObservationsProvider(client: client,
+                                        checklistDataService: swiftDataService,
+                                        locationService: locationService)
 
         let recentProvider =
             RecentObservationsProvider(

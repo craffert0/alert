@@ -7,35 +7,24 @@ import Schema
 
 @Observable
 class BirdObservationsProvider {
-    var observations: [eBirdRecentObservation] = []
-    private let speciesCode: String
-    private let locationService: LocationService
-    private var lastLoadTime: Date?
+    var observations: [eBirdRecentObservation] { provider.observations }
+    private var provider: ObservationsProvider<eBirdRecentObservation>
 
     init(for speciesCode: String,
          locationService: LocationService)
     {
-        self.speciesCode = speciesCode
-        self.locationService = locationService
+        provider = ObservationsProvider(locationService: locationService) { range in
+            try await URLSession.shared.getBird(in: range,
+                                                for: speciesCode)
+        }
     }
 
     func load() async throws {
-        let lastLoadTime = lastLoadTime ?? Date.distantPast
-        if observations.isEmpty ||
-            Date.now.timeIntervalSince(lastLoadTime) > 3600
-        {
-            try await refresh()
-        }
+        try await provider.load()
     }
 
     func refresh() async throws {
-        guard let location = locationService.location else {
-            throw eBirdServiceError.noLocation
-        }
-        observations =
-            try await URLSession.shared.getBird(
-                near: location, for: speciesCode
-            )
+        try await provider.refresh()
     }
 }
 
