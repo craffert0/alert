@@ -9,11 +9,14 @@ struct RangePreferenceView: View {
     @ObservedObject var preferences = PreferencesModel.global
 
     var body: some View {
-        Picker("Location", selection: preferences.$rangeOption) {
-            Text("Nearby").tag(RangeOption.radius)
-            Text("County").tag(RangeOption.region)
-        }
         VStack {
+            HStack {
+                Text("Location Style")
+                Picker("Location", selection: preferences.$rangeOption) {
+                    Text("Nearby").tag(RangeOption.radius)
+                    Text("County").tag(RangeOption.region)
+                }
+            }
             switch preferences.rangeOption {
             case .radius: radiusView
             case .region: regionView
