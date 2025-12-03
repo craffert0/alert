@@ -27,7 +27,7 @@ struct RecentObservationsView: View {
         NavigationStack {
             RangeView(range: provider.loadedRange)
             if !model.loading, provider.observations.isEmpty {
-                EmptyView(name: "local")
+                EmptyView(name: "local", range: provider.loadedRange)
             } else {
                 SortPickerView(observationSort: $observationSort)
                 listView

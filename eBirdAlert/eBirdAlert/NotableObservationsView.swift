@@ -19,7 +19,7 @@ struct NotableObservationsView: View {
         NavigationStack {
             RangeView(range: provider.loadedRange)
             if !model.loading, provider.observations.isEmpty {
-                EmptyView(name: "rare")
+                EmptyView(name: "rare", range: provider.loadedRange)
             } else {
                 SortPickerView(observationSort: $observationSort)
                 listView

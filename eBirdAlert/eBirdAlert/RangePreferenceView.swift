@@ -10,9 +10,8 @@ struct RangePreferenceView: View {
 
     var body: some View {
         Picker("Location", selection: preferences.$rangeOption) {
-            ForEach(RangeOption.allCases) { option in
-                Text(option.rawValue.capitalized)
-            }
+            Text("Nearby").tag(RangeOption.radius)
+            Text("County").tag(RangeOption.region)
         }
         VStack {
             switch preferences.rangeOption {
