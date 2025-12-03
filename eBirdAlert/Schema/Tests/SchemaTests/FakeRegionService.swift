@@ -49,11 +49,11 @@ extension FakeRegionService: eBirdRegionService {
         throw ServiceError.noSubregions
     }
 
-    public func getInfo(of region: RegionCodeProvider)
+    public func getInfo(for regionCode: String)
         async throws -> eBirdRegionInfo
     {
         for i in info {
-            if i.region.code == region.code {
+            if i.region.code == regionCode {
                 return i.result
             }
         }

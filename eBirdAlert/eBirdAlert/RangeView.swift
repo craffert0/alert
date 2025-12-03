@@ -66,7 +66,7 @@ struct RangeView: View {
                 Marker(coordinate: coordinate) {}
                 MapCircle(
                     center: coordinate,
-                    radius: 1000 * circle.units.asKilometers(circle.radius)
+                    radius: circle.units.asMeters(circle.radius)
                 )
                 .foregroundStyle(.clear)
                 .stroke(.blue, lineWidth: 5)
@@ -78,7 +78,6 @@ struct RangeView: View {
         VStack {
             regionView(regionInfo)
             Map {
-                Marker(coordinate: regionInfo.coordinate) {}
                 if let bounds = regionInfo.bounds {
                     MapPolyline(coordinates: bounds.coordinates)
                         .stroke(.blue, lineWidth: 5)

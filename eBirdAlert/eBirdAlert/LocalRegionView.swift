@@ -11,7 +11,17 @@ struct LocalRegionView: View {
     @State var regions: [eBirdRegionInfo] = []
     @State var showError: Bool = false
     @State var error: eBirdServiceError? = nil
-    @State var selectedCode: String?
+    private var selectedCode = Binding {
+        PreferencesModel.global.regionCode
+    } set: { newValue in
+        Task { @MainActor in
+            PreferencesModel.global.regionCode = newValue
+        }
+    }
+
+    init(regionService: any eBirdRegionService) {
+        self.regionService = regionService
+    }
 
     var body: some View {
         VStack {
@@ -33,18 +43,16 @@ struct LocalRegionView: View {
 
     private var mapView: some View {
         VStack {
-            List(regions, selection: $selectedCode) {
+            List(regions, selection: selectedCode) {
                 Text($0.result)
             }
             Map {
                 ForEach(regions) { info in
                     if let bounds = info.bounds {
-                        box(for: bounds, with: info.code == selectedCode)
+                        box(for: bounds, with: info.code == selectedCode.wrappedValue)
                     }
                 }
-                if let location = locationService.location {
-                    Marker(coordinate: location.coordinate) {}
-                }
+                UserAnnotation()
             }
         }
     }

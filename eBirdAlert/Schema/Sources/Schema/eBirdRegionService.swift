@@ -6,10 +6,16 @@ import CoreLocation
 public protocol eBirdRegionService {
     func getSubRegions(of region: RegionCodeProvider,
                        as type: eBirdRegionType) async throws -> [eBirdRegion]
-    func getInfo(of regionCode: RegionCodeProvider) async throws -> eBirdRegionInfo
+    func getInfo(for regionCode: String) async throws -> eBirdRegionInfo
 }
 
 public extension eBirdRegionService {
+    func getInfo(of provider: RegionCodeProvider) async throws
+        -> eBirdRegionInfo
+    {
+        try await getInfo(for: provider.code)
+    }
+
     func getRegions(near location: CLLocation) async throws -> [eBirdRegionInfo] {
         try await getRegions(location, .world, .world, .custom)
     }

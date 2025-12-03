@@ -15,11 +15,11 @@ extension URLSession: @retroactive eBirdRegionService {
         return try await object(for: request)
     }
 
-    public func getInfo(of region: RegionCodeProvider)
+    public func getInfo(for regionCode: String)
         async throws -> eBirdRegionInfo
     {
         let request = URLRequest(
-            eBirdPath: "ref/region/info/\(region.code)"
+            eBirdPath: "ref/region/info/\(regionCode)"
         )
         return try await object(for: request)
     }

@@ -18,9 +18,7 @@ class PreferencesModel: ObservableObject {
     var directionsType: MapDirectionsOption = .none
     @Published var debugMode: Bool = false
     let maxDistance: Double = 250
-
-    // TODO: implement me.
-    @Published var regionInfo: eBirdRegionInfo? = .kings
+    @AppStorage("settings.regionCode") var regionCode: String?
 }
 
 extension PreferencesModel {
@@ -37,7 +35,9 @@ extension PreferencesModel {
                                    value: "\(distUnits.asKilometers(distValue))")]
     }
 
-    func range(for location: CLLocation?) throws -> RangeType {
+    func range(for location: CLLocation?,
+               with service: eBirdRegionService) async throws -> RangeType
+    {
         switch rangeOption {
         case .radius:
             guard let location else { throw eBirdServiceError.noLocation }
@@ -45,8 +45,8 @@ extension PreferencesModel {
                                        radius: distValue,
                                        units: distUnits))
         case .region:
-            guard let regionInfo else { throw eBirdServiceError.noRegion }
-            return .region(regionInfo)
+            guard let regionCode else { throw eBirdServiceError.noRegion }
+            return try await .region(service.getInfo(for: regionCode))
         }
     }
 }
