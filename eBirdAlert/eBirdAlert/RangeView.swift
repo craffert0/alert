@@ -7,14 +7,10 @@ import SwiftUI
 
 struct RangeView: View {
     let range: RangeType?
-    let onDismiss: () -> Void
     @State var showMap: Bool = false
 
-    init(range: RangeType?,
-         onDismiss: @escaping (() -> Void))
-    {
+    init(range: RangeType?) {
         self.range = range
-        self.onDismiss = onDismiss
     }
 
     var body: some View {
@@ -36,9 +32,7 @@ struct RangeView: View {
             case let .region(regionInfo): regionView(regionInfo)
             }
         }
-        .sheet(isPresented: $showMap,
-               onDismiss: onDismiss)
-        {
+        .sheet(isPresented: $showMap) {
             switch range {
             case let .radius(circle): radiusMap(circle)
             case let .region(regionInfo): regionMap(regionInfo)
@@ -97,13 +91,13 @@ struct RangeView: View {
                     units: .miles))
     TabView {
         Tab("None", systemImage: "environments.circle") {
-            RangeView(range: none) {}
+            RangeView(range: none)
         }
         Tab("Region", systemImage: "environments.circle") {
-            RangeView(range: region) {}
+            RangeView(range: region)
         }
         Tab("Radius", systemImage: "environments.circle") {
-            RangeView(range: radius) {}
+            RangeView(range: radius)
         }
     }
 }
