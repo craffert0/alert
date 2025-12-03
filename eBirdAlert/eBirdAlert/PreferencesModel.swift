@@ -13,12 +13,12 @@ class PreferencesModel: ObservableObject {
     @AppStorage("settings.rangeOption") var rangeOption: RangeOption = .radius
     @AppStorage("settings.distValue") var distValue: Double = 3
     @AppStorage("settings.distUnits") var distUnits: DistanceUnits = .miles
+    @AppStorage("settings.regionCode") var regionCode: String?
     @AppStorage("settings.mapType") var mapType: MapOption = .apple
     @AppStorage("settings.mapDirectionsType")
     var directionsType: MapDirectionsOption = .none
     @Published var debugMode: Bool = false
     let maxDistance: Double = 250
-    @AppStorage("settings.regionCode") var regionCode: String?
 }
 
 extension PreferencesModel {
@@ -45,8 +45,14 @@ extension PreferencesModel {
                                        radius: distValue,
                                        units: distUnits))
         case .region:
-            guard let regionCode else { throw eBirdServiceError.noRegion }
-            return try await .region(service.getInfo(for: regionCode))
+            if let regionCode {
+                return try await .region(service.getInfo(for: regionCode))
+            } else {
+                guard let location else { throw eBirdServiceError.noLocation }
+                return try await .region(
+                    service.getInfo(for: service.getCensusTract(
+                        for: location).code))
+            }
         }
     }
 }

@@ -5,11 +5,12 @@ import Schema
 import SwiftUI
 
 struct PreferencesView: View {
+    @Environment(LocationService.self) var locationService
     @ObservedObject var preferences = PreferencesModel.global
     @State var daysBack: Double = .init(PreferencesModel.global.daysBack)
     @State var showRange: Bool = false
     @State var showLicense: Bool = false
-    @State var regionInfo: eBirdRegionInfo? = nil
+    @State var range: RangeType? = nil
     private let service: eBirdRegionService = URLSession.region
 
     private var githubMarkdown =
@@ -33,7 +34,7 @@ struct PreferencesView: View {
             }.navigationBarTitle("eBird Alert!")
         }
         .task {
-            await loadRegionInfo()
+            await loadRange()
         }
     }
 
@@ -56,36 +57,33 @@ struct PreferencesView: View {
         Button {
             showRange = true
         } label: {
-            switch preferences.rangeOption {
-            case .radius:
-                HStack {
-                    Text("Within")
-                    Text(preferences.distValue.formatted(.eBirdFormat))
-                    Text(preferences.distUnits.rawValue)
-                }
-            case .region:
-                if let regionInfo {
+            if let range {
+                switch range {
+                case let .region(regionInfo):
                     Text(regionInfo.result)
-                } else if let regionCode = preferences.regionCode {
-                    Text(regionCode)
-                } else {
-                    Text("dang!")
+                case let .radius(circle):
+                    HStack {
+                        Text("Within")
+                        Text(circle.radius.formatted(.eBirdFormat))
+                        Text(circle.units.rawValue)
+                    }
                 }
+            } else {
+                Text("TODO: oops")
             }
         }
         .sheet(isPresented: $showRange,
                onDismiss: {
-                   Task { @MainActor in await loadRegionInfo() }
+                   Task { @MainActor in await loadRange() }
                }) {
             RangePreferenceView()
         }
         .frame(maxWidth: .infinity, alignment: .center)
     }
 
-    private func loadRegionInfo() async {
-        if let regionCode = preferences.regionCode {
-            regionInfo = try? await service.getInfo(for: regionCode)
-        }
+    private func loadRange() async {
+        range = try? await preferences.range(for: locationService.location,
+                                             with: service)
     }
 
     private var mapTypeView: some View {

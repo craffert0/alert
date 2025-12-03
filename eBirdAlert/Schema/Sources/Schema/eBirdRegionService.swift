@@ -6,7 +6,10 @@ import CoreLocation
 public protocol eBirdRegionService {
     func getSubRegions(of region: RegionCodeProvider,
                        as type: eBirdRegionType) async throws -> [eBirdRegion]
+
     func getInfo(for regionCode: String) async throws -> eBirdRegionInfo
+
+    func getCensusTract(for location: CLLocation) async throws -> CensusTract
 }
 
 public extension eBirdRegionService {
