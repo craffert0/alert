@@ -16,9 +16,18 @@ struct NotableObservationsView: View {
     }
 
     var body: some View {
+        ZStack(alignment: .center) {
+            mainView
+            if model.isLoading {
+                ProgressView()
+            }
+        }
+    }
+
+    private var mainView: some View {
         NavigationStack {
             RangeView(range: provider.loadedRange)
-            if !model.loading, provider.observations.isEmpty {
+            if !model.isLoading, provider.observations.isEmpty {
                 EmptyView(name: "rare", range: provider.loadedRange)
             } else {
                 VStack {
