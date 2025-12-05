@@ -21,8 +21,12 @@ struct NotableObservationsView: View {
             if !model.loading, provider.observations.isEmpty {
                 EmptyView(name: "rare", range: provider.loadedRange)
             } else {
-                SortPickerView(observationSort: $observationSort)
-                listView
+                VStack {
+                    SortPickerView(observationSort: $observationSort)
+                    listView
+                }
+                .navigationTitle("Rarities")
+                .navigationBarTitleDisplayMode(.inline)
             }
         }
         .task {

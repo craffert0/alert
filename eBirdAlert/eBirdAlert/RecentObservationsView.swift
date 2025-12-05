@@ -29,8 +29,12 @@ struct RecentObservationsView: View {
             if !model.loading, provider.observations.isEmpty {
                 EmptyView(name: "local", range: provider.loadedRange)
             } else {
-                SortPickerView(observationSort: $observationSort)
-                listView
+                VStack {
+                    SortPickerView(observationSort: $observationSort)
+                    listView
+                }
+                .navigationTitle("Locals")
+                .navigationBarTitleDisplayMode(.inline)
             }
         }
         .task {
