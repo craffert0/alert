@@ -7,6 +7,7 @@ struct RecentObservationsView: View {
     @Environment(LocationService.self) var locationService
     @State var provider: RecentObservationsProvider
     @State var model: ObservationsProviderModel
+    @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
     @State private var observationSort: ObservationSortOption = .byName
 
@@ -30,7 +31,11 @@ struct RecentObservationsView: View {
                 EmptyView(name: "local", range: provider.loadedRange)
             } else {
                 VStack {
-                    SortPickerView(observationSort: $observationSort)
+                    HStack {
+                        Text(preferences.daysBackString)
+                        Spacer()
+                        SortPickerView(observationSort: $observationSort)
+                    }.padding()
                     listView
                 }
                 .navigationTitle("Locals")

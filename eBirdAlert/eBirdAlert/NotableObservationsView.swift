@@ -22,7 +22,11 @@ struct NotableObservationsView: View {
                 EmptyView(name: "rare", range: provider.loadedRange)
             } else {
                 VStack {
-                    SortPickerView(observationSort: $observationSort)
+                    HStack {
+                        Text(preferences.daysBackString)
+                        Spacer()
+                        SortPickerView(observationSort: $observationSort)
+                    }.padding()
                     listView
                 }
                 .navigationTitle("Rarities")
