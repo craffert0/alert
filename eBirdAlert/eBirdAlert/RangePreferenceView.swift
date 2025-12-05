@@ -27,6 +27,7 @@ struct RangePreferenceView: View {
     private var radiusView: some View {
         VStack {
             DistancePreferencesView(isInForm: false)
+                .padding()
             if let location = locationService.location {
                 Map {
                     UserAnnotation()
