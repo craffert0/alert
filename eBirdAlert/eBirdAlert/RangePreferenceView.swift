@@ -6,17 +6,20 @@ import SwiftUI
 
 struct RangePreferenceView: View {
     @Environment(LocationService.self) var locationService
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject var preferences = PreferencesModel.global
 
     var body: some View {
         VStack {
             HStack {
+                Button("Done") { dismiss() }
+                Spacer()
                 Text("Location Style")
                 Picker("Location", selection: preferences.$rangeOption) {
                     Text("Nearby").tag(RangeOption.radius)
                     Text("County").tag(RangeOption.region)
                 }
-            }
+            }.padding()
             switch preferences.rangeOption {
             case .radius: radiusView
             case .region: regionView

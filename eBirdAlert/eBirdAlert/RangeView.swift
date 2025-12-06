@@ -54,7 +54,11 @@ struct RangeView: View {
 
     private func radiusMap(_ circle: CircleModel) -> some View {
         VStack {
-            radiusView(circle)
+            HStack {
+                Button("Done") { showMap = false }
+                Spacer()
+                radiusView(circle)
+            }.padding()
             Map {
                 let coordinate = circle.location.coordinate
                 Marker(coordinate: coordinate) {}
@@ -70,7 +74,11 @@ struct RangeView: View {
 
     private func regionMap(_ regionInfo: eBirdRegionInfo) -> some View {
         VStack {
-            regionView(regionInfo)
+            HStack {
+                Button("Done") { showMap = false }
+                Spacer()
+                regionView(regionInfo)
+            }.padding()
             Map {
                 if let bounds = regionInfo.bounds {
                     MapPolyline(coordinates: bounds.coordinates)
