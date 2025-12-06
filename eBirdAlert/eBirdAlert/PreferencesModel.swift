@@ -22,6 +22,14 @@ class PreferencesModel: ObservableObject {
 }
 
 extension PreferencesModel {
+    var daysBackString: String {
+        if daysBack == 1 {
+            "Past day"
+        } else {
+            "Past \(daysBack) days"
+        }
+    }
+
     var queryItems: [URLQueryItem] {
         [
             URLQueryItem(name: "detail", value: "full"),

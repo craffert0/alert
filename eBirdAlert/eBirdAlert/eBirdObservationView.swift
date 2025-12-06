@@ -23,7 +23,6 @@ struct eBirdObservationView: View {
     var body: some View {
         VStack {
             userView
-            Text(e.obsDt.eBirdFormatted)
             LocationButton(location: e)
             speciesView
             if let hasMedia = obs?.hasMedia, hasMedia {
@@ -40,6 +39,8 @@ struct eBirdObservationView: View {
                                    species: e.speciesCode)
             }
         }
+        .navigationTitle(e.obsDt.eBirdFormatted)
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private var userView: some View {

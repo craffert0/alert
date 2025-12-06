@@ -9,21 +9,21 @@ class ObservationsProviderModel {
     var preferences = PreferencesModel.global
     var error: eBirdServiceError?
     var showError = false
-    var loading = false
+    var isLoading = false
 
     init(provider: ObservationsProviderProtocol) {
         self.provider = provider
     }
 
     func load() async {
-        loading = true
+        isLoading = true
         do {
             try await tryLoading()
         } catch {
             self.error = eBirdServiceError.from(error)
             showError = true
         }
-        loading = false
+        isLoading = false
     }
 
     private func tryLoading() async throws {
@@ -48,13 +48,13 @@ class ObservationsProviderModel {
     }
 
     func refresh() async {
-        loading = true
+        isLoading = true
         do {
             try await provider.refresh()
         } catch {
             self.error = eBirdServiceError.from(error)
             showError = true
         }
-        loading = false
+        isLoading = false
     }
 }

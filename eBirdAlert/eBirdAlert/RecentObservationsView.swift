@@ -7,6 +7,7 @@ struct RecentObservationsView: View {
     @Environment(LocationService.self) var locationService
     @State var provider: RecentObservationsProvider
     @State var model: ObservationsProviderModel
+    @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
     @State private var observationSort: ObservationSortOption = .byName
 
@@ -19,18 +20,31 @@ struct RecentObservationsView: View {
         if locationService.location == nil {
             Text("no location 😢")
         } else {
-            mainView
+            ZStack(alignment: .center) {
+                mainView
+                if model.isLoading {
+                    ProgressView()
+                }
+            }
         }
     }
 
     private var mainView: some View {
         NavigationStack {
             RangeView(range: provider.loadedRange)
-            if !model.loading, provider.observations.isEmpty {
+            if !model.isLoading, provider.observations.isEmpty {
                 EmptyView(name: "local", range: provider.loadedRange)
             } else {
-                SortPickerView(observationSort: $observationSort)
-                listView
+                VStack {
+                    HStack {
+                        Text(preferences.daysBackString)
+                        Spacer()
+                        SortPickerView(observationSort: $observationSort)
+                    }.padding()
+                    listView
+                }
+                .navigationTitle("Locals")
+                .navigationBarTitleDisplayMode(.inline)
             }
         }
         .task {

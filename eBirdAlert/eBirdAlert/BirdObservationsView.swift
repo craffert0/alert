@@ -33,6 +33,8 @@ struct BirdObservationsView: View {
         List(o.locations) { l in
             NavigationLink {
                 LocationObservationsView(l)
+                    .navigationTitle(o.comName)
+                    .navigationBarTitleDisplayMode(.inline)
             } label: {
                 Text(l.latestSighting, relativeTo: now)
                 Text(l.locName)

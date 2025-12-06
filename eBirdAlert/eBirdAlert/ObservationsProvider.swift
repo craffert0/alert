@@ -10,6 +10,7 @@ import Schema
 class ObservationsProvider<T>: ObservationsProviderProtocol {
     var observations: [T] = []
     var loadedRange: RangeType?
+    var loadedDaysBack: Int?
     private let locationService: LocationService
     private let loader: (RangeType) async throws -> [T]
     private let service: eBirdRegionService = URLSession.region
@@ -29,9 +30,11 @@ class ObservationsProvider<T>: ObservationsProviderProtocol {
         let location = locationService.location
         let range = try? await preferences.range(for: location, with: service)
         if loadedRange == nil ||
+            loadedDaysBack == nil ||
             lastLoadTime == nil ||
             observations.isEmpty ||
             range != loadedRange! ||
+            preferences.daysBack != loadedDaysBack! ||
             Date.now.timeIntervalSince(lastLoadTime!) > 3600
         {
             if let range {
@@ -52,6 +55,7 @@ class ObservationsProvider<T>: ObservationsProviderProtocol {
     private func forceLoad(in range: RangeType) async throws {
         observations = try await loader(range)
         loadedRange = range
+        loadedDaysBack = preferences.daysBack
         lastLoadTime = Date.now
     }
 }
