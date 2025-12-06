@@ -11,13 +11,7 @@ struct LocalRegionView: View {
     @State var regions: [eBirdRegionInfo] = []
     @State var showError: Bool = false
     @State var error: eBirdServiceError? = nil
-    private var selectedCode = Binding {
-        PreferencesModel.global.regionCode
-    } set: { newValue in
-        Task { @MainActor in
-            PreferencesModel.global.regionCode = newValue
-        }
-    }
+    @ObservedObject var preferences = PreferencesModel.global
 
     init(regionService: any eBirdRegionService) {
         self.regionService = regionService
@@ -28,7 +22,9 @@ struct LocalRegionView: View {
             if regions.isEmpty {
                 Text("loading regions...")
                 ProgressView()
+                Map()
             } else {
+                Text(title)
                 mapView
             }
         }
@@ -42,18 +38,27 @@ struct LocalRegionView: View {
     }
 
     private var mapView: some View {
-        VStack {
-            List(regions, selection: selectedCode) {
-                Text($0.result)
-            }
-            Map {
-                ForEach(regions) { info in
-                    if let bounds = info.bounds {
-                        box(for: bounds, with: info.code == selectedCode.wrappedValue)
-                    }
+        Map(selection: preferences.$regionCode) {
+            ForEach(regions) { info in
+                Marker(info.result, coordinate: info.coordinate)
+                    .tag(info.code)
+                if let bounds = info.bounds {
+                    box(for: bounds,
+                        with: info.code == preferences.regionCode)
                 }
-                UserAnnotation()
             }
+            UserAnnotation()
+        }
+        .mapStyle(.standard(pointsOfInterest: []))
+    }
+
+    private var title: String {
+        if let regionCode = preferences.regionCode,
+           let info = regions.first(where: { $0.code == regionCode })
+        {
+            info.result
+        } else {
+            "Search current county"
         }
     }
 

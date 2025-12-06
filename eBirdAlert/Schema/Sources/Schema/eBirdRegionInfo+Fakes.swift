@@ -22,6 +22,13 @@ public extension eBirdRegionInfo.Bounds {
         minY: 40.570752,
         maxY: 40.739551
     )
+
+    static let queens = eBirdRegionInfo.Bounds(
+        minX: -73.969719,
+        maxX: -73.704193,
+        minY: 40.542167,
+        maxY: 40.801049
+    )
 }
 
 public extension eBirdRegionInfo {
@@ -58,5 +65,15 @@ public extension eBirdRegionInfo {
         parent: .ny,
         longitude: -73.947918,
         latitude: 40.6551515
+    )
+
+    static let queens = eBirdRegionInfo(
+        bounds: .queens,
+        result: "Queens, New York, United States",
+        code: "US-NY-081",
+        type: .subnational2,
+        parent: .ny,
+        longitude: -73.836956,
+        latitude: 40.671608
     )
 }
