@@ -19,21 +19,10 @@ struct LocalRegionView: View {
 
     var body: some View {
         VStack {
-            if regions.isEmpty {
-                Text("loading regions...")
-                ProgressView()
-                Map()
-            } else {
-                Text(title)
-                mapView
-            }
+            Text(title)
+            mapView
         }
-        .task {
-            await load()
-        }
-        .refreshable {
-            await load()
-        }
+        .task { await load() }
         .alert(isPresented: $showError, error: error) {}
     }
 
@@ -57,6 +46,8 @@ struct LocalRegionView: View {
            let info = regions.first(where: { $0.code == regionCode })
         {
             info.result
+        } else if regions.isEmpty {
+            "loading regions..."
         } else {
             "Search current county"
         }
@@ -75,10 +66,13 @@ struct LocalRegionView: View {
             guard let location = locationService.location else {
                 throw eBirdServiceError.noLocation
             }
-            try await regions =
-                regionService.getRegions(near: location).sorted {
-                    $0.distance2(location) ?? 0 < $1.distance2(location) ?? 0
-                }
+            try await regions = regionService.getRegions(near: location)
+            if let code = preferences.regionCode,
+               !regions.contains(where: { $0.code == code }),
+               let region = try? await regionService.getInfo(for: code)
+            {
+                regions.append(region)
+            }
         } catch {
             self.error = eBirdServiceError.from(error)
             showError = true
