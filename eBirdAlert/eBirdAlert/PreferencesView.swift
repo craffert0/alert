@@ -4,6 +4,18 @@
 import Schema
 import SwiftUI
 
+extension UNNotificationSetting {
+    var name: String {
+        switch self {
+        case .notSupported: "notSupported"
+        case .disabled: "disabled"
+        case .enabled: "enabled"
+        @unknown default:
+            fatalError()
+        }
+    }
+}
+
 struct PreferencesView: View {
     @Environment(LocationService.self) var locationService
     @ObservedObject var preferences = PreferencesModel.global
@@ -12,6 +24,8 @@ struct PreferencesView: View {
     @State var showLicense: Bool = false
     @State var range: RangeType? = nil
     private let service: eBirdRegionService = URLSession.region
+    private let center = UNUserNotificationCenter.current()
+    @State var notificationSettings: UNNotificationSettings? = nil
 
     private var githubMarkdown =
         "[git@github.com:craffert0/alert]" +
@@ -29,6 +43,8 @@ struct PreferencesView: View {
                     mapTypeView
                     directionsTypeView
                 }
+
+                notificationsView
 
                 copyrightView
             }.navigationBarTitle("eBird Alert!")
@@ -128,6 +144,35 @@ struct PreferencesView: View {
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity, alignment: .center)
         }
+    }
+
+    private var notificationsView: some View {
+        Section("Notifications") {
+            Button("look up") {
+                Task { @MainActor in
+                    notificationSettings = await center.notificationSettings()
+                }
+            }
+            Button("request") {
+                Task { @MainActor in
+                    try? await center.requestAuthorization(options: [.alert])
+                }
+            }
+            if let ns = notificationSettings {
+                Text("notificationCenterSetting: \(ns.notificationCenterSetting.name)")
+                Text("lockScreenSetting: \(ns.lockScreenSetting.name)")
+                Text("carPlaySetting: \(ns.carPlaySetting.name)")
+                Text("alertSetting: \(ns.alertSetting.name)")
+                Text("badgeSetting: \(ns.badgeSetting.name)")
+                Text("soundSetting: \(ns.soundSetting.name)")
+                Text("criticalAlertSetting: \(ns.criticalAlertSetting.name)")
+                Text("announcementSetting: \(ns.announcementSetting.name)")
+                Text("scheduledDeliverySetting: \(ns.scheduledDeliverySetting.name)")
+                Text("timeSensitiveSetting: \(ns.timeSensitiveSetting.name)")
+            }
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 
