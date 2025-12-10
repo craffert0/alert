@@ -132,5 +132,8 @@ struct PreferencesView: View {
 }
 
 #Preview {
+    let locationService: LocationService =
+        FixedLocationService(latitude: 41, longitude: -74)
     PreferencesView()
+        .environment(locationService)
 }
