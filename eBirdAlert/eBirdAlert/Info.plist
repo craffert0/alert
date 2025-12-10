@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Your location is required to find nearby birds</string>
+	<string>Turning on location will allow us to show you nearby birds.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Your location is required to notify you of new birds</string>
+	<string>Turning on location will allow us to show you nearby birds.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is required to find nearby birds</string>
+	<string>Turning on location will allow us to show you nearby birds.</string>
 	<key>NSLocationUsageDescription</key>
-	<string>Your location is required to find nearby birds</string>
+	<string>Turning on location will allow us to show you nearby birds.</string>
         <key>LSApplicationQueriesSchemes</key>
         <array>
           <string>ebird</string>
