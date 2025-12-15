@@ -4,18 +4,6 @@
 import Schema
 import SwiftUI
 
-extension UNNotificationSetting {
-    var name: String {
-        switch self {
-        case .notSupported: "notSupported"
-        case .disabled: "disabled"
-        case .enabled: "enabled"
-        @unknown default:
-            fatalError()
-        }
-    }
-}
-
 struct PreferencesView: View {
     @Environment(LocationService.self) var locationService
     @ObservedObject var preferences = PreferencesModel.global
@@ -24,9 +12,6 @@ struct PreferencesView: View {
     @State var showLicense: Bool = false
     @State var range: RangeType? = nil
     private let service: eBirdRegionService = URLSession.region
-    private let center = UNUserNotificationCenter.current()
-    @State var notificationSettings: UNNotificationSettings? = nil
-    @State var now = TimeDataSource<Date>.currentDate
 
     private var githubMarkdown =
         "[git@github.com:craffert0/alert]" +
@@ -149,53 +134,20 @@ struct PreferencesView: View {
 
     private var notificationsView: some View {
         Section("Notifications") {
-            timeView(preferences.timeRequested)
-            timeView(preferences.timeFired)
-            diffView
-            Button("look up") {
-                Task { @MainActor in
-                    notificationSettings = await center.notificationSettings()
-                }
+            Toggle(isOn: preferences.$notifyNotable) {
+                Text("Notify on new rarities")
             }
-            Button("request") {
-                Task { @MainActor in
-                    try? await center.requestAuthorization(options: [.alert])
+            .onChange(of: preferences.notifyNotable) { _, newValue in
+                if newValue {
+                    Task { @MainActor in
+                        try? await UNUserNotificationCenter.current()
+                            .requestAuthorization(options: [.alert, .badge, .sound])
+                    }
                 }
-            }
-            if let ns = notificationSettings {
-                Text("notificationCenterSetting: \(ns.notificationCenterSetting.name)")
-                Text("lockScreenSetting: \(ns.lockScreenSetting.name)")
-                Text("carPlaySetting: \(ns.carPlaySetting.name)")
-                Text("alertSetting: \(ns.alertSetting.name)")
-                Text("badgeSetting: \(ns.badgeSetting.name)")
-                Text("soundSetting: \(ns.soundSetting.name)")
-                Text("criticalAlertSetting: \(ns.criticalAlertSetting.name)")
-                Text("announcementSetting: \(ns.announcementSetting.name)")
-                Text("scheduledDeliverySetting: \(ns.scheduledDeliverySetting.name)")
-                Text("timeSensitiveSetting: \(ns.timeSensitiveSetting.name)")
             }
         }
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity, alignment: .center)
-    }
-
-    var diffView: some View {
-        guard let timeRequested = preferences.timeRequested,
-              let timeFired = preferences.timeFired,
-              timeRequested < timeFired
-        else { return Text("...") }
-        return Text(timeRequested.relative(to: timeFired))
-    }
-
-    func timeView(_ date: Date?) -> some View {
-        HStack {
-            if let date {
-                Text(date.formatted(date: .numeric, time: .complete))
-                Text(date, relativeTo: now)
-            } else {
-                Text("none")
-            }
-        }
     }
 }
 

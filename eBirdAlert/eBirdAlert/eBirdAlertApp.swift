@@ -13,7 +13,8 @@ struct eBirdAlertApp: App {
     @State var locationService: LocationService
     @State var notableProvider: NotableObservationsProvider
     @State var recentProvider: RecentObservationsProvider
-    let refreshService = RefreshService()
+    let notificationService = NotificationService()
+    let refreshService: RefreshService
 
     init() {
         let modelContainer =
@@ -39,6 +40,8 @@ struct eBirdAlertApp: App {
         self.locationService = locationService
         self.notableProvider = notableProvider
         self.recentProvider = recentProvider
+        refreshService =
+            RefreshService(notificationService: notificationService)
 
         Timer.scheduledTimer(withTimeInterval: 3600, repeats: true) { _ in
             swiftDataService.garbageCollect(daysBack: 8)
@@ -58,7 +61,9 @@ struct eBirdAlertApp: App {
             try? await refreshService.refresh()
         }
         .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .background {
+            if newPhase == .background,
+               PreferencesModel.global.notifyNotable
+            {
                 try? refreshService.schedule()
             }
         }
