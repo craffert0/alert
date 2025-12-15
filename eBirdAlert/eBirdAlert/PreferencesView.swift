@@ -26,6 +26,7 @@ struct PreferencesView: View {
     private let service: eBirdRegionService = URLSession.region
     private let center = UNUserNotificationCenter.current()
     @State var notificationSettings: UNNotificationSettings? = nil
+    @State var now = TimeDataSource<Date>.currentDate
 
     private var githubMarkdown =
         "[git@github.com:craffert0/alert]" +
@@ -148,6 +149,9 @@ struct PreferencesView: View {
 
     private var notificationsView: some View {
         Section("Notifications") {
+            timeView(preferences.timeRequested)
+            timeView(preferences.timeFired)
+            diffView
             Button("look up") {
                 Task { @MainActor in
                     notificationSettings = await center.notificationSettings()
@@ -173,6 +177,25 @@ struct PreferencesView: View {
         }
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity, alignment: .center)
+    }
+
+    var diffView: some View {
+        guard let timeRequested = preferences.timeRequested,
+              let timeFired = preferences.timeFired,
+              timeRequested < timeFired
+        else { return Text("...") }
+        return Text(timeRequested.relative(to: timeFired))
+    }
+
+    func timeView(_ date: Date?) -> some View {
+        HStack {
+            if let date {
+                Text(date.formatted(date: .numeric, time: .complete))
+                Text(date, relativeTo: now)
+            } else {
+                Text("none")
+            }
+        }
     }
 }
 

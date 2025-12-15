@@ -7,11 +7,13 @@ import SwiftUI
 
 @main
 struct eBirdAlertApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     let modelContainer: ModelContainer
     @State var swiftDataService: SwiftDataService
     @State var locationService: LocationService
     @State var notableProvider: NotableObservationsProvider
     @State var recentProvider: RecentObservationsProvider
+    let refreshService = RefreshService()
 
     init() {
         let modelContainer =
@@ -51,6 +53,14 @@ struct eBirdAlertApp: App {
                 .environment(locationService)
                 .environment(\.eBirdNotable, notableProvider)
                 .environment(\.eBirdAll, recentProvider)
+        }
+        .backgroundTask(.appRefresh(id: .refreshCounter)) {
+            try? await refreshService.refresh()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .background {
+                try? refreshService.schedule()
+            }
         }
     }
 }

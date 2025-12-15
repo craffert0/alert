@@ -9,6 +9,8 @@ import SwiftUI
 class PreferencesModel: ObservableObject {
     static let global = PreferencesModel()
 
+    @AppStorage("settings.timeRequested") var timeRequested: Date?
+    @AppStorage("settings.timeFired") var timeFired: Date?
     @AppStorage("settings.daysBack") var daysBack: Int = 2
     @AppStorage("settings.rangeOption") var rangeOption: RangeOption = .radius
     @AppStorage("settings.distValue") var distValue: Double = 3
