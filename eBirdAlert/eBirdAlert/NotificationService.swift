@@ -4,29 +4,33 @@
 import UserNotifications
 
 class NotificationService {
-    let birds = [
-        "American Pipit",
-        "Bald Eagle",
-        "Black & White Warbler",
-        "Greater Scaup",
-    ]
-    var bird = 0
+    func notify(for birds: [String], badge: Int) async throws {
+        let request = try await UNNotificationRequest(
+            identifier: UUID().uuidString,
+            content: .with(birds, badge: badge),
+            trigger: .eBird
+        )
 
-    func fakeNotify() async {
-        bird = (bird + 1) % birds.count
+        try await UNUserNotificationCenter.current().add(request)
+    }
+}
+
+extension UNNotificationTrigger {
+    static var eBird =
+        UNTimeIntervalNotificationTrigger(timeInterval: 1,
+                                          repeats: false)
+}
+
+extension UNNotificationContent {
+    static func with(_ birds: [String], badge: Int) async throws
+        -> UNNotificationContent
+    {
         let content = UNMutableNotificationContent()
-        content.title = "New Rarity"
-        content.body = birds[bird]
+        content.title = birds.count == 1 ? "New Rarity" : "New Rarities"
+        content.body = birds.notificationFormat
         content.sound = UNNotificationSound.default
-        content.launchImageName = "Rarities"
-        // content.badge = NSNumber(value: bird)
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1,
-                                                        repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString,
-                                            content: content,
-                                            trigger: trigger)
-
-        let center = UNUserNotificationCenter.current()
-        try? await center.add(request)
+        content.targetContentIdentifier = "Rarities"
+        content.badge = NSNumber(value: badge)
+        return content
     }
 }
