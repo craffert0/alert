@@ -3,7 +3,10 @@
 
 import UserNotifications
 
+@Observable
 class NotificationService {
+    private var center = UNUserNotificationCenter.current()
+
     func notify(for birds: [String], badge: Int) async throws {
         let request = try await UNNotificationRequest(
             identifier: UUID().uuidString,
@@ -11,7 +14,11 @@ class NotificationService {
             trigger: .eBird
         )
 
-        try await UNUserNotificationCenter.current().add(request)
+        try await center.add(request)
+    }
+
+    func clearBadgeCount() async throws {
+        try await center.setBadgeCount(0)
     }
 }
 

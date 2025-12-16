@@ -57,6 +57,7 @@ struct eBirdAlertApp: App {
                 .modelContainer(modelContainer)
                 .environment(swiftDataService)
                 .environment(locationService)
+                .environment(notificationService)
                 .environment(\.eBirdNotable, notableProvider)
                 .environment(\.eBirdAll, recentProvider)
         }
