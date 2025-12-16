@@ -35,13 +35,16 @@ struct eBirdAlertApp: App {
                 locationService: locationService
             )
 
+        let refreshService =
+            RefreshService(notificationService: notificationService,
+                           notableProvider: notableProvider)
+
         self.modelContainer = modelContainer
         self.swiftDataService = swiftDataService
         self.locationService = locationService
         self.notableProvider = notableProvider
         self.recentProvider = recentProvider
-        refreshService =
-            RefreshService(notificationService: notificationService)
+        self.refreshService = refreshService
 
         Timer.scheduledTimer(withTimeInterval: 3600, repeats: true) { _ in
             swiftDataService.garbageCollect(daysBack: 8)
