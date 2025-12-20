@@ -38,6 +38,12 @@ extension UNNotificationContent {
         content.sound = UNNotificationSound.default
         content.targetContentIdentifier = "Rarities"
         content.badge = NSNumber(value: badge)
+        content.userInfo = [.kTabName: TabKind.rarities.rawValue]
         return content
+    }
+
+    var tabKind: TabKind? {
+        guard let tabName = userInfo[.kTabName] as? String else { return nil }
+        return TabKind(rawValue: tabName)
     }
 }

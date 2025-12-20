@@ -7,6 +7,7 @@ import SwiftUI
 
 @main
 struct eBirdAlertApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
     let modelContainer: ModelContainer
     @State var swiftDataService: SwiftDataService

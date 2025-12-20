@@ -146,8 +146,6 @@ struct PreferencesView: View {
                 }
             }
         }
-        .multilineTextAlignment(.center)
-        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 

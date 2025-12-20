@@ -7,27 +7,40 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var preferences = PreferencesModel.global
-    @Environment(\.eBirdNotable) var notableProvider: NotableObservationsProvider?
-    @Environment(\.eBirdAll) var recentObservationsProvider: RecentObservationsProvider?
+    @Environment(\.eBirdNotable)
+    var notableProvider: NotableObservationsProvider?
+    @Environment(\.eBirdAll)
+    var recentObservationsProvider: RecentObservationsProvider?
+    @State private var selectedTab: TabKind = .rarities
+    private let center = NotificationCenter.default
 
     var body: some View {
-        TabView {
-            Tab("Rarities", systemImage: "environments.circle") {
-                MainView(provider: notableProvider!)
-            }
+        TabView(selection: $selectedTab) {
+            MainView(provider: notableProvider!)
+                .tabItem {
+                    Label("Rarities", systemImage: "environments.circle")
+                }
+                .tag(TabKind.rarities)
 
-            Tab("Locals", systemImage: "bird.circle") {
-                RecentObservationsView(provider: recentObservationsProvider!)
-            }
+            RecentObservationsView(provider: recentObservationsProvider!)
+                .tabItem { Label("Locals", systemImage: "bird.circle") }
+                .tag(TabKind.locals)
 
             if preferences.debugMode {
-                Tab("Debug", systemImage: "ladybug.circle.fill") {
-                    DebugView()
-                }
+                DebugView()
+                    .tabItem {
+                        Label("Debug", systemImage: "ladybug.circle.fill")
+                    }
+                    .tag(TabKind.debug)
             }
 
-            Tab("Settings", systemImage: "gearshape") {
-                PreferencesView()
+            PreferencesView()
+                .tabItem { Label("Settings", systemImage: "gearshape") }
+                .tag(TabKind.settings)
+        }
+        .onReceive(center.publisher(for: .navigateToTab)) { notification in
+            if let tab = notification.object as? TabKind {
+                selectedTab = tab
             }
         }
     }
