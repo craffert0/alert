@@ -17,6 +17,7 @@ class PreferencesModel: ObservableObject {
     @AppStorage("settings.mapType") var mapType: MapOption = .apple
     @AppStorage("settings.mapDirectionsType")
     var directionsType: MapDirectionsOption = .none
+    @AppStorage("settings.notifyNotable") var notifyNotable: Bool = false
     @Published var debugMode: Bool = false
     let maxDistance: Double = 250
 }

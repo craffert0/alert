@@ -4,6 +4,7 @@
 import SwiftUI
 
 struct NotableObservationsView: View {
+    @Environment(NotificationService.self) private var notificationService
     @State var provider: NotableObservationsProvider
     @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
@@ -44,6 +45,7 @@ struct NotableObservationsView: View {
         }
         .task {
             await model.load()
+            try? await notificationService.clearBadgeCount()
         }
         .alert(isPresented: $model.showError, error: model.error) { _ in
         } message: { e in

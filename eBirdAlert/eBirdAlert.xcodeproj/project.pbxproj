@@ -430,6 +430,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = eBirdAlert/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "eBird Alert!";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Turning on location will allow us to show you nearby birds.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Turning on location will allow us to show you nearby birds.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Turning on location will allow us to show you nearby birds.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Turning on location will allow us to show you nearby birds.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -460,6 +465,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = eBirdAlert/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "eBird Alert!";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Turning on location will allow us to show you nearby birds.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Turning on location will allow us to show you nearby birds.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Turning on location will allow us to show you nearby birds.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Turning on location will allow us to show you nearby birds.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

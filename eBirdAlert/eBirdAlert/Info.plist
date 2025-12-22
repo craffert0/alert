@@ -2,19 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Turning on location will allow us to show you nearby birds.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Turning on location will allow us to show you nearby birds.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Turning on location will allow us to show you nearby birds.</string>
-	<key>NSLocationUsageDescription</key>
-	<string>Turning on location will allow us to show you nearby birds.</string>
-        <key>LSApplicationQueriesSchemes</key>
-        <array>
-          <string>ebird</string>
-        </array>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>net.rafferty.colin.eBirdAlert.refreshNotable</string>
+		<string>net.rafferty.colin.eBirdAlert.refreshCounter</string>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>ebird</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
 </dict>
 </plist>

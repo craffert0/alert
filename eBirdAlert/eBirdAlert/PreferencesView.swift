@@ -30,6 +30,8 @@ struct PreferencesView: View {
                     directionsTypeView
                 }
 
+                notificationsView
+
                 copyrightView
             }.navigationBarTitle("eBird Alert!")
         }
@@ -127,6 +129,22 @@ struct PreferencesView: View {
             )
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity, alignment: .center)
+        }
+    }
+
+    private var notificationsView: some View {
+        Section("Notifications") {
+            Toggle(isOn: preferences.$notifyNotable) {
+                Text("Notify on new rarities")
+            }
+            .onChange(of: preferences.notifyNotable) { _, newValue in
+                if newValue {
+                    Task { @MainActor in
+                        try? await UNUserNotificationCenter.current()
+                            .requestAuthorization(options: [.alert, .badge, .sound])
+                    }
+                }
+            }
         }
     }
 }
