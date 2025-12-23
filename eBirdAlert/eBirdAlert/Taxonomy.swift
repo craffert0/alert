@@ -2,6 +2,7 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import Foundation
+import Schema
 import SwiftUtil
 
 class Taxonomy {
@@ -10,8 +11,7 @@ class Taxonomy {
     lazy var taxa: [Taxon] = {
         let url = Bundle.main.url(forResource: "taxonomy",
                                   withExtension: "json")!
-        return try! JSONDecoder().decode([Taxon].self,
-                                         from: Data(contentsOf: url))
+        return try! .from(url)
     }()
 
     func search(string: String) -> [Taxon] {

@@ -35,6 +35,7 @@ let package = Package(
                 .process("Checklists/S222245597.json"),
                 .process("Checklists/S273904108.json"),
                 .process("Others/SampleRegionData.json"),
+                .process("../../../eBirdAlert/Assets/taxonomy.json"),
             ]
         ),
     ]
