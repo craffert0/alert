@@ -9,5 +9,9 @@ extension BirdObservations: @retroactive Identifiable {
 }
 
 extension BirdObservations: ObservationSortable {
+    var taxonOrder: Double {
+        Taxonomy.global.find(for: speciesCode)?.taxonOrder ?? 9_999_999
+    }
+
     public var obsDt: Date { latestSighting }
 }

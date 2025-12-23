@@ -9,7 +9,7 @@ struct RecentObservationsView: View {
     @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
-    @State private var observationSort: ObservationSortOption = .byName
+    @State private var observationSort: ObservationSortOption = .byTaxon
 
     init(provider: RecentObservationsProvider) {
         self.provider = provider
