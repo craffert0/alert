@@ -13,6 +13,7 @@ def main():
         {
             "speciesCode": x["speciesCode"],
             "comName": x["comName"],
+            "taxonOrder": x["taxonOrder"],
         }
         for x in server.get("ref/taxonomy/ebird")
     ]
