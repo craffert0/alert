@@ -73,6 +73,6 @@ struct eBirdObservationView: View {
         eBirdObservation.fake,
         in: Checklist(for: "fake",
                       date: Date.now,
-                      status: .unloaded)
+                      status: .value(checklist: .fake))
     )
 }

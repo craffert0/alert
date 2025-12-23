@@ -7,22 +7,23 @@ import SwiftUI
 struct eBirdChecklistView: View {
     @State var checklist: eBirdChecklist
     let species: String
+    private var others: [eBirdChecklist.Obs] {
+        checklist.obs.compactMap {
+            $0.speciesCode != species ? $0 : nil
+        }
+    }
 
     var body: some View {
         Label("Checklist", systemImage: "globe.americas")
-        ScrollView(.vertical) {
+        VStack {
             if let comments = checklist.comments {
                 Text(comments)
                     .textSelection(.enabled)
                     .padding()
             }
-            LazyVStack {
-                ForEach(checklist.obs) { o in
-                    if o.speciesCode != species {
-                        ObsView(obs: o)
-                    }
-                }
-            }
+            List(others) { o in
+                ObsView(obs: o)
+            }.listStyle(.grouped)
         }
     }
 
@@ -37,6 +38,8 @@ struct eBirdChecklistView: View {
                 }.sheet(isPresented: $showSpecies) {
                     SafariView(code: obs.speciesCode, site: .ebird)
                 }
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, alignment: .center)
                 if let c = obs.comments {
                     Text(c)
                         .textSelection(.enabled)
@@ -47,8 +50,8 @@ struct eBirdChecklistView: View {
     }
 }
 
-// #Preview {
-//     VStack {
-//         eBirdChecklistView()
-//     }
-// }
+#Preview {
+    VStack {
+        eBirdChecklistView(checklist: .fake, species: "mutswa")
+    }
+}
