@@ -33,10 +33,9 @@ struct eBirdObservationView: View {
                     .textSelection(.enabled)
                     .padding()
             }
-            if case let .value(checklist) = checklist.status {
+            if case let .value(actual) = checklist.status {
                 Divider()
-                eBirdChecklistView(checklist: checklist,
-                                   species: e.speciesCode)
+                checklistView(actual)
             }
         }
         .navigationTitle(e.obsDt.eBirdFormatted)
@@ -64,6 +63,46 @@ struct eBirdObservationView: View {
             showPhotos = true
         }.sheet(isPresented: $showPhotos) {
             SafariView(code: checklist.id, site: .photos)
+        }
+    }
+
+    private func checklistView(_ actual: eBirdChecklist) -> some View {
+        VStack {
+            Label("Checklist", systemImage: "globe.americas")
+            if let comments = actual.comments {
+                Text(comments)
+                    .textSelection(.enabled)
+                    .padding()
+            }
+            List(
+                actual.obs.compactMap {
+                    $0.speciesCode != e.speciesCode ? $0 : nil
+                }
+            ) {
+                ObsView(obs: $0)
+            }.listStyle(.grouped)
+        }
+    }
+
+    struct ObsView: View {
+        @State var obs: eBirdChecklist.Obs
+        @State var showSpecies: Bool = false
+
+        var body: some View {
+            VStack {
+                Button("\(obs.howManyStr ?? "1") \(obs.printableName)") {
+                    showSpecies = true
+                }.sheet(isPresented: $showSpecies) {
+                    SafariView(code: obs.speciesCode, site: .ebird)
+                }
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, alignment: .center)
+                if let c = obs.comments {
+                    Text(c)
+                        .textSelection(.enabled)
+                        .padding([.horizontal])
+                }
+            }
         }
     }
 }
