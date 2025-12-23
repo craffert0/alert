@@ -34,6 +34,14 @@ final class Checklist {
         return checklist.obs.first { $0.speciesCode == speciesCode }
     }
 
+    func refresh() async {
+        guard case .value = status else { return }
+        if let e = try? await URLSession.shared.getChecklist(subId: id) {
+            date = e.obsDt
+            status = .value(checklist: e)
+        }
+    }
+
     func load() {
         guard case .unloaded = status else { return }
         status = .loading(startTime: Date.now)

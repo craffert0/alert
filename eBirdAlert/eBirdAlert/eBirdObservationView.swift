@@ -80,7 +80,11 @@ struct eBirdObservationView: View {
                 }
             ) {
                 ObsView(obs: $0)
-            }.listStyle(.grouped)
+            }
+            .listStyle(.grouped)
+            .refreshable {
+                await checklist.refresh()
+            }
         }
     }
 
