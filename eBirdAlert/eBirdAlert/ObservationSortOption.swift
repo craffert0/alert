@@ -6,6 +6,7 @@ import Schema
 enum ObservationSortOption: String {
     case byTime = "By Time"
     case byName = "By Name"
+    case byTaxon = "By Taxon"
 }
 
 extension ObservationSortOption: CaseIterable, Identifiable {
@@ -14,13 +15,18 @@ extension ObservationSortOption: CaseIterable, Identifiable {
 
 extension ObservationSortOption {
     func sort<T: ObservationSortable>(_ observations: [T]) -> [T] {
-        if self == .byName {
+        switch self {
+        case .byName:
             observations.sorted { a, b in
                 a.comName < b.comName
             }
-        } else {
+        case .byTime:
             observations.sorted { a, b in
                 a.obsDt > b.obsDt
+            }
+        case .byTaxon:
+            observations.sorted { a, b in
+                a.taxonOrder < b.taxonOrder
             }
         }
     }

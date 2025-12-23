@@ -7,7 +7,11 @@ extension eBirdRecentObservation: @retroactive Identifiable {
     public var id: String { "\(speciesCode).\(locId)" }
 }
 
-extension eBirdRecentObservation: ObservationSortable {}
+extension eBirdRecentObservation: ObservationSortable {
+    var taxonOrder: Double {
+        Taxonomy.global.find(for: speciesCode)?.taxonOrder ?? 9_999_999
+    }
+}
 
 extension eBirdRecentObservation: ChecklistDataServiceObservation {}
 
