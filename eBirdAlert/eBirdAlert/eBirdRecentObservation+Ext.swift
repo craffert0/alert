@@ -14,8 +14,8 @@ extension eBirdRecentObservation: ObservationSortable {
         taxon?.taxonOrder ?? 9_999_999
     }
 
-    var order: String {
-        taxon?.order ?? "Unknown"
+    var order: eBirdOrder {
+        taxon?.order ?? .Unknown
     }
 }
 

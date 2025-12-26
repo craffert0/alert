@@ -64,7 +64,7 @@ struct NotableObservationsView: View {
             if let grouped = observationSort.group(provider.observations) {
                 List {
                     ForEach(grouped, id: \.0) { pair in
-                        Section(pair.0) {
+                        Section(pair.0.rawValue) {
                             ForEach(pair.1) { o in
                                 link(for: o)
                             }
