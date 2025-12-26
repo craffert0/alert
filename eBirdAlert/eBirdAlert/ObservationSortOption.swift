@@ -30,4 +30,17 @@ extension ObservationSortOption {
             }
         }
     }
+
+    func group<T: ObservationSortable>(_ observations: [T])
+        -> [(String, [T])]?
+    {
+        guard self == .byTaxon else { return nil }
+        return Dictionary(grouping: observations) {
+            $0.order
+        }.sorted {
+            $0.value.first!.taxonOrder < $1.value.first!.taxonOrder
+        }.map {
+            ($0.key, sort($0.value))
+        }
+    }
 }

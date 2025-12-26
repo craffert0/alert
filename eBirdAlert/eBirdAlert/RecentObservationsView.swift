@@ -64,40 +64,24 @@ struct RecentObservationsView: View {
 
     private var listView: some View {
         Group {
-            if observationSort == .byTaxon {
-                groupView
+            if let grouped = observationSort.group(provider.observations) {
+                List {
+                    ForEach(grouped, id: \.0) { pair in
+                        Section(pair.0) {
+                            ForEach(pair.1) { o in
+                                link(for: o)
+                            }
+                        }
+                    }
+                }
             } else {
-                simpleListView
+                List(observationSort.sort(provider.observations)) { o in
+                    link(for: o)
+                }
             }
         }
         .refreshable {
             await model.refresh()
-        }
-    }
-
-    var groupedByOrder: [(String, [eBirdRecentObservation])] {
-        Dictionary(grouping: provider.observations) {
-            $0.order
-        }.sorted {
-            $0.value.first!.taxonOrder < $1.value.first!.taxonOrder
-        }
-    }
-
-    private var groupView: some View {
-        List {
-            ForEach(groupedByOrder, id: \.0) { pair in
-                Section(pair.0) {
-                    ForEach(observationSort.sort(pair.1)) { o in
-                        link(for: o)
-                    }
-                }
-            }
-        }
-    }
-
-    private var simpleListView: some View {
-        List(observationSort.sort(provider.observations)) { o in
-            link(for: o)
         }
     }
 
@@ -111,7 +95,6 @@ struct RecentObservationsView: View {
         } label: {
             Text(o.obsDt, relativeTo: now)
             Text(o.comName)
-            Text("(\(Int(o.taxonOrder)))")
         }
     }
 }

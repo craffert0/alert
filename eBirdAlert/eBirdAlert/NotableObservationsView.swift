@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import Schema
 import SwiftUI
 
 struct NotableObservationsView: View {
@@ -59,18 +60,35 @@ struct NotableObservationsView: View {
     }
 
     private var listView: some View {
-        List(observationSort.sort(provider.observations)) { o in
-            NavigationLink {
-                BirdObservationsView(o)
-            } label: {
-                Text(o.latestSighting, relativeTo: now)
-                Text(o.comName)
-                Text("(\(o.locations.total_count))")
+        Group {
+            if let grouped = observationSort.group(provider.observations) {
+                List {
+                    ForEach(grouped, id: \.0) { pair in
+                        Section(pair.0) {
+                            ForEach(pair.1) { o in
+                                link(for: o)
+                            }
+                        }
+                    }
+                }
+            } else {
+                List(observationSort.sort(provider.observations)) { o in
+                    link(for: o)
+                }
             }
         }
-        .listStyle(.automatic)
         .refreshable {
             await model.refresh()
+        }
+    }
+
+    private func link(for o: BirdObservations) -> some View {
+        NavigationLink {
+            BirdObservationsView(o)
+        } label: {
+            Text(o.latestSighting, relativeTo: now)
+            Text(o.comName)
+            Text("(\(o.locations.total_count))")
         }
     }
 }
