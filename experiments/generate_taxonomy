@@ -14,6 +14,7 @@ def main():
             "speciesCode": x["speciesCode"],
             "comName": x["comName"],
             "taxonOrder": x["taxonOrder"],
+            "order": x.get("order", "Unknown"),
         }
         for x in server.get("ref/taxonomy/ebird")
     ]

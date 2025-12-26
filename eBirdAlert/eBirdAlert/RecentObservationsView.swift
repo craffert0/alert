@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import Schema
 import SwiftUI
 
 struct RecentObservationsView: View {
@@ -62,21 +63,55 @@ struct RecentObservationsView: View {
     }
 
     private var listView: some View {
-        List(observationSort.sort(provider.observations)) { o in
-            NavigationLink {
-                RecentBirdView(o: o,
-                               provider: BirdObservationsProvider(
-                                   for: o.speciesCode,
-                                   locationService: locationService
-                               ))
-            } label: {
-                Text(o.obsDt, relativeTo: now)
-                Text(o.comName)
+        Group {
+            if observationSort == .byTaxon {
+                groupView
+            } else {
+                simpleListView
             }
         }
-        .listStyle(.automatic)
         .refreshable {
             await model.refresh()
+        }
+    }
+
+    var groupedByOrder: [(String, [eBirdRecentObservation])] {
+        Dictionary(grouping: provider.observations) {
+            $0.order
+        }.sorted {
+            $0.value.first!.taxonOrder < $1.value.first!.taxonOrder
+        }
+    }
+
+    private var groupView: some View {
+        List {
+            ForEach(groupedByOrder, id: \.0) { pair in
+                Section(pair.0) {
+                    ForEach(observationSort.sort(pair.1)) { o in
+                        link(for: o)
+                    }
+                }
+            }
+        }
+    }
+
+    private var simpleListView: some View {
+        List(observationSort.sort(provider.observations)) { o in
+            link(for: o)
+        }
+    }
+
+    private func link(for o: eBirdRecentObservation) -> some View {
+        NavigationLink {
+            RecentBirdView(o: o,
+                           provider: BirdObservationsProvider(
+                               for: o.speciesCode,
+                               locationService: locationService
+                           ))
+        } label: {
+            Text(o.obsDt, relativeTo: now)
+            Text(o.comName)
+            Text("(\(Int(o.taxonOrder)))")
         }
     }
 }
