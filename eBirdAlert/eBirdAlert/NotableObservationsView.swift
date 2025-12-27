@@ -6,6 +6,7 @@ import SwiftUI
 
 struct NotableObservationsView: View {
     @Environment(NotificationService.self) private var notificationService
+    @Environment(LocationService.self) var locationService
     @State var provider: NotableObservationsProvider
     @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
@@ -18,10 +19,14 @@ struct NotableObservationsView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .center) {
-            mainView
-            if model.isLoading {
-                ProgressView()
+        if locationService.location == nil {
+            Text("no location 😢")
+        } else {
+            ZStack(alignment: .center) {
+                mainView
+                if model.isLoading {
+                    ProgressView()
+                }
             }
         }
     }
@@ -95,8 +100,21 @@ struct NotableObservationsView: View {
 
 #Preview {
     let checklistDataService = FakeChecklistDataService()
-    let locationService = FixedLocationService(latitude: 41, longitude: -74)
+    let locationService: LocationService =
+        FixedLocationService(latitude: 41, longitude: -74)
+    let noLocationService = LocationService()
+    let notificationService = NotificationService()
     TabView {
+        Tab("Where", systemImage: "globe.americas") {
+            let provider = NotableObservationsProvider(
+                client: FakeObservationsClient(observations: []),
+                checklistDataService: checklistDataService,
+                locationService: locationService
+            )
+            NotableObservationsView(provider: provider)
+                .environment(noLocationService)
+                .environment(notificationService)
+        }
         Tab("None", systemImage: "bird.circle.fill") {
             let provider = NotableObservationsProvider(
                 client: FakeObservationsClient(observations: []),
@@ -104,6 +122,8 @@ struct NotableObservationsView: View {
                 locationService: locationService
             )
             NotableObservationsView(provider: provider)
+                .environment(locationService)
+                .environment(notificationService)
         }
         Tab("Some", systemImage: "bird.circle") {
             let provider = NotableObservationsProvider(
@@ -112,6 +132,8 @@ struct NotableObservationsView: View {
                 locationService: locationService
             )
             NotableObservationsView(provider: provider)
+                .environment(locationService)
+                .environment(notificationService)
         }
     }
 }
