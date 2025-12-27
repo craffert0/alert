@@ -16,7 +16,7 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            MainView(provider: notableProvider!)
+            NotableObservationsView(provider: notableProvider!)
                 .tabItem {
                     Label("Rarities", systemImage: "environments.circle")
                 }

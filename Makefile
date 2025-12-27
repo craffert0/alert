@@ -14,4 +14,4 @@ lint:
 	swiftformat -q --swiftversion 6 .
 
 regen:
-	cd experiments ; ./generate_taxonomy > ../eBirdAlert/eBirdAlert/Assets/taxonomy.json
+	cd experiments ; ./generate_taxonomy ../eBirdAlert/Schema/Sources/Schema/eBirdOrder.swift > ../eBirdAlert/eBirdAlert/Assets/taxonomy.json

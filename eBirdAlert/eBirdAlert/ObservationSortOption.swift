@@ -30,4 +30,17 @@ extension ObservationSortOption {
             }
         }
     }
+
+    func group<T: ObservationSortable>(_ observations: [T])
+        -> [(eBirdOrder, [T])]?
+    {
+        guard self == .byTaxon else { return nil }
+        return Dictionary(grouping: observations) {
+            $0.order
+        }.sorted {
+            $0.key < $1.key
+        }.map {
+            ($0.key, sort($0.value))
+        }
+    }
 }

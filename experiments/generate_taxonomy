@@ -3,19 +3,57 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import datetime
 import json
+import sys
 from server import Server
 
 
-def main():
+def taxoo():
     server = Server()
+    return server.get("ref/taxonomy/ebird")
+
+
+def get_orders(taxon):
+    d = dict()
+    for x in taxon:
+        d[x.get("order", "Unknown")] = x["taxonOrder"]
+    return [x[0] for x in sorted(d.items(), key=lambda i: i[1])]
+
+
+def generate_order(fp, orders):
+    print(f"// Generated {datetime.datetime.now()}", file=fp)
+    print(f"", file=fp)
+    print("public enum eBirdOrder: String {", file=fp)
+    for k in orders:
+        print(f"    case {k}", file=fp)
+    print("}", file=fp)
+    print("", file=fp)
+    print("extension eBirdOrder {", file=fp)
+    print("    var sortKey: Int {", file=fp)
+    print("        switch self {", file=fp)
+    i = 0
+    for k in orders:
+        print(f"        case .{k}: {i}", file=fp)
+        i += 1
+    print("        }", file=fp)
+    print("    }", file=fp)
+    print("}", file=fp)
+
+
+def main(argv):
+    everything = taxoo()
+    with open(argv[1], mode="w") as fp:
+        generate_order(fp, get_orders(everything))
+
     taxon = [
         {
             "speciesCode": x["speciesCode"],
             "comName": x["comName"],
             "taxonOrder": x["taxonOrder"],
+            "order": x.get("order", "Unknown"),
         }
-        for x in server.get("ref/taxonomy/ebird")
+        for x in everything
     ]
     print(
         json.dumps(
@@ -26,4 +64,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)

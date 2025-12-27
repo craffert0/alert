@@ -8,8 +8,14 @@ extension eBirdRecentObservation: @retroactive Identifiable {
 }
 
 extension eBirdRecentObservation: ObservationSortable {
+    var taxon: Taxon? { Taxonomy.global.find(for: speciesCode) }
+
     var taxonOrder: Double {
-        Taxonomy.global.find(for: speciesCode)?.taxonOrder ?? 9_999_999
+        taxon?.taxonOrder ?? 9_999_999
+    }
+
+    var order: eBirdOrder {
+        taxon?.order ?? .Unknown
     }
 }
 

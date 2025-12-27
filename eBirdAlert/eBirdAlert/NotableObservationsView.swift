@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import Schema
 import SwiftUI
 
 struct NotableObservationsView: View {
     @Environment(NotificationService.self) private var notificationService
+    @Environment(LocationService.self) var locationService
     @State var provider: NotableObservationsProvider
     @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
@@ -17,10 +19,14 @@ struct NotableObservationsView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .center) {
-            mainView
-            if model.isLoading {
-                ProgressView()
+        if locationService.location == nil {
+            Text("no location 😢")
+        } else {
+            ZStack(alignment: .center) {
+                mainView
+                if model.isLoading {
+                    ProgressView()
+                }
             }
         }
     }
@@ -59,26 +65,56 @@ struct NotableObservationsView: View {
     }
 
     private var listView: some View {
-        List(observationSort.sort(provider.observations)) { o in
-            NavigationLink {
-                BirdObservationsView(o)
-            } label: {
-                Text(o.latestSighting, relativeTo: now)
-                Text(o.comName)
-                Text("(\(o.locations.total_count))")
+        Group {
+            if let grouped = observationSort.group(provider.observations) {
+                List {
+                    ForEach(grouped, id: \.0) { pair in
+                        Section(pair.0.rawValue) {
+                            ForEach(pair.1) { o in
+                                link(for: o)
+                            }
+                        }
+                    }
+                }
+            } else {
+                List(observationSort.sort(provider.observations)) { o in
+                    link(for: o)
+                }
             }
         }
-        .listStyle(.automatic)
         .refreshable {
             await model.refresh()
+        }
+    }
+
+    private func link(for o: BirdObservations) -> some View {
+        NavigationLink {
+            BirdObservationsView(o)
+        } label: {
+            Text(o.latestSighting, relativeTo: now)
+            Text(o.comName)
+            Text("(\(o.locations.total_count))")
         }
     }
 }
 
 #Preview {
     let checklistDataService = FakeChecklistDataService()
-    let locationService = FixedLocationService(latitude: 41, longitude: -74)
+    let locationService: LocationService =
+        FixedLocationService(latitude: 41, longitude: -74)
+    let noLocationService = LocationService()
+    let notificationService = NotificationService()
     TabView {
+        Tab("Where", systemImage: "globe.americas") {
+            let provider = NotableObservationsProvider(
+                client: FakeObservationsClient(observations: []),
+                checklistDataService: checklistDataService,
+                locationService: locationService
+            )
+            NotableObservationsView(provider: provider)
+                .environment(noLocationService)
+                .environment(notificationService)
+        }
         Tab("None", systemImage: "bird.circle.fill") {
             let provider = NotableObservationsProvider(
                 client: FakeObservationsClient(observations: []),
@@ -86,6 +122,8 @@ struct NotableObservationsView: View {
                 locationService: locationService
             )
             NotableObservationsView(provider: provider)
+                .environment(locationService)
+                .environment(notificationService)
         }
         Tab("Some", systemImage: "bird.circle") {
             let provider = NotableObservationsProvider(
@@ -94,6 +132,8 @@ struct NotableObservationsView: View {
                 locationService: locationService
             )
             NotableObservationsView(provider: provider)
+                .environment(locationService)
+                .environment(notificationService)
         }
     }
 }

@@ -10,16 +10,19 @@ class RecentObservationsProvider {
     var observations: [eBirdRecentObservation] { provider.observations }
     var loadedRange: RangeType? { provider.loadedRange }
     private var provider: ObservationsProvider<eBirdRecentObservation>
-    private let checklistDataService: ChecklistDataService
 
     init(client: RecentObservationsClient,
          checklistDataService: ChecklistDataService,
          locationService: LocationService)
     {
         provider = ObservationsProvider(locationService: locationService) { range in
-            try await client.get(in: range)
+            let observations =
+                try await client.get(in: range)
+            for o in observations {
+                await checklistDataService.prepare(obs: o)
+            }
+            return observations
         }
-        self.checklistDataService = checklistDataService
     }
 
     func load() async throws {
