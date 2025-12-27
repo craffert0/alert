@@ -10,7 +10,7 @@ struct RecentObservationsView: View {
     @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
-    @State private var observationSort: ObservationSortOption = .byTaxon
+    var observationSort: ObservationSortOption { preferences.localsSort }
 
     init(provider: RecentObservationsProvider) {
         self.provider = provider
@@ -40,7 +40,9 @@ struct RecentObservationsView: View {
                     HStack {
                         Text(preferences.daysBackString)
                         Spacer()
-                        SortPickerView(observationSort: $observationSort)
+                        SortPickerView(
+                            observationSort: preferences.$localsSort
+                        )
                     }.padding()
                     listView
                 }

@@ -11,7 +11,7 @@ struct NotableObservationsView: View {
     @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
-    @State private var observationSort: ObservationSortOption = .byTime
+    var observationSort: ObservationSortOption { preferences.notableSort }
 
     init(provider: NotableObservationsProvider) {
         self.provider = provider
@@ -41,7 +41,9 @@ struct NotableObservationsView: View {
                     HStack {
                         Text(preferences.daysBackString)
                         Spacer()
-                        SortPickerView(observationSort: $observationSort)
+                        SortPickerView(
+                            observationSort: preferences.$notableSort
+                        )
                     }.padding()
                     listView
                 }
