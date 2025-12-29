@@ -3,9 +3,17 @@
 
 .PHONY: all lint test test_schema, regen
 
-all: test
+PUSHER_APP := pusher/.build/release/pusher
+PUSHER_FILES := $(shell find pusher/Sources -type f -name '*.swift') pusher/Package.swift
 
-test: test_schema
+$(PUSHER_APP): $(PUSHER_FILES)
+	cd pusher ; swift build --configuration release
+
+pusher: $(PUSHER_APP)
+
+all: test $(PUSHER_APP)
+
+test: test_schema test_pusher test_bazel
 
 test_schema:
 	cd eBirdAlert/Schema ; swift test -q
