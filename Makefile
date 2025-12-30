@@ -5,13 +5,8 @@
 
 all: test pusher
 
-TEST_PUSHER_APP := pusher/.build/release/test-pusher
-TEST_PUSHER_FILES := $(shell find pusher/Sources -type f -name '*.swift') pusher/Package.swift
-
-$(TEST_PUSHER_APP): $(TEST_PUSHER_FILES)
-	cd pusher ; swift build --configuration release
-
 pusher: $(TEST_PUSHER_APP)
+	cd pusher ; swift build --configuration release
 
 test: test_schema test_pusher test_bazel
 

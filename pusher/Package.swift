@@ -19,6 +19,10 @@ let package = Package(
             url: "https://github.com/swift-server-community/APNSwift.git",
             from: "6.0.0"
         ),
+        .package(
+            url: "https://github.com/swhitty/FlyingFox.git",
+            .upToNextMajor(from: "0.26.0")
+        ),
     ],
 
     targets: [
@@ -29,6 +33,15 @@ let package = Package(
                          package: "swift-argument-parser"),
                 .product(name: "APNS",
                          package: "APNSwift"),
+            ]
+        ),
+        .executableTarget(
+            name: "TestListener",
+            dependencies: [
+                .product(name: "ArgumentParser",
+                         package: "swift-argument-parser"),
+                .product(name: "FlyingFox",
+                         package: "FlyingFox"),
             ]
         ),
         .testTarget(
