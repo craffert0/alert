@@ -19,12 +19,11 @@ let package = Package(
             url: "https://github.com/swift-server-community/APNSwift.git",
             from: "6.0.0"
         ),
-
     ],
 
     targets: [
         .executableTarget(
-            name: "test-pusher",
+            name: "TestPusher",
             dependencies: [
                 .product(name: "ArgumentParser",
                          package: "swift-argument-parser"),
