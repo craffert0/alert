@@ -3,15 +3,15 @@
 
 .PHONY: all lint test test_schema, regen
 
-PUSHER_APP := pusher/.build/release/pusher
-PUSHER_FILES := $(shell find pusher/Sources -type f -name '*.swift') pusher/Package.swift
+all: test pusher
 
-$(PUSHER_APP): $(PUSHER_FILES)
+TEST_PUSHER_APP := pusher/.build/release/test-pusher
+TEST_PUSHER_FILES := $(shell find pusher/Sources -type f -name '*.swift') pusher/Package.swift
+
+$(TEST_PUSHER_APP): $(TEST_PUSHER_FILES)
 	cd pusher ; swift build --configuration release
 
-pusher: $(PUSHER_APP)
-
-all: test $(PUSHER_APP)
+pusher: $(TEST_PUSHER_APP)
 
 test: test_schema test_pusher test_bazel
 

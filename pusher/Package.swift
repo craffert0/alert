@@ -24,7 +24,7 @@ let package = Package(
 
     targets: [
         .executableTarget(
-            name: "pusher",
+            name: "test-pusher",
             dependencies: [
                 .product(name: "ArgumentParser",
                          package: "swift-argument-parser"),

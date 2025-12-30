@@ -5,13 +5,16 @@ import APNS
 import Foundation
 
 extension APNSClient<JSONDecoder, JSONEncoder> {
-    convenience init(privateKey: String) throws {
+    convenience init(teamIdentifier: String,
+                     keyIdentifier: String,
+                     privateKey: String) throws
+    {
         try self.init(
             configuration: .init(
                 authenticationMethod: .jwt(
                     privateKey: .init(pemRepresentation: privateKey),
-                    keyIdentifier: "NK5PK5BWL5",
-                    teamIdentifier: "65BH4M439S"
+                    keyIdentifier: keyIdentifier,
+                    teamIdentifier: teamIdentifier
                 ),
                 environment: .development
             ),
