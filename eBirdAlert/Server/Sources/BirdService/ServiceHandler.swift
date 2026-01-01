@@ -14,6 +14,6 @@ struct ServiceHandler: APIProtocol {
     func getHello(_: Operations.GetHello.Input) async throws
         -> Operations.GetHello.Output
     {
-        .ok(.init(body: .plainText("hello, world")))
+        .ok(.init(body: .json(.init(message: "hello, world"))))
     }
 }
