@@ -14,24 +14,19 @@ struct ExampleHandler: HTTPHandler {
 
 @main
 struct TestListener: AsyncParsableCommand {
-    @Option var api_port: UInt16
-    @Option var admin_port: UInt16
+    @Option var port: UInt16
 
     func run() async throws {
-        let api_server = HTTPServer(port: api_port)
-        let admin_server = HTTPServer(port: admin_port)
-        await api_server.appendRoute("GET /v1/hello") { _ in
+        let server = HTTPServer(port: port)
+        await server.appendRoute("GET /api/v1/hello") { _ in
             HTTPResponse(statusCode: .ok,
                          headers: [.contentType: "text/plain; charset=UTF-8"],
                          body: "hello, world".data(using: .utf8)!)
         }
-        await admin_server.appendRoute("GET /v1/yo", to: ExampleHandler())
-        let api_task = Task { try await api_server.run() }
-        let admin_task = Task { try await admin_server.run() }
-        try await api_server.waitUntilListening()
-        try await admin_server.waitUntilListening()
+        await server.appendRoute("GET /admin/yo", to: ExampleHandler())
+        let task = Task { try await server.run() }
+        try await server.waitUntilListening()
         print("listening")
-        try await api_task.value
-        try await admin_task.value
+        try await task.value
     }
 }
