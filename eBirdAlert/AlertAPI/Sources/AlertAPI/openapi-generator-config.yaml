@@ -1,0 +1,4 @@
+generate:
+  - types
+namingStrategy: idiomatic
+accessModifier: public
