@@ -1,0 +1,39 @@
+openapi: "3.0.3"
+info:
+  title: Server
+  version: 1.0.0
+servers:
+  - url: http://alert-api.rafferty.net/
+    description: "Notification Server for eBird Alert!"
+paths:
+  /api/v1/hello:
+    get:
+      operationId: getHello
+      parameters:
+      responses:
+        '200':
+          description: "Returns a little hello."
+          content:
+            text/plain:
+              schema:
+                type: string
+  /admin/yo:
+    get:
+      operationId: getYo
+      parameters:
+      responses:
+        '200':
+          description: "Returns a little yo."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Yo'
+components:
+  schemas:
+    Yo:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
