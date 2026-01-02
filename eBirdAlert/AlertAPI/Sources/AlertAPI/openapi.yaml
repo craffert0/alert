@@ -1,11 +1,26 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
+
 openapi: "3.0.3"
 info:
-  title: Server
+  title: eBird Alert API
   version: 1.0.0
 servers:
   - url: https://alert-api.rafferty.net/
     description: "Notification Server for eBird Alert!"
 paths:
+  /api/v1/notableQuery:
+    post:
+      operationId: postNotableQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotableQuery'
+      responses:
+        '202':
+          description: A success response for the accepted value.
   /api/v1/hello:
     get:
       operationId: getHello
@@ -30,6 +45,64 @@ paths:
                 $ref: '#/components/schemas/Yo'
 components:
   schemas:
+    NotableQuery:
+      type: object
+      properties:
+        userToken:
+          type: string
+          description: The token for the authorized user.
+        deviceId:
+          type: string
+          description: Hex string of the ID of the device that did the query.
+        range:
+          $ref: '#/components/schemas/Range'
+          description: Range of the query.
+        daysBack:
+          type: integer
+          description: Number of days back to query.
+        results:
+          type: array
+          items:
+            type: string
+      required:
+        - userToken
+        - deviceId
+        - range
+        - daysBack
+        - results
+    Range:
+      oneOf:
+        - $ref: '#/components/schemas/RegionCode'
+        - $ref: '#/components/schemas/Circle'
+    RegionCode:
+      type: string
+    Circle:
+      type: object
+      properties:
+        location:
+          $ref: '#/components/schemas/Location'
+        radius:
+          type: number
+          format: double
+        units:
+          type: string
+          enum: [km, miles]
+      required:
+        - location
+        - radius
+        - units
+    Location:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+        lng:
+          type: number
+          format: double
+      required:
+        - lat
+        - lng
     Yo:
       type: object
       properties:
