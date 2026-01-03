@@ -32,7 +32,9 @@ struct RecentObservationsView: View {
 
     private var mainView: some View {
         NavigationStack {
-            RangeView(range: provider.loadedRange)
+            LocationView {
+                await model.load()
+            }
             if !model.isLoading, provider.observations.isEmpty {
                 EmptyView(name: "local", range: provider.loadedRange)
             } else {
