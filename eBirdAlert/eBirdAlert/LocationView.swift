@@ -36,23 +36,26 @@ struct LocationView: View {
             }
         }
         .task {
-            _ = await loadRange()
+            _ = await loadRangeDidChange()
         }
         .sheet(isPresented: $showRange,
-               onDismiss: {
-                   Task { @MainActor in
-                       if await loadRange(),
-                          let onChange
-                       {
-                           await onChange()
-                       }
-                   }
-               }) {
+               onDismiss: didDismiss)
+        {
             RangePreferenceView()
         }
     }
 
-    private func loadRange() async -> Bool {
+    private func didDismiss() {
+        Task { @MainActor in
+            if await loadRangeDidChange(),
+               let onChange
+            {
+                await onChange()
+            }
+        }
+    }
+
+    private func loadRangeDidChange() async -> Bool {
         let oldRange = range
         range = try? await preferences.range(for: locationService.location,
                                              with: service)
