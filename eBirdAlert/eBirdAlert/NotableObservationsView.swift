@@ -33,7 +33,9 @@ struct NotableObservationsView: View {
 
     private var mainView: some View {
         NavigationStack {
-            RangeView(range: provider.loadedRange)
+            LocationView {
+                await model.load()
+            }
             if !model.isLoading, provider.observations.isEmpty {
                 EmptyView(name: "rare", range: provider.loadedRange)
             } else {
