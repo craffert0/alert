@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-import CoreLocation
-
 public protocol eBirdRegionService {
     func getSubRegions(of region: RegionCodeProvider,
                        as type: eBirdRegionType) async throws -> [eBirdRegion]
 
     func getInfo(for regionCode: String) async throws -> eBirdRegionInfo
 
-    func getCensusTract(for location: CLLocation) async throws -> CensusTract
+    func getCensusTract(for location: Coordinate) async throws -> CensusTract
 }
 
 public extension eBirdRegionService {
@@ -19,11 +17,11 @@ public extension eBirdRegionService {
         try await getInfo(for: provider.code)
     }
 
-    func getRegions(near location: CLLocation) async throws -> [eBirdRegionInfo] {
+    func getRegions(near location: Coordinate) async throws -> [eBirdRegionInfo] {
         try await getRegions(location, .world, .world, .custom)
     }
 
-    private func getRegions(_ location: CLLocation,
+    private func getRegions(_ location: Coordinate,
                             _ region: eBirdRegion,
                             _ info: eBirdRegionInfo,
                             _ type: eBirdRegionType)

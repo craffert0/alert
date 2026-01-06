@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-import CoreLocation
 import Foundation
 import Schema
 
@@ -10,10 +9,9 @@ extension URLSession: @retroactive CensusService {
         let results: [CensusTract]
     }
 
-    public func getCensusTract(for location: CLLocation) async throws
+    public func getCensusTract(for coord: Coordinate) async throws
         -> CensusTract
     {
-        let coord = location.coordinate
         let queryItems: [URLQueryItem] = [
             URLQueryItem(name: "lat", value: "\(coord.latitude)"),
             URLQueryItem(name: "lon", value: "\(coord.longitude)"),

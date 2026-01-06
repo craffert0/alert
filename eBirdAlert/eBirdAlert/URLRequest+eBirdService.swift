@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-import CoreLocation
 import Foundation
+import Schema
 
 extension URLRequest {
     init(eBirdPath path: String,
          queryItems: [URLQueryItem] = [],
-         withLocation location: CLLocation? = nil)
+         withLocation location: Coordinate? = nil)
     {
         let applicationKey = KeyService.global.applicationKey
 
@@ -16,9 +16,9 @@ extension URLRequest {
         if let location {
             allQueryItems += [
                 URLQueryItem(name: "lat",
-                             value: "\(location.coordinate.latitude)"),
+                             value: "\(location.latitude)"),
                 URLQueryItem(name: "lng",
-                             value: "\(location.coordinate.longitude)"),
+                             value: "\(location.longitude)"),
             ]
         }
 

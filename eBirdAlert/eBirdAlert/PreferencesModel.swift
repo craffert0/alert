@@ -2,7 +2,6 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import Combine
-import CoreLocation
 import Schema
 import SwiftUI
 
@@ -48,7 +47,7 @@ extension PreferencesModel {
                                    value: "\(distUnits.asKilometers(distValue))")]
     }
 
-    func range(for location: CLLocation?,
+    func range(for location: Coordinate?,
                with service: eBirdRegionService) async throws -> RangeType
     {
         switch rangeOption {
