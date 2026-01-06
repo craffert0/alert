@@ -37,7 +37,7 @@ struct ServiceHandler: APIProtocol {
             return .conflict // TODO: this should be better
         }
         do {
-            let user = User(name: req.name)
+            let user = User(from: req)
             try await user.create(on: app.db)
             return .created(.init(body: .json(user.response)))
         } catch {

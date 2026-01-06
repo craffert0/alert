@@ -13,16 +13,6 @@ final class User: Model, @unchecked Sendable {
     @Children(for: \.$user) var devices: [Device]
 
     init() {}
-
-    private let kTokenLetters =
-        "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRTUVWXYZ2346789"
-
-    init(name: String) {
-        self.name = name
-        token = (0 ..< 12).map {
-            _ in String(kTokenLetters.randomElement()!)
-        }.joined()
-    }
 }
 
 extension User {
