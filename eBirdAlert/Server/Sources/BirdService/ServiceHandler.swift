@@ -16,6 +16,17 @@ extension Components.Schemas.Range {
     }
 }
 
+extension Device {
+    func dump() {
+        print($user.name)
+        print(registerTime)
+        print(daysBack)
+        print(deviceResult.joined(separator: ", "))
+        print(mostRecentResult.joined(separator: ", "))
+        print(String(describing: mostRecentUpdate))
+    }
+}
+
 struct ServiceHandler: APIProtocol {
     let app: Vapor.Application
 
@@ -29,7 +40,8 @@ struct ServiceHandler: APIProtocol {
             let user = User(name: req.name)
             try await user.create(on: app.db)
             return .created(.init(body: .json(user.response)))
-        } catch is DatabaseError {
+        } catch {
+            print(error)
             return .conflict
         }
     }
@@ -51,17 +63,31 @@ struct ServiceHandler: APIProtocol {
             body: .json(User.query(on: app.db).all().map(\.response))))
     }
 
-    func postNotableQuery(_ input: Operations.PostNotableQuery.Input) async throws
+    func postNotableQuery(
+        _ input: Operations.PostNotableQuery.Input
+    ) async throws
         -> Operations.PostNotableQuery.Output
     {
-        // TODO: do something with this!
-        switch input.body {
-        case let .json(q):
-            print("\(q.userToken)/\(q.deviceId)")
-            print("\(q.daysBack) day(s) back")
-            q.range.dump()
-            print(q.results.joined(separator: ", "))
+        guard case let .json(q) = input.body else { return .unauthorized }
+
+        if let device = try await Device.from(app.db, deviceId: q.deviceId) {
+            try await device.$user.load(on: app.db)
+            guard device.$user.value?.token == q.userToken else {
+                return .unauthorized
+            }
+            try await device.update(from: q, on: app.db)
+            device.dump()
+            return .accepted
         }
+
+        guard let user = try await User.from(app.db, token: q.userToken) else {
+            print("no user")
+            return .unauthorized
+        }
+        print("create d")
+        let device = Device(from: q)
+        try await user.$devices.create(device, on: app.db)
+        device.dump()
         return .accepted
     }
 }

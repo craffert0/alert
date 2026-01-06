@@ -21,6 +21,8 @@ paths:
       responses:
         '202':
           description: A success response for the accepted value.
+        '401':
+          description: The token provided is not valid.
   /admin/newUser:
     post:
       operationId: newUser

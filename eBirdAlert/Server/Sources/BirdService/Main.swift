@@ -16,6 +16,7 @@ struct Main {
         // app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
         app.databases.use(.sqlite(.memory), as: .sqlite)
         app.migrations.add(CreateUser())
+        app.migrations.add(CreateDevice())
         try await app.autoMigrate()
         let transport = VaporTransport(routesBuilder: app)
         let handler = ServiceHandler(app: app)

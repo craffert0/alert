@@ -9,6 +9,7 @@ struct CreateUser: AsyncMigration {
             .id()
             .field("name", .string, .required)
             .field("token", .string, .required)
+            .field("devices", .array(of: .uuid), .references(Device.schema, "id"))
             .unique(on: "name")
             .create()
     }
