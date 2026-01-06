@@ -21,28 +21,53 @@ paths:
       responses:
         '202':
           description: A success response for the accepted value.
-  /api/v1/hello:
-    get:
-      operationId: getHello
-      parameters:
+  /admin/newUser:
+    post:
+      operationId: newUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUserRequest'
       responses:
-        '200':
-          description: "Returns a little hello."
+        '201':
+          description: The newly created user.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Hello'
-  /admin/yo:
+                $ref: '#/components/schemas/User'
+        '409':
+          description: There is already a user by that name.
+  /admin/user:
     get:
-      operationId: getYo
+      operationId: getUser
       parameters:
+        - name: name
+          required: true
+          in: query
+          description: The name used in the returned greeting.
+          schema:
+            type: string
       responses:
         '200':
-          description: "Returns a little yo."
+          description: Get the user with that name
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Yo'
+                $ref: '#/components/schemas/User'
+        '404':
+          description: No such user
+  /admin/users:
+    get:
+      operationId: getUsers
+      responses:
+        '200':
+          description: Get all the users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserArray'
 components:
   schemas:
     NotableQuery:
@@ -103,17 +128,27 @@ components:
       required:
         - lat
         - lng
-    Yo:
+    NewUserRequest:
       type: object
       properties:
-        message:
+        name:
           type: string
       required:
-        - message
-    Hello:
+        - name
+    User:
       type: object
       properties:
-        message:
+        id:
+          type: string
+        name:
+          type: string
+        token:
           type: string
       required:
-        - message
+        - id
+        - name
+        - token
+    UserArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'      

@@ -2,6 +2,8 @@
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
 import AlertAPI
+import Fluent
+import FluentSQLiteDriver
 import OpenAPIVapor
 import Vapor
 
@@ -11,8 +13,12 @@ struct Main {
         let app = try await Vapor.Application.make()
         app.http.server.configuration.address =
             .hostname("0.0.0.0", port: 8192)
+        // app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
+        app.databases.use(.sqlite(.memory), as: .sqlite)
+        app.migrations.add(CreateUser())
+        try await app.autoMigrate()
         let transport = VaporTransport(routesBuilder: app)
-        let handler = ServiceHandler()
+        let handler = ServiceHandler(app: app)
         try handler.registerHandlers(on: transport,
                                      serverURL: Servers.Server1.url())
         try await app.execute()

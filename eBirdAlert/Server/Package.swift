@@ -28,6 +28,14 @@ let package = Package(
             url: "https://github.com/vapor/vapor",
             .upToNextMajor(from: "4.120.0")
         ),
+        .package(
+            url: "https://github.com/vapor/fluent",
+            .upToNextMajor(from: "4.13.0")
+        ),
+        .package(
+            url: "https://github.com/vapor/fluent-sqlite-driver",
+            .upToNextMajor(from: "4.8.1")
+        ),
     ],
     targets: [
         .executableTarget(
@@ -45,6 +53,14 @@ let package = Package(
                 .product(
                     name: "Vapor",
                     package: "vapor"
+                ),
+                .product(
+                    name: "Fluent",
+                    package: "fluent"
+                ),
+                .product(
+                    name: "FluentSQLiteDriver",
+                    package: "fluent-sqlite-driver"
                 ),
             ],
             plugins: [
