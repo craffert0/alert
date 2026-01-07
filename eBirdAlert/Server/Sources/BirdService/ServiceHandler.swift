@@ -5,17 +5,6 @@ import AlertAPI
 import FluentKit
 import Vapor
 
-extension Components.Schemas.Range {
-    func dump() {
-        switch self {
-        case let .RegionCode(code):
-            print("region: \(code)")
-        case let .Circle(c):
-            print("\(c.location.lat), \(c.location.lng): \(c.radius) \(c.units.rawValue)")
-        }
-    }
-}
-
 extension Device {
     func dump() {
         print($user.name)
@@ -61,6 +50,13 @@ struct ServiceHandler: APIProtocol {
     {
         try await .ok(.init(
             body: .json(User.query(on: app.db).all().map(\.response))))
+    }
+
+    func getDevices(_: Operations.GetDevices.Input) async throws
+        -> Operations.GetDevices.Output
+    {
+        try await .ok(.init(body:
+            .json(Device.query(on: app.db).all().asApi(on: app.db))))
     }
 
     func postNotableQuery(

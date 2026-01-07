@@ -12,6 +12,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../AlertAPI"),
+        .package(path: "../Schema"),
         .package(
             url: "https://github.com/apple/swift-openapi-generator",
             .upToNextMinor(from: "1.10.3")
@@ -42,6 +43,7 @@ let package = Package(
             name: "BirdService",
             dependencies: [
                 "AlertAPI",
+                "Schema",
                 .product(
                     name: "OpenAPIRuntime",
                     package: "swift-openapi-runtime"

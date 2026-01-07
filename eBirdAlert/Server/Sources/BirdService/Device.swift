@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
+import AlertAPI
 import Fluent
 import Foundation
 
 final class Device: Model, @unchecked Sendable {
     static let schema = "devices"
+
+    typealias Range = Components.Schemas.Range
 
     // Fixed fields
     @ID(key: .id) var id: UUID?
@@ -14,7 +17,7 @@ final class Device: Model, @unchecked Sendable {
 
     // From postNotableQuery
     @Field(key: "registerTime") var registerTime: Date
-    // TODO: range
+    @Field(key: "rangeData") var rangeData: Data
     @Field(key: "daysBack") var daysBack: Int
     @Field(key: "deviceResult") var deviceResult: [String]
 
@@ -24,6 +27,17 @@ final class Device: Model, @unchecked Sendable {
         key: "mostRecentUpdate",
         on: .update
     ) var mostRecentUpdate: Date?
+
+    var range: Range? {
+        get { try? JSONDecoder().decode(Range.self, from: rangeData) }
+        set(range) {
+            if let range {
+                rangeData = try! JSONEncoder().encode(range)
+            } else {
+                rangeData = Data()
+            }
+        }
+    }
 
     init() {}
 }

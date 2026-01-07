@@ -10,6 +10,7 @@ struct CreateDevice: AsyncMigration {
             .field("user", .uuid, .required, .references(User.schema, "id"))
             .field("deviceId", .string, .required)
             .field("registerTime", .datetime, .required)
+            .field("rangeData", .data, .required)
             .field("daysBack", .int8, .required)
             .field("deviceResult", .array(of: .string), .required)
             .field("mostRecentResult", .array(of: .string), .required)

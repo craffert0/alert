@@ -69,7 +69,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserArray'
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'      
+  /admin/devices:
+    get:
+      operationId: getDevices
+      responses:
+        '200':
+          description: All the devices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
 components:
   schemas:
     NotableQuery:
@@ -150,7 +164,22 @@ components:
         - id
         - name
         - token
-    UserArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/User'      
+    Device:
+      type: object
+      properties:
+        user:
+          type: string
+        deviceId:
+          type: string
+        range:
+          $ref: '#/components/schemas/Range'
+        daysBack:
+          type: integer
+        deviceResult:
+          type: array
+          items:
+            type: string
+        mostRecentResult:
+          type: array
+          items:
+            type: string

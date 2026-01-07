@@ -5,6 +5,15 @@ import AlertAPI
 import FluentKit
 
 extension Device {
+    var api: Components.Schemas.Device {
+        Components.Schemas.Device(user: $user.value?.name,
+                                  deviceId: deviceId,
+                                  range: range,
+                                  daysBack: daysBack,
+                                  deviceResult: deviceResult,
+                                  mostRecentResult: mostRecentResult)
+    }
+
     convenience init(from query: Components.Schemas.NotableQuery) {
         self.init()
         deviceId = query.deviceId
@@ -21,7 +30,17 @@ extension Device {
     private func update(from query: Components.Schemas.NotableQuery) {
         registerTime = .now
         daysBack = query.daysBack
+        range = query.range
         deviceResult = query.results
         mostRecentResult = query.results
+    }
+}
+
+extension [Device] {
+    func asApi(on db: Database) async throws -> [Components.Schemas.Device] {
+        for d in self {
+            try await d.$user.load(on: db)
+        }
+        return map(\.api)
     }
 }
