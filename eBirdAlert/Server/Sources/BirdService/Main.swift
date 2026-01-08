@@ -19,7 +19,10 @@ struct Main {
         app.migrations.add(CreateDevice())
         try await app.autoMigrate()
         let transport = VaporTransport(routesBuilder: app)
-        let handler = ServiceHandler(app: app)
+        let runner = DevicesRunner(provider: app,
+                                   birdService: URLSession.shared,
+                                   notificationService: URLSession.shared)
+        let handler = ServiceHandler(app: app, runner: runner)
         try handler.registerHandlers(on: transport,
                                      serverURL: Servers.Server1.url())
         try await app.execute()

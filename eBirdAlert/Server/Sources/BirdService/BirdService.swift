@@ -3,6 +3,6 @@
 
 import AlertAPI
 
-protocol BirdService {
+protocol BirdService: Sendable {
     func getBirds(in range: Components.Schemas.Range) async throws -> [String]
 }

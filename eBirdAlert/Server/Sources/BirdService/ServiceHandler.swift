@@ -18,11 +18,12 @@ extension Device {
 
 struct ServiceHandler: APIProtocol {
     let app: Vapor.Application
+    let runner: DevicesRunner
 
     func trigger(_: Operations.Trigger.Input) async throws
         -> Operations.Trigger.Output
     {
-        print("trigger")
+        try await runner.run()
         return .accepted
     }
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
-struct DevicesRunner {
+struct DevicesRunner: Sendable {
     let provider: DevicesProvider
     let birdService: BirdService
     let notificationService: NotificationService
