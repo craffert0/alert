@@ -19,6 +19,13 @@ extension Device {
 struct ServiceHandler: APIProtocol {
     let app: Vapor.Application
 
+    func trigger(_: Operations.Trigger.Input) async throws
+        -> Operations.Trigger.Output
+    {
+        print("trigger")
+        return .accepted
+    }
+
     func newUser(_ input: Operations.NewUser.Input) async throws
         -> Operations.NewUser.Output
     {

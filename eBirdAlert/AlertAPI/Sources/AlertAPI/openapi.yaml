@@ -84,6 +84,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Device'
+  /admin/trigger:
+    post:
+      operationId: trigger
+      responses:
+        '202':
+          description: triggered
 components:
   schemas:
     NotableQuery:

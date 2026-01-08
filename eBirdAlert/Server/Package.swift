@@ -37,6 +37,10 @@ let package = Package(
             url: "https://github.com/vapor/fluent-sqlite-driver",
             .upToNextMajor(from: "4.8.1")
         ),
+        .package(
+            url: "https://github.com/Brightify/Cuckoo",
+            .upToNextMajor(from: "2.2.0")
+        ),
     ],
     targets: [
         .executableTarget(
@@ -68,6 +72,20 @@ let package = Package(
             plugins: [
                 .plugin(name: "OpenAPIGenerator",
                         package: "swift-openapi-generator"),
+            ]
+        ),
+        .testTarget(
+            name: "BirdServiceTests",
+            dependencies: [
+                "BirdService",
+                .product(
+                    name: "Cuckoo",
+                    package: "Cuckoo"
+                ),
+            ],
+            plugins: [
+                .plugin(name: "CuckooPluginSingleFile",
+                        package: "Cuckoo"),
             ]
         ),
     ]

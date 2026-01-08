@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-.PHONY: all lint test test_schema regen server pusher run_server
+.PHONY: all lint test test_schema regen server pusher run_server test_server
 
 all: test pusher server
 
@@ -14,10 +14,13 @@ server:
 run_server: 
 	cd eBirdAlert/Server ; swift run
 
+test_server: 
+	cd eBirdAlert/Server ; swift test
+
 test_pusher:
 	cd pusher ; swift test
 
-test: test_schema test_pusher
+test: test_schema test_pusher test_server
 
 test_schema:
 	cd eBirdAlert/Schema ; swift test -q

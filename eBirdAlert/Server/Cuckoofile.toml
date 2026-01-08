@@ -1,0 +1,28 @@
+# You can define a fallback output for all modules that don't define their own.
+# output = "Tests/Swift/Generated/GeneratedMocks.swift"
+
+[modules.BirdService]
+output = "Tests/BirdServiceTests/Generated/GeneratedMocks+BirdService.swift"
+# Standard imports added to the generated file(s).
+imports = ["Foundation"]
+
+# Public imports if needed due to imports being internal by default from Swift 6.
+# publicImports = ["ExampleModule"]
+
+# @testable imports if needed.
+testableImports = ["BirdService"]
+sources = [
+    "Sources/BirdService/*.swift",
+]
+# exclude = ["ExcludedTestClass"]
+
+# Optionally you can use a regular expression to filter only specific classes/protocols.
+# regex = ""
+
+[modules.BirdService.options]
+# glob = false
+# Docstrings are preserved by default, comments are omitted.
+keepDocumentation = false
+# enableInheritance = false
+# protocolsOnly = true
+# omitHeaders = true
