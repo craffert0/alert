@@ -22,7 +22,7 @@ struct Main {
         let runner = DevicesRunner(provider: app,
                                    birdService: URLSession.shared,
                                    notificationService: URLSession.shared)
-        let handler = ServiceHandler(app: app, runner: runner)
+        let handler = ServiceHandler(provider: app, runner: runner)
         try handler.registerHandlers(on: transport,
                                      serverURL: Servers.Server1.url())
         try await app.execute()

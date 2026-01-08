@@ -8,7 +8,7 @@ import Foundation
 import Testing
 
 @Suite struct DevicesRunnerTest {
-    let provider: MockDevicesProvider
+    let provider: MockModelProvider
     let birdService: MockBirdService
     let notificationService: MockNotificationService
     let runner: DevicesRunner
@@ -30,7 +30,7 @@ import Testing
     }
 
     init() {
-        provider = MockDevicesProvider()
+        provider = MockModelProvider()
         birdService = MockBirdService()
         notificationService = MockNotificationService()
 
@@ -41,7 +41,7 @@ import Testing
 
     @Test func noDevices() async throws {
         stub(provider) { stub in
-            when(stub.getAll()).thenReturn([])
+            when(stub.getDevices()).thenReturn([])
         }
         try await runner.run()
     }
@@ -50,7 +50,7 @@ import Testing
         let birds = ["cangoo", "blwwhi"]
         let device = device(deviceResult: birds, mostRecentResult: birds)
         stub(provider) { stub in
-            when(stub.getAll()).thenReturn([device])
+            when(stub.getDevices()).thenReturn([device])
         }
         stub(birdService) { stub in
             when(stub.getBirds(in: equal(to: kRange))).thenReturn(birds)
@@ -67,7 +67,7 @@ import Testing
                             mostRecentResult: deviceResult)
         var actualMostRecentResult: [String] = []
         stub(provider) { stub in
-            when(stub.getAll())
+            when(stub.getDevices())
                 .thenReturn([device])
             when(stub.update(device: equal(to: device)))
                 .then { device in
@@ -96,7 +96,7 @@ import Testing
                             mostRecentResult: mostRecentResult)
         var actualMostRecentResult: [String] = []
         stub(provider) { stub in
-            when(stub.getAll())
+            when(stub.getDevices())
                 .thenReturn([device])
             when(stub.update(device: equal(to: device)))
                 .then { device in

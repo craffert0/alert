@@ -20,27 +20,11 @@ extension Device {
         update(from: query)
     }
 
-    func update(from query: Components.Schemas.NotableQuery,
-                on db: Database) async throws
-    {
-        update(from: query)
-        try await update(on: db)
-    }
-
-    private func update(from query: Components.Schemas.NotableQuery) {
+    func update(from query: Components.Schemas.NotableQuery) {
         registerTime = .now
         daysBack = query.daysBack
         range = query.range
         deviceResult = query.results
         mostRecentResult = query.results
-    }
-}
-
-extension [Device] {
-    func asApi(on db: Database) async throws -> [Components.Schemas.Device] {
-        for d in self {
-            try await d.$user.load(on: db)
-        }
-        return map(\.api)
     }
 }

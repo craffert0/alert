@@ -2,8 +2,6 @@
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
 import AlertAPI
-import FluentKit
-import Vapor
 
 extension Device {
     func dump() {
@@ -17,7 +15,7 @@ extension Device {
 }
 
 struct ServiceHandler: APIProtocol {
-    let app: Vapor.Application
+    let provider: ModelProvider
     let runner: DevicesRunner
 
     func trigger(_: Operations.Trigger.Input) async throws
@@ -35,7 +33,7 @@ struct ServiceHandler: APIProtocol {
         }
         do {
             let user = User(from: req)
-            try await user.create(on: app.db)
+            try await provider.create(user: user)
             return .created(.init(body: .json(user.response)))
         } catch {
             print(error)
@@ -46,7 +44,7 @@ struct ServiceHandler: APIProtocol {
     func getUser(_ input: Operations.GetUser.Input) async throws
         -> Operations.GetUser.Output
     {
-        guard let user = try await User.from(app.db, name: input.query.name)
+        guard let user = try await provider.getUser(name: input.query.name)
         else {
             return .notFound
         }
@@ -57,14 +55,14 @@ struct ServiceHandler: APIProtocol {
         -> Operations.GetUsers.Output
     {
         try await .ok(.init(
-            body: .json(User.query(on: app.db).all().map(\.response))))
+            body: .json(provider.getUsers().map(\.response))))
     }
 
     func getDevices(_: Operations.GetDevices.Input) async throws
         -> Operations.GetDevices.Output
     {
         try await .ok(.init(body:
-            .json(Device.query(on: app.db).all().asApi(on: app.db))))
+            .json(provider.getDevices().map(\.api))))
     }
 
     func postNotableQuery(
@@ -74,23 +72,23 @@ struct ServiceHandler: APIProtocol {
     {
         guard case let .json(q) = input.body else { return .unauthorized }
 
-        if let device = try await Device.from(app.db, deviceId: q.deviceId) {
-            try await device.$user.load(on: app.db)
+        if let device = try await provider.getDevice(deviceId: q.deviceId) {
             guard device.$user.value?.token == q.userToken else {
                 return .unauthorized
             }
-            try await device.update(from: q, on: app.db)
+            device.update(from: q)
+            try await provider.update(device: device)
             device.dump()
             return .accepted
         }
 
-        guard let user = try await User.from(app.db, token: q.userToken) else {
+        guard let user = try await provider.getUser(token: q.userToken) else {
             print("no user")
             return .unauthorized
         }
         print("create d")
         let device = Device(from: q)
-        try await user.$devices.create(device, on: app.db)
+        try await provider.create(device: device, for: user)
         device.dump()
         return .accepted
     }

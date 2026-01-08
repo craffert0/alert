@@ -2,12 +2,12 @@
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
 struct DevicesRunner: Sendable {
-    let provider: DevicesProvider
+    let provider: ModelProvider
     let birdService: BirdService
     let notificationService: NotificationService
 
     func run() async throws {
-        for device in try await provider.getAll() {
+        for device in try await provider.getDevices() {
             try await run(device: device)
         }
     }
