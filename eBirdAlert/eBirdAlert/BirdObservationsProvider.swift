@@ -13,8 +13,9 @@ class BirdObservationsProvider {
     init(for speciesCode: String,
          locationService: LocationService)
     {
-        provider = ObservationsProvider(locationService: locationService) { range in
+        provider = ObservationsProvider(locationService: locationService) { range, daysBack in
             try await URLSession.shared.getBird(in: range,
+                                                back: daysBack,
                                                 for: speciesCode)
         }
     }

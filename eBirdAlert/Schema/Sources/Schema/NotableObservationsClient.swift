@@ -12,7 +12,9 @@ public class NotableObservationsClient {
 }
 
 extension NotableObservationsClient: ObservationsClient {
-    public func get(in range: RangeType) async throws -> [eBirdObservation] {
-        try await service.getNotable(in: range)
+    public func get(in range: RangeType,
+                    back daysBack: Int) async throws -> [eBirdObservation]
+    {
+        try await service.getNotable(in: range, back: daysBack)
     }
 }

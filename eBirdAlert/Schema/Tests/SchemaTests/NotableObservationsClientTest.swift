@@ -21,7 +21,7 @@ extension eBirdObservation {
 
     var raw_observations: [eBirdObservation] {
         get async throws {
-            try await service.getNotable(in: .region(.kings))
+            try await service.getNotable(in: .region(.kings), back: 2)
         }
     }
 
@@ -51,6 +51,6 @@ extension eBirdObservation {
 
     @Test func removed_duplicates_parse() async throws {
         let client = NotableObservationsClient(service: service)
-        #expect(try await client.observations(in: .region(.kings)).count < raw_observations.count)
+        #expect(try await client.observations(in: .region(.kings), back: 2).count < raw_observations.count)
     }
 }

@@ -15,9 +15,9 @@ class RecentObservationsProvider {
          checklistDataService: ChecklistDataService,
          locationService: LocationService)
     {
-        provider = ObservationsProvider(locationService: locationService) { range in
+        provider = ObservationsProvider(locationService: locationService) { range, daysBack in
             let observations =
-                try await client.get(in: range)
+                try await client.get(in: range, back: daysBack)
             for o in observations {
                 await checklistDataService.prepare(obs: o)
             }

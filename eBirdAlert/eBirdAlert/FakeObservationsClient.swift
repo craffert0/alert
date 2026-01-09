@@ -12,7 +12,7 @@ public class FakeObservationsClient {
 }
 
 extension FakeObservationsClient: ObservationsClient {
-    public func get(in _: Schema.RangeType) async throws -> [Schema.eBirdObservation] {
+    public func get(in _: Schema.RangeType, back _: Int) async throws -> [Schema.eBirdObservation] {
         guard let observations else {
             throw eBirdServiceError.noLocation
         }

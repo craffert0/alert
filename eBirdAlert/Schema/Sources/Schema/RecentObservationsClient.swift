@@ -10,9 +10,10 @@ public class RecentObservationsClient {
         self.service = service
     }
 
-    public func get(in range: RangeType) async throws
+    public func get(in range: RangeType,
+                    back daysBack: Int) async throws
         -> [eBirdRecentObservation]
     {
-        try await service.getAll(in: range)
+        try await service.getAll(in: range, back: daysBack)
     }
 }

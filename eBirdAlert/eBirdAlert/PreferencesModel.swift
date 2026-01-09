@@ -34,19 +34,6 @@ extension PreferencesModel {
         }
     }
 
-    var queryItems: [URLQueryItem] {
-        [
-            URLQueryItem(name: "detail", value: "full"),
-            URLQueryItem(name: "hotspot", value: "false"),
-            URLQueryItem(name: "back", value: "\(daysBack)"),
-        ]
-    }
-
-    var geoQueryItems: [URLQueryItem] {
-        queryItems + [URLQueryItem(name: "dist",
-                                   value: "\(distUnits.asKilometers(distValue))")]
-    }
-
     func range(for location: Coordinate?,
                with service: eBirdRegionService) async throws -> RangeType
     {
