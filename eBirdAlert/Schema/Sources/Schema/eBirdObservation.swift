@@ -44,29 +44,33 @@ extension eBirdObservation: Hashable {
 }
 
 public extension eBirdObservation {
-    static let fake = eBirdObservation(
-        speciesCode: "species",
-        comName: "My Fancy Species",
-        sciName: "Specious Reasoning",
-        locId: "backyard",
-        locName: "My Backyard",
-        obsDt: Date.now,
-        howMany: 4,
-        lat: 40.7,
-        lng: -74.0,
+    init(fake speciesCode: String) {
+        self.init(
+            speciesCode: speciesCode,
+            comName: "My Fancy Species",
+            sciName: "Specious Reasoning",
+            locId: "backyard",
+            locName: "My Backyard",
+            obsDt: Date.now,
+            howMany: 4,
+            lat: 40.7,
+            lng: -74.0,
 
-        locationPrivate: false,
-        subId: "subid",
+            locationPrivate: false,
+            subId: "subid",
 
-        userDisplayName: "Barack Obama",
-        obsId: "obsid",
-        checklistId: "checklistis",
+            userDisplayName: "Barack Obama",
+            obsId: "obsid",
+            checklistId: "checklistis",
 
-        hasComments: true,
-        firstName: "Barack",
-        lastName: "Obama",
-        hasRichMedia: false
-    )
+            hasComments: true,
+            firstName: "Barack",
+            lastName: "Obama",
+            hasRichMedia: false
+        )
+    }
+
+    static let fake = eBirdObservation(fake: "species")
 }
 
 public extension [eBirdObservation] {

@@ -119,10 +119,22 @@ components:
         - results
     Range:
       oneOf:
-        - $ref: '#/components/schemas/RegionCode'
+        - $ref: '#/components/schemas/RegionInfo'
         - $ref: '#/components/schemas/Circle'
-    RegionCode:
-      type: string
+    RegionInfo:
+      type: object
+      properties:
+        result:
+          type: string
+        code:
+          type: string
+        type:
+          type: string
+          enum: [custom, country, subnational1, subnational2]
+      required:
+        - result
+        - code
+        - type
     Circle:
       type: object
       properties:
@@ -133,7 +145,7 @@ components:
           format: double
         units:
           type: string
-          enum: [km, miles]
+          enum: [kilometers, miles]
       required:
         - location
         - radius

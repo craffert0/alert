@@ -4,7 +4,10 @@
 [modules.BirdService]
 output = "Tests/BirdServiceTests/Generated/GeneratedMocks+BirdService.swift"
 # Standard imports added to the generated file(s).
-imports = ["Foundation"]
+imports = [
+    "Foundation",
+    "Schema",
+]
 
 # Public imports if needed due to imports being internal by default from Swift 6.
 # publicImports = ["ExampleModule"]
@@ -13,8 +16,14 @@ imports = ["Foundation"]
 testableImports = ["BirdService"]
 sources = [
     "Sources/BirdService/*.swift",
+    "../Schema/Sources/Schema/*.swift",
 ]
-# exclude = ["ExcludedTestClass"]
+
+# cuckoo thinks these two classes are protocols
+exclude = [
+    "NotableObservationsClient",
+    "RecentObservationsClient",
+]
 
 # Optionally you can use a regular expression to filter only specific classes/protocols.
 # regex = ""

@@ -5,6 +5,7 @@ import AlertAPI
 import Fluent
 import FluentSQLiteDriver
 import OpenAPIVapor
+import URLNetwork
 import Vapor
 
 @main

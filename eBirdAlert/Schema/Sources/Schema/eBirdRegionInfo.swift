@@ -19,7 +19,7 @@ public final class eBirdRegionInfo: Codable, Sendable {
         public let maxY: Double
     }
 
-    init(
+    public init(
         bounds: Bounds? = nil,
         result: String,
         code: String,

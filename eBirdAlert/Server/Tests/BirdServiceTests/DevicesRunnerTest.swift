@@ -5,15 +5,18 @@ import AlertAPI
 @testable import BirdService
 import Cuckoo
 import Foundation
+import Network
+import Schema
 import Testing
 
 @Suite struct DevicesRunnerTest {
     let provider: MockModelProvider
-    let birdService: MockBirdService
+    let birdService: MockeBirdService
     let notificationService: MockNotificationService
     let runner: DevicesRunner
 
-    let kRange = Components.Schemas.Range.RegionCode("NY")
+    let kRange = RangeType.region(.kings).api
+    let kDaysBack = 3
 
     private func device(deviceId: String? = nil,
                         deviceResult: [String],
@@ -24,6 +27,7 @@ import Testing
             device.deviceId = deviceId
         }
         device.range = kRange
+        device.daysBack = kDaysBack
         device.deviceResult = deviceResult
         device.mostRecentResult = mostRecentResult
         return device
@@ -31,7 +35,7 @@ import Testing
 
     init() {
         provider = MockModelProvider()
-        birdService = MockBirdService()
+        birdService = MockeBirdService()
         notificationService = MockNotificationService()
 
         runner = DevicesRunner(provider: provider,
@@ -53,7 +57,8 @@ import Testing
             when(stub.getDevices()).thenReturn([device])
         }
         stub(birdService) { stub in
-            when(stub.getBirds(in: equal(to: kRange))).thenReturn(birds)
+            when(stub.getNotable(in: equal(to: kRange.model), back: kDaysBack))
+                .thenReturn(birds.fakes)
         }
         try await runner.run()
     }
@@ -75,8 +80,8 @@ import Testing
                 }
         }
         stub(birdService) { stub in
-            when(stub.getBirds(in: equal(to: kRange)))
-                .thenReturn(latestResult)
+            when(stub.getNotable(in: equal(to: kRange.model), back: kDaysBack))
+                .thenReturn(latestResult.fakes)
         }
         stub(notificationService) { stub in
             when(stub.notify(device.deviceId, newBirds: equal(to: expected)))
@@ -104,8 +109,8 @@ import Testing
                 }
         }
         stub(birdService) { stub in
-            when(stub.getBirds(in: equal(to: kRange)))
-                .thenReturn(latestResult)
+            when(stub.getNotable(in: equal(to: kRange.model), back: kDaysBack))
+                .thenReturn(latestResult.fakes)
         }
         stub(notificationService) { stub in
             when(stub.notify(device.deviceId, newBirds: equal(to: expected)))
