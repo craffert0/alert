@@ -3,7 +3,7 @@
 
 import Foundation
 
-extension URL {
+public extension URL {
     init(eBird speciesCode: String) {
         self.init(string: "eBird://obsDetails?code=" + speciesCode)!
     }

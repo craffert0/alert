@@ -1,5 +1,5 @@
 # KeyService.swift is the secret key
-eBirdAlert/eBirdAlert/KeyService.swift
+eBirdAlert/URLNetwork/Sources/KeyService.swift
 
 # eBirdOrder.swift is generated
 eBirdAlert/Schema/Sources/Schema/eBirdOrder.swift

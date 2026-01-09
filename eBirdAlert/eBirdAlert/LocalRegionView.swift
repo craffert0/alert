@@ -4,6 +4,7 @@
 import MapKit
 import Schema
 import SwiftUI
+import URLNetwork
 
 struct LocalRegionView: View {
     var regionService: any eBirdRegionService

@@ -4,6 +4,7 @@
 import Foundation
 import Schema
 import SwiftData
+import URLNetwork
 
 @Model
 final class Checklist {

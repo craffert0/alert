@@ -4,6 +4,7 @@
 import Combine
 import Schema
 import SwiftUI
+import URLNetwork
 
 class PreferencesModel: ObservableObject {
     static let global = PreferencesModel()
