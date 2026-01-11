@@ -17,6 +17,7 @@ extension Device {
 struct ServiceHandler: APIProtocol {
     let provider: ModelProvider
     let runner: DevicesRunner
+    let notificationService: NotificationService
 
     func trigger(_: Operations.Trigger.Input) async throws
         -> Operations.Trigger.Output
@@ -90,6 +91,17 @@ struct ServiceHandler: APIProtocol {
         let device = Device(from: q)
         try await provider.create(device: device, for: user)
         device.dump()
+        return .accepted
+    }
+
+    func sendFake(_ input: Operations.SendFake.Input) async throws
+        -> Operations.SendFake.Output
+    {
+        guard case let .json(q) = input.body else { return .notFound }
+        print(q.deviceId)
+        print(q.birds)
+        try await notificationService.notify(q.deviceId,
+                                             newBirds: Set(q.birds))
         return .accepted
     }
 }

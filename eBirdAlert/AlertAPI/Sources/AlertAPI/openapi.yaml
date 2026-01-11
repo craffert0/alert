@@ -90,6 +90,20 @@ paths:
       responses:
         '202':
           description: triggered
+  /admin/fake:
+    post:
+      operationId: sendFake
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendFakeRequest'
+      responses:
+        '202':
+          description: sent
+        '404':
+          description: No such device
 components:
   schemas:
     NotableQuery:
@@ -162,6 +176,18 @@ components:
       required:
         - lat
         - lng
+    SendFakeRequest:
+      type: object
+      properties:
+        deviceId:
+          type: string
+        birds:
+          type: array
+          items:
+            type: string
+      required:
+        - deviceId
+        - birds
     NewUserRequest:
       type: object
       properties:
