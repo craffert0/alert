@@ -3,6 +3,7 @@
 
 import AlertAPI
 import OpenAPIVapor
+import Schema
 import URLNetwork
 import Vapor
 
@@ -10,24 +11,21 @@ import Vapor
 struct Main {
     static func main() async throws {
         let config = Config.global
+        let application = try await Vapor.Application.make(config: config)
+        let modelProvider: ModelProvider = application
+        let birdService: eBirdService = URLSession.shared
         let notificationService: NotificationService = config.apnsClient
 
-        let app = try await Vapor.Application.make()
-        app.http.server.configuration.address = config.address
-        app.databases.use(config.database, as: .sqlite)
-        app.migrations.add(CreateUser())
-        app.migrations.add(CreateDevice())
-        try await app.autoMigrate()
-
-        let transport = VaporTransport(routesBuilder: app)
-        let runner = DevicesRunner(provider: app,
-                                   birdService: URLSession.shared,
+        let runner = DevicesRunner(provider: modelProvider,
+                                   birdService: birdService,
                                    notificationService: notificationService)
-        let handler = ServiceHandler(provider: app,
+        let handler = ServiceHandler(provider: modelProvider,
                                      runner: runner,
                                      notificationService: notificationService)
+        let transport = VaporTransport(routesBuilder: application)
         try handler.registerHandlers(on: transport,
                                      serverURL: Servers.Server1.url())
-        try await app.execute()
+
+        try await application.execute()
     }
 }
