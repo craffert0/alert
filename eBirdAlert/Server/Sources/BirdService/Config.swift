@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
+import APNS
 import FluentSQLiteDriver
 import Foundation
 import Vapor
@@ -31,6 +32,12 @@ extension Config {
         } else {
             .sqlite(.file(databaseConfig))
         }
+    }
+
+    var apnsClient: APNSClient<JSONDecoder, JSONEncoder> {
+        try! .init(teamIdentifier: apnTeamIdentifier,
+                   keyIdentifier: apnKeyIdentifier,
+                   privateKey: apnPrivateKey)
     }
 }
 

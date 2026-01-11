@@ -27,6 +27,10 @@ let package = Package(
             .upToNextMinor(from: "1.0.1")
         ),
         .package(
+            url: "https://github.com/swift-server-community/APNSwift",
+            .upToNextMinor(from: "6.3.0")
+        ),
+        .package(
             url: "https://github.com/vapor/vapor",
             .upToNextMajor(from: "4.120.0")
         ),
@@ -50,6 +54,10 @@ let package = Package(
                 "AlertAPI",
                 "Schema",
                 "URLNetwork",
+                .product(
+                    name: "APNS",
+                    package: "APNSwift"
+                ),
                 .product(
                     name: "OpenAPIRuntime",
                     package: "swift-openapi-runtime"
