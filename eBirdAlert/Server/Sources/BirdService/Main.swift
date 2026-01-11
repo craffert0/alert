@@ -2,8 +2,6 @@
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
 import AlertAPI
-import Fluent
-import FluentSQLiteDriver
 import OpenAPIVapor
 import URLNetwork
 import Vapor
@@ -12,10 +10,8 @@ import Vapor
 struct Main {
     static func main() async throws {
         let app = try await Vapor.Application.make()
-        app.http.server.configuration.address =
-            .hostname("0.0.0.0", port: 8192)
-        // app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
-        app.databases.use(.sqlite(.memory), as: .sqlite)
+        app.http.server.configuration.address = Config.global.address
+        app.databases.use(Config.global.database, as: .sqlite)
         app.migrations.add(CreateUser())
         app.migrations.add(CreateDevice())
         try await app.autoMigrate()
