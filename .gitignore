@@ -4,10 +4,6 @@ eBirdAlert/URLNetwork/Sources/KeyService.swift
 # eBirdOrder.swift is generated
 eBirdAlert/Schema/Sources/Schema/eBirdOrder.swift
 
-# cd eBirdAlert/Server/Sources/BirdService
-# ln -s ../../../AlertAPI/Sources/AlertAPI/openapi.yaml .
-eBirdAlert/Server/Sources/BirdService/openapi.yaml
-
 RCS/
 __pycache__/
 

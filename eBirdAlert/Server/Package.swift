@@ -15,24 +15,16 @@ let package = Package(
         .package(path: "../Schema"),
         .package(path: "../URLNetwork"),
         .package(
-            url: "https://github.com/apple/swift-openapi-generator",
-            .upToNextMinor(from: "1.10.3")
-        ),
-        .package(
-            url: "https://github.com/apple/swift-openapi-runtime",
-            .upToNextMinor(from: "1.9.0")
-        ),
-        .package(
-            url: "https://github.com/swift-server/swift-openapi-vapor",
-            .upToNextMinor(from: "1.0.1")
-        ),
-        .package(
             url: "https://github.com/swift-server-community/APNSwift",
             .upToNextMinor(from: "6.3.0")
         ),
         .package(
             url: "https://github.com/vapor/vapor",
             .upToNextMajor(from: "4.120.0")
+        ),
+        .package(
+            url: "https://github.com/swift-server/swift-openapi-vapor",
+            .upToNextMinor(from: "1.0.1")
         ),
         .package(
             url: "https://github.com/vapor/fluent",
@@ -59,10 +51,6 @@ let package = Package(
                     package: "APNSwift"
                 ),
                 .product(
-                    name: "OpenAPIRuntime",
-                    package: "swift-openapi-runtime"
-                ),
-                .product(
                     name: "OpenAPIVapor",
                     package: "swift-openapi-vapor"
                 ),
@@ -78,10 +66,6 @@ let package = Package(
                     name: "FluentSQLiteDriver",
                     package: "fluent-sqlite-driver"
                 ),
-            ],
-            plugins: [
-                .plugin(name: "OpenAPIGenerator",
-                        package: "swift-openapi-generator"),
             ]
         ),
         .testTarget(

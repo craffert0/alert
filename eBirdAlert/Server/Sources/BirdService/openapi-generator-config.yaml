@@ -1,5 +1,0 @@
-generate:
-  - server
-additionalImports:
-  - AlertAPI
-namingStrategy: idiomatic
