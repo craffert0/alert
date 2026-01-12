@@ -2,22 +2,13 @@
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
 import AlertAPI
-
-extension Device {
-    func dump() {
-        print($user.name)
-        print(registerTime)
-        print(daysBack)
-        print(deviceResult.joined(separator: ", "))
-        print(mostRecentResult.joined(separator: ", "))
-        print(String(describing: mostRecentUpdate))
-    }
-}
+import Logging
 
 struct ServiceHandler: APIProtocol {
     let provider: ModelProvider
     let runner: DevicesRunner
     let notificationService: NotificationService
+    let logger: Logger
 
     func trigger(_: Operations.Trigger.Input) async throws
         -> Operations.Trigger.Output
@@ -37,7 +28,7 @@ struct ServiceHandler: APIProtocol {
             try await provider.create(user: user)
             return .created(.init(body: .json(user.response)))
         } catch {
-            print(error)
+            logger.info("newUser: \(error)")
             return .conflict
         }
     }
@@ -79,18 +70,21 @@ struct ServiceHandler: APIProtocol {
             }
             device.update(from: q)
             try await provider.update(device: device)
-            device.dump()
+            logger.info(
+                "notableQuery: updated \(device.id?.uuidString ?? "<>")"
+            )
             return .accepted
         }
 
         guard let user = try await provider.getUser(token: q.userToken) else {
-            print("no user")
+            logger.info("notableQuery: no user \(q.userToken)")
             return .unauthorized
         }
-        print("create d")
         let device = Device(from: q)
         try await provider.create(device: device, for: user)
-        device.dump()
+        logger.info(
+            "notableQuery: created \(device.id?.uuidString ?? "<>") for \(user.name)"
+        )
         return .accepted
     }
 
@@ -98,8 +92,6 @@ struct ServiceHandler: APIProtocol {
         -> Operations.SendFake.Output
     {
         guard case let .json(q) = input.body else { return .notFound }
-        print(q.deviceId)
-        print(q.birds)
         try await notificationService.notify(q.deviceId,
                                              newBirds: Set(q.birds),
                                              badgeCount: q.birds.count)

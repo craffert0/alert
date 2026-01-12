@@ -5,6 +5,7 @@ import AlertAPI
 @testable import BirdService
 import Cuckoo
 import Foundation
+import Logging
 import Network
 import Schema
 import Testing
@@ -40,7 +41,8 @@ import Testing
 
         runner = DevicesRunner(provider: provider,
                                birdService: birdService,
-                               notificationService: notificationService)
+                               notificationService: notificationService,
+                               logger: Logger(label: "testy"))
     }
 
     @Test func noDevices() async throws {

@@ -12,6 +12,7 @@ struct Config: Codable {
     let apnKeyIdentifier: String
     let apnPrivateKeyArray: [String]
     let servicePort: Int
+    let checkTimeInterval: TimeInterval
     let databaseConfig: String
 }
 
