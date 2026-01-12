@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
-import AlertAPI
 import Foundation
 import Schema
 
-extension Components.Schemas.Range {
+public extension Components.Schemas.Range {
     var model: RangeType {
         switch self {
         case let .RegionInfo(info):
@@ -16,7 +15,7 @@ extension Components.Schemas.Range {
     }
 }
 
-extension Components.Schemas.RegionInfo {
+public extension Components.Schemas.RegionInfo {
     var model: eBirdRegionInfo {
         .init(result: result,
               code: code,
@@ -24,7 +23,7 @@ extension Components.Schemas.RegionInfo {
     }
 }
 
-extension Components.Schemas.Circle {
+public extension Components.Schemas.Circle {
     var model: CircleModel {
         .init(location: location.model,
               radius: radius,
@@ -32,7 +31,7 @@ extension Components.Schemas.Circle {
     }
 }
 
-extension Components.Schemas.Location {
+public extension Components.Schemas.Location {
     var model: Coordinate {
         .init(latitude: lat, longitude: lng)
     }
@@ -40,7 +39,7 @@ extension Components.Schemas.Location {
 
 // ----------------------------------------------------------------
 
-extension RangeType {
+public extension RangeType {
     var api: Components.Schemas.Range {
         switch self {
         case let .region(info):
@@ -51,7 +50,7 @@ extension RangeType {
     }
 }
 
-extension eBirdRegionInfo {
+public extension eBirdRegionInfo {
     var api: Components.Schemas.RegionInfo {
         .init(result: result,
               code: code,
@@ -59,7 +58,7 @@ extension eBirdRegionInfo {
     }
 }
 
-extension CircleModel {
+public extension CircleModel {
     var api: Components.Schemas.Circle {
         .init(location: location.api,
               radius: radius,
@@ -67,7 +66,7 @@ extension CircleModel {
     }
 }
 
-extension Coordinate {
+public extension Coordinate {
     var api: Components.Schemas.Location {
         .init(lat: latitude, lng: longitude)
     }

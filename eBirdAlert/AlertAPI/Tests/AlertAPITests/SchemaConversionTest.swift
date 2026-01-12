@@ -2,7 +2,6 @@
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
 import AlertAPI
-@testable import BirdService
 import Foundation
 import Schema
 import Testing
@@ -11,7 +10,7 @@ typealias Circle = Components.Schemas.Circle
 typealias RegionInfo = Components.Schemas.RegionInfo
 typealias Range = Components.Schemas.Range
 
-@Suite struct AlertApiSchemaTest {
+@Suite struct SchemaConversionTest {
     @Test func circle() {
         let expected: RangeType =
             .radius(.init(location: .init(latitude: 73,

@@ -18,6 +18,7 @@ let package = Package(
     ],
 
     dependencies: [
+        .package(path: "../Schema"),
         .package(
             url: "https://github.com/apple/swift-openapi-generator",
             .upToNextMinor(from: "1.10.3")
@@ -32,6 +33,7 @@ let package = Package(
         .target(
             name: "AlertAPI",
             dependencies: [
+                "Schema",
                 .product(
                     name: "OpenAPIRuntime",
                     package: "swift-openapi-runtime"
@@ -40,6 +42,12 @@ let package = Package(
             plugins: [
                 .plugin(name: "OpenAPIGenerator",
                         package: "swift-openapi-generator"),
+            ]
+        ),
+        .testTarget(
+            name: "AlertAPITests",
+            dependencies: [
+                "AlertAPI",
             ]
         ),
     ]
