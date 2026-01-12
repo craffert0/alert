@@ -66,7 +66,7 @@ import Testing
     @Test func newBirds() async throws {
         let deviceResult = ["cangoo", "blwwhi"]
         let latestResult = ["blwwhi", "cuckoo", "horlar"]
-        let expected = Set(["cuckoo", "horlar"])
+        let expected = Set(["f-cuckoo", "f-horlar"])
         let device = device(deviceId: "abc",
                             deviceResult: deviceResult,
                             mostRecentResult: deviceResult)
@@ -97,7 +97,7 @@ import Testing
         let deviceResult = ["cangoo", "blwwhi"]
         let mostRecentResult = ["cangoo", "blwwhi", "cuckoo"]
         let latestResult = ["blwwhi", "cuckoo", "horlar"]
-        let expected = Set(["horlar"])
+        let expected = Set(["f-horlar"])
         let device = device(deviceId: "abc",
                             deviceResult: deviceResult,
                             mostRecentResult: mostRecentResult)
@@ -152,11 +152,11 @@ import Testing
             try await runner.run()
         }
         try await run(["cangoo", "blwwhi", "horlar", "cuckoo"],
-                      ["horlar", "cuckoo"],
+                      ["f-horlar", "f-cuckoo"],
                       2)
         try await run(["cangoo", "blwwhi", "horlar", "cuckoo"], nil, nil)
         try await run(["blwwhi", "horlar", "cuckoo", "chicken"],
-                      ["chicken"],
+                      ["f-chicken"],
                       3)
         try await run(["blwwhi", "horlar", "cuckoo"], nil, nil)
     }

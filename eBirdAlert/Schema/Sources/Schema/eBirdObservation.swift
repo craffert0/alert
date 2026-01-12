@@ -47,7 +47,7 @@ public extension eBirdObservation {
     init(fake speciesCode: String) {
         self.init(
             speciesCode: speciesCode,
-            comName: "My Fancy Species",
+            comName: "f-\(speciesCode)",
             sciName: "Specious Reasoning",
             locId: "backyard",
             locName: "My Backyard",

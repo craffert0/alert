@@ -16,16 +16,20 @@ struct DevicesRunner: Sendable {
 
     private func run(device: Device) async throws {
         guard let range = device.range else { return }
-        let nowBirds =
-            try await birdService.getBirds(in: range,
-                                           back: device.daysBack)
+        let nowInfos =
+            try await birdService.getNotable(in: range.model,
+                                             back: device.daysBack)
+        let nowBirds = Set(nowInfos.map(\.speciesCode))
         let oldBirds = Set(device.mostRecentResult)
         let newBirds = nowBirds.subtracting(oldBirds)
         if !newBirds.isEmpty {
+            let birdNames = newBirds.map { code in
+                nowInfos.first(where: { $0.speciesCode == code })!.comName
+            }
             let deviceBirds = Set(device.deviceResult)
             let badgeCount = nowBirds.subtracting(deviceBirds).count
             try await notificationService.notify(device.deviceId,
-                                                 newBirds: newBirds,
+                                                 newBirds: Set(birdNames),
                                                  badgeCount: badgeCount)
         }
         if nowBirds != oldBirds {
