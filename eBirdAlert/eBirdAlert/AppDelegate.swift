@@ -38,15 +38,14 @@ extension AppDelegate: UIApplicationDelegate {
         _: UIApplication,
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
     ) {
-        let hex = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        print("registered: \(hex)")
+        PreferencesModel.global.deviceToken = deviceToken
     }
 
     @MainActor
     func application(
         _: UIApplication,
-        didFailToRegisterForRemoteNotificationsWithError error: any Error
+        didFailToRegisterForRemoteNotificationsWithError _: any Error
     ) {
-        print("failed: \(error)")
+        PreferencesModel.global.deviceToken = nil
     }
 }

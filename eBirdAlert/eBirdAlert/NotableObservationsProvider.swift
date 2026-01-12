@@ -13,7 +13,8 @@ class NotableObservationsProvider {
 
     init(client: ObservationsClient,
          checklistDataService: ChecklistDataService,
-         locationService: LocationService)
+         locationService: LocationService,
+         remoteNotificationService: RemoteNotificationService? = nil)
     {
         provider = ObservationsProvider(locationService: locationService) { range, daysBack in
             let observations =
@@ -25,6 +26,11 @@ class NotableObservationsProvider {
                     }
                 }
             }
+            remoteNotificationService?.register(
+                range: range,
+                daysBack: daysBack,
+                birdsSeen: observations
+            )
             return observations
         }
     }
