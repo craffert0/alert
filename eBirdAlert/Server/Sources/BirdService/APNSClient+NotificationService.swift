@@ -5,7 +5,10 @@ import APNS
 import Foundation
 
 extension APNSClient<JSONDecoder, JSONEncoder>: NotificationService {
-    func notify(_ deviceId: String, newBirds: Set<String>) async throws {
+    func notify(_ deviceId: String,
+                newBirds: Set<String>,
+                badgeCount: Int) async throws
+    {
         try await sendAlertNotification(
             .init(
                 alert: .init(
@@ -17,7 +20,7 @@ extension APNSClient<JSONDecoder, JSONEncoder>: NotificationService {
                 priority: .immediately,
                 topic: "net.rafferty.colin.eBirdAlert",
                 payload: NotificationPayload(),
-                badge: nil
+                badge: badgeCount
             ),
             deviceToken: deviceId
         )

@@ -84,7 +84,9 @@ import Testing
                 .thenReturn(latestResult.fakes)
         }
         stub(notificationService) { stub in
-            when(stub.notify(device.deviceId, newBirds: equal(to: expected)))
+            when(stub.notify(device.deviceId,
+                             newBirds: equal(to: expected),
+                             badgeCount: 2))
                 .then { _ in }
         }
         try await runner.run()
@@ -113,10 +115,49 @@ import Testing
                 .thenReturn(latestResult.fakes)
         }
         stub(notificationService) { stub in
-            when(stub.notify(device.deviceId, newBirds: equal(to: expected)))
+            when(stub.notify(device.deviceId,
+                             newBirds: equal(to: expected),
+                             badgeCount: 2))
                 .then { _ in }
         }
         try await runner.run()
         #expect(Set(actualMostRecentResult) == Set(latestResult))
+    }
+
+    @Test func iterativeBadgeCount() async throws {
+        let base = ["cangoo", "blwwhi"]
+        let device = device(deviceId: "abc",
+                            deviceResult: base,
+                            mostRecentResult: base)
+        stub(provider) { stub in
+            when(stub.getDevices())
+                .thenReturn([device])
+            when(stub.update(device: equal(to: device)))
+                .then { _ in }
+        }
+        let run: ([String], [String]?, Int?) async throws -> Void = {
+            result, expected, badgeCount in
+            stub(birdService) { stub in
+                when(stub.getNotable(in: equal(to: kRange.model), back: kDaysBack))
+                    .thenReturn(result.fakes)
+            }
+            if let expected, let badgeCount {
+                stub(notificationService) { stub in
+                    when(stub.notify(device.deviceId,
+                                     newBirds: equal(to: Set(expected)),
+                                     badgeCount: badgeCount))
+                        .then { _ in }
+                }
+            }
+            try await runner.run()
+        }
+        try await run(["cangoo", "blwwhi", "horlar", "cuckoo"],
+                      ["horlar", "cuckoo"],
+                      2)
+        try await run(["cangoo", "blwwhi", "horlar", "cuckoo"], nil, nil)
+        try await run(["blwwhi", "horlar", "cuckoo", "chicken"],
+                      ["chicken"],
+                      3)
+        try await run(["blwwhi", "horlar", "cuckoo"], nil, nil)
     }
 }

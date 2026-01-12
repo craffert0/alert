@@ -22,8 +22,11 @@ struct DevicesRunner: Sendable {
         let oldBirds = Set(device.mostRecentResult)
         let newBirds = nowBirds.subtracting(oldBirds)
         if !newBirds.isEmpty {
+            let deviceBirds = Set(device.deviceResult)
+            let badgeCount = nowBirds.subtracting(deviceBirds).count
             try await notificationService.notify(device.deviceId,
-                                                 newBirds: newBirds)
+                                                 newBirds: newBirds,
+                                                 badgeCount: badgeCount)
         }
         if nowBirds != oldBirds {
             device.mostRecentResult = Array(nowBirds)

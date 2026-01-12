@@ -101,7 +101,8 @@ struct ServiceHandler: APIProtocol {
         print(q.deviceId)
         print(q.birds)
         try await notificationService.notify(q.deviceId,
-                                             newBirds: Set(q.birds))
+                                             newBirds: Set(q.birds),
+                                             badgeCount: q.birds.count)
         return .accepted
     }
 }

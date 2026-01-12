@@ -2,5 +2,7 @@
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
 protocol NotificationService: Sendable {
-    func notify(_ deviceId: String, newBirds: Set<String>) async throws
+    func notify(_ deviceId: String,
+                newBirds: Set<String>,
+                badgeCount: Int) async throws
 }
