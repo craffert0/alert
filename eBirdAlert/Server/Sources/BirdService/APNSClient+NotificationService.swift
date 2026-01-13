@@ -10,18 +10,7 @@ extension APNSClient<JSONDecoder, JSONEncoder>: NotificationService {
                 badgeCount: Int) async throws
     {
         try await sendAlertNotification(
-            .init(
-                alert: .init(
-                    title: .raw(newBirds.count == 1 ? "New Rarity" : "New Rarities"),
-                    body: .raw(newBirds.joined(separator: ", ")),
-                    launchImage: nil
-                ),
-                expiration: .immediately,
-                priority: .immediately,
-                topic: "net.rafferty.colin.eBirdAlert",
-                payload: NotificationPayload(),
-                badge: badgeCount
-            ),
+            .init(newBirds: newBirds, badgeCount: badgeCount),
             deviceToken: deviceId
         )
     }
