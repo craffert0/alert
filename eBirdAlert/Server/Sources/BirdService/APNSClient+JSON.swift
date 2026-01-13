@@ -3,6 +3,7 @@
 
 import APNS
 import Foundation
+import NIOCore
 
 extension APNSClient<JSONDecoder, JSONEncoder> {
     convenience init(teamIdentifier: String,
@@ -18,9 +19,22 @@ extension APNSClient<JSONDecoder, JSONEncoder> {
                 ),
                 environment: .development
             ),
-            eventLoopGroupProvider: .createNew,
+            eventLoopGroupProvider: (WorkaroundS() as WorkaroundP).get(),
             responseDecoder: JSONDecoder(),
             requestEncoder: JSONEncoder()
         )
+    }
+}
+
+// https://stackoverflow.com/a/45743766
+
+protocol WorkaroundP {
+    func get() -> NIOEventLoopGroupProvider
+}
+
+struct WorkaroundS: WorkaroundP {
+    @available(*, deprecated)
+    func get() -> NIOEventLoopGroupProvider {
+        .createNew
     }
 }
