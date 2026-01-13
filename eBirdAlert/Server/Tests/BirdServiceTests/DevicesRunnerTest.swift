@@ -10,6 +10,10 @@ import Network
 import Schema
 import Testing
 
+enum TestError: Error {
+    case unexpectedNotification
+}
+
 @Suite struct DevicesRunnerTest {
     let provider: MockModelProvider
     let birdService: MockeBirdService
@@ -34,6 +38,48 @@ import Testing
         return device
     }
 
+    private func setup(_ deviceResult: [String],
+                       mostRecentResult: [String]? = nil)
+    {
+        let device = device(deviceId: "deviceId",
+                            deviceResult: deviceResult,
+                            mostRecentResult: mostRecentResult ?? deviceResult)
+
+        stub(provider) { stub in
+            when(stub.getDevices())
+                .thenReturn([device])
+            when(stub.update(device: equal(to: device)))
+                .then { _ in }
+        }
+    }
+
+    private func run(_ result: [String],
+                     _ expected: [String]? = nil,
+                     _ badgeCount: Int? = nil) async throws
+    {
+        stub(birdService) { stub in
+            when(stub.getNotable(in: equal(to: kRange.model), back: kDaysBack))
+                .thenReturn(result.fakes)
+        }
+        if let expected, let badgeCount {
+            stub(notificationService) { stub in
+                when(stub.notify("deviceId",
+                                 newBirds: equal(to: Set(expected)),
+                                 badgeCount: badgeCount))
+                    .then { _ in }
+            }
+        } else {
+            stub(notificationService) { stub in
+                when(stub.notify("deviceId",
+                                 newBirds: any(),
+                                 badgeCount: anyInt()))
+                    .thenThrow(TestError.unexpectedNotification)
+            }
+        }
+
+        try await runner.run()
+    }
+
     init() {
         provider = MockModelProvider()
         birdService = MockeBirdService()
@@ -54,105 +100,30 @@ import Testing
 
     @Test func sameBirds() async throws {
         let birds = ["cangoo", "blwwhi"]
-        let device = device(deviceResult: birds, mostRecentResult: birds)
-        stub(provider) { stub in
-            when(stub.getDevices()).thenReturn([device])
-        }
-        stub(birdService) { stub in
-            when(stub.getNotable(in: equal(to: kRange.model), back: kDaysBack))
-                .thenReturn(birds.fakes)
-        }
-        try await runner.run()
+        setup(birds)
+        try await run(birds)
     }
 
     @Test func newBirds() async throws {
         let deviceResult = ["cangoo", "blwwhi"]
         let latestResult = ["blwwhi", "cuckoo", "horlar"]
-        let expected = Set(["f-cuckoo", "f-horlar"])
-        let device = device(deviceId: "abc",
-                            deviceResult: deviceResult,
-                            mostRecentResult: deviceResult)
-        var actualMostRecentResult: [String] = []
-        stub(provider) { stub in
-            when(stub.getDevices())
-                .thenReturn([device])
-            when(stub.update(device: equal(to: device)))
-                .then { device in
-                    actualMostRecentResult = device.mostRecentResult
-                }
-        }
-        stub(birdService) { stub in
-            when(stub.getNotable(in: equal(to: kRange.model), back: kDaysBack))
-                .thenReturn(latestResult.fakes)
-        }
-        stub(notificationService) { stub in
-            when(stub.notify(device.deviceId,
-                             newBirds: equal(to: expected),
-                             badgeCount: 2))
-                .then { _ in }
-        }
-        try await runner.run()
-        #expect(Set(actualMostRecentResult) == Set(latestResult))
+        let expected = ["f-cuckoo", "f-horlar"]
+        setup(deviceResult)
+        try await run(latestResult, expected, 2)
     }
 
     @Test func allDifferentBirds() async throws {
         let deviceResult = ["cangoo", "blwwhi"]
         let mostRecentResult = ["cangoo", "blwwhi", "cuckoo"]
         let latestResult = ["blwwhi", "cuckoo", "horlar"]
-        let expected = Set(["f-horlar"])
-        let device = device(deviceId: "abc",
-                            deviceResult: deviceResult,
-                            mostRecentResult: mostRecentResult)
-        var actualMostRecentResult: [String] = []
-        stub(provider) { stub in
-            when(stub.getDevices())
-                .thenReturn([device])
-            when(stub.update(device: equal(to: device)))
-                .then { device in
-                    actualMostRecentResult = device.mostRecentResult
-                }
-        }
-        stub(birdService) { stub in
-            when(stub.getNotable(in: equal(to: kRange.model), back: kDaysBack))
-                .thenReturn(latestResult.fakes)
-        }
-        stub(notificationService) { stub in
-            when(stub.notify(device.deviceId,
-                             newBirds: equal(to: expected),
-                             badgeCount: 2))
-                .then { _ in }
-        }
-        try await runner.run()
-        #expect(Set(actualMostRecentResult) == Set(latestResult))
+        let expected = ["f-horlar"]
+        setup(deviceResult, mostRecentResult: mostRecentResult)
+        try await run(latestResult, expected, 2)
     }
 
     @Test func iterativeBadgeCount() async throws {
         let base = ["cangoo", "blwwhi"]
-        let device = device(deviceId: "abc",
-                            deviceResult: base,
-                            mostRecentResult: base)
-        stub(provider) { stub in
-            when(stub.getDevices())
-                .thenReturn([device])
-            when(stub.update(device: equal(to: device)))
-                .then { _ in }
-        }
-        let run: ([String], [String]?, Int?) async throws -> Void = {
-            result, expected, badgeCount in
-            stub(birdService) { stub in
-                when(stub.getNotable(in: equal(to: kRange.model), back: kDaysBack))
-                    .thenReturn(result.fakes)
-            }
-            if let expected, let badgeCount {
-                stub(notificationService) { stub in
-                    when(stub.notify(device.deviceId,
-                                     newBirds: equal(to: Set(expected)),
-                                     badgeCount: badgeCount))
-                        .then { _ in }
-                }
-            }
-            try await runner.run()
-        }
+        setup(base)
         try await run(["cangoo", "blwwhi", "horlar", "cuckoo"],
                       ["f-horlar", "f-cuckoo"],
                       2)
