@@ -12,11 +12,13 @@ class AppDelegate: NSObject {
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _: UNUserNotificationCenter,
-        didReceive response: UNNotificationResponse
-    ) async {
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
         if let tabKind = response.notification.request.content.tabKind {
             center.post(name: .navigateToTab, object: tabKind)
         }
+        completionHandler()
     }
 
     func userNotificationCenter(
