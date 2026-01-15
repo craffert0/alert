@@ -215,6 +215,8 @@ components:
           type: string
         deviceId:
           type: string
+        registerTime:
+          type: string
         range:
           $ref: '#/components/schemas/Range'
         daysBack:
@@ -227,3 +229,11 @@ components:
           type: array
           items:
             type: string
+        mostRecentUpdate:
+          type: string
+      required:
+        - deviceId
+        - registerTime
+        - daysBack
+        - deviceSpecies
+        - mostRecentPushSpecies

@@ -6,12 +6,16 @@ import FluentKit
 
 extension Device {
     var api: Components.Schemas.Device {
-        Components.Schemas.Device(user: $user.value?.name,
-                                  deviceId: deviceId,
-                                  range: range,
-                                  daysBack: daysBack,
-                                  deviceSpecies: deviceSpecies,
-                                  mostRecentPushSpecies: mostRecentPushSpecies)
+        Components.Schemas.Device(
+            user: $user.value?.name,
+            deviceId: deviceId,
+            registerTime: registerTime.formatted(.iso8601),
+            range: range,
+            daysBack: daysBack,
+            deviceSpecies: deviceSpecies,
+            mostRecentPushSpecies: mostRecentPushSpecies,
+            mostRecentUpdate: mostRecentUpdate?.formatted(.iso8601)
+        )
     }
 
     convenience init(from query: Components.Schemas.NotableQuery) {
