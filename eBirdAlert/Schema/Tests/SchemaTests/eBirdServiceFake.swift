@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-import CoreLocation
 import Foundation
 import Schema
 
-class eBirdServiceFake {
+final class eBirdServiceFake {
     let notableName: String?
     let allName: String?
 
@@ -30,17 +29,22 @@ class eBirdServiceFake {
 }
 
 extension eBirdServiceFake: eBirdService {
-    func getNotable(in _: RangeType) async throws -> [eBirdObservation] {
+    func getNotable(in _: RangeType,
+                    back _: Int) async throws -> [eBirdObservation]
+    {
         guard let notableName else { throw eBirdServiceFakeError.noName }
         return try get(name: notableName)
     }
 
-    func getAll(in _: RangeType) async throws -> [eBirdRecentObservation] {
+    func getAll(in _: RangeType,
+                back _: Int) async throws -> [eBirdRecentObservation]
+    {
         guard let allName else { throw eBirdServiceFakeError.noName }
         return try get(name: allName)
     }
 
     func getBird(in _: RangeType,
+                 back _: Int,
                  for _: String) async throws -> [eBirdRecentObservation]
     {
         throw eBirdServiceFakeError.noName

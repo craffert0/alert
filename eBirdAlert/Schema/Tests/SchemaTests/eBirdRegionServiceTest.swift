@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-import CoreLocation
 import Foundation
 import Schema
 import Testing
@@ -15,7 +14,7 @@ import Testing
         let service = try FakeRegionService.from(resource: "SampleRegionData")
         let result =
             try await service.getRegions(
-                near: CLLocation(latitude: 40.67, longitude: -73.97)
+                near: Coordinate(latitude: 40.67, longitude: -73.97)
             ).sorted(by: { a, b in a.code < b.code })
         try #require(result.count == 7)
         #expect(result[0].result == "Bergen, New Jersey, United States")

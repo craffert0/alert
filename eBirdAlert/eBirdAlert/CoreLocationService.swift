@@ -2,6 +2,7 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import CoreLocation
+import Schema
 
 class CoreLocationService: LocationService {
     private let locationManager = CLLocationManager()
@@ -30,7 +31,9 @@ extension CoreLocationService: CLLocationManagerDelegate {
     {
         guard let location = locations.last else { return }
         Task { @MainActor in
-            self.location = location
+            self.location =
+                Coordinate(latitude: location.coordinate.latitude,
+                           longitude: location.coordinate.longitude)
         }
     }
 }

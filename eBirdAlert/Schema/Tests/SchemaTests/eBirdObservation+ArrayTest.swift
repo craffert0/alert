@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-import CoreLocation
 import Foundation
 import Schema
 import Testing
@@ -18,7 +17,7 @@ private func dump(json e: any Encodable) throws {
         let client =
             NotableObservationsClient(
                 service: eBirdServiceFake(notableName: "20250402T1030"))
-        let raw = try await client.observations(in: .region(.kings))
+        let raw = try await client.observations(in: .region(.kings), back: 3)
         #expect(raw.count == 87)
         let observations = raw.collate()
         #expect(observations.count == 9)

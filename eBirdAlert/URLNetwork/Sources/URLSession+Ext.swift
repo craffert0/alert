@@ -4,7 +4,7 @@
 import Foundation
 
 extension URLSession {
-    static let region = URLSession(configuration: .region)
+    public static let region = URLSession(configuration: .region)
 
     func object<Output: Decodable>(
         for request: URLRequest

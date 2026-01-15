@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-import CoreLocation
 import Schema
+import URLNetwork
 
 public class FakeObservationsClient {
     private let observations: [eBirdObservation]?
@@ -13,7 +13,7 @@ public class FakeObservationsClient {
 }
 
 extension FakeObservationsClient: ObservationsClient {
-    public func get(in _: Schema.RangeType) async throws -> [Schema.eBirdObservation] {
+    public func get(in _: Schema.RangeType, back _: Int) async throws -> [Schema.eBirdObservation] {
         guard let observations else {
             throw eBirdServiceError.noLocation
         }

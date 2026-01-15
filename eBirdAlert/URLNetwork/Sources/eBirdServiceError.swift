@@ -4,7 +4,7 @@
 import Foundation
 import Schema
 
-enum eBirdServiceError: Error {
+public enum eBirdServiceError: Error {
     case noKey
     case noLocation
     case noRegion
@@ -15,7 +15,7 @@ enum eBirdServiceError: Error {
     case unexpectedError(error: Error)
     case expandedArea(distance: Double, units: DistanceUnits)
 
-    static func from(_ error: Error?) -> eBirdServiceError? {
+    public static func from(_ error: Error?) -> eBirdServiceError? {
         guard let error else { return nil }
         if let urlError = error as? URLError {
             return .urlError(error: urlError)
@@ -28,7 +28,7 @@ enum eBirdServiceError: Error {
 }
 
 extension eBirdServiceError: LocalizedError {
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .noKey: "no api key"
         case .noLocation: "could not get location"

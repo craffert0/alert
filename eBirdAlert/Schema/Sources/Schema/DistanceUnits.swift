@@ -20,4 +20,4 @@ public enum DistanceUnits: String {
     }
 }
 
-extension DistanceUnits: Sendable {}
+extension DistanceUnits: Codable, Sendable {}

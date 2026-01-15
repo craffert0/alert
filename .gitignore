@@ -1,5 +1,9 @@
-eBirdAlert/eBirdAlert/KeyService.swift
+# KeyService.swift is the secret key
+eBirdAlert/URLNetwork/Sources/KeyService.swift
+
+# eBirdOrder.swift is generated
 eBirdAlert/Schema/Sources/Schema/eBirdOrder.swift
+
 RCS/
 __pycache__/
 
@@ -69,3 +73,4 @@ fastlane/test_output
 *.DS_Store
 
 Package.resolved
+contents.xcworkspacedata

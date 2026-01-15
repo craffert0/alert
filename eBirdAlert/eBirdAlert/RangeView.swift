@@ -60,10 +60,10 @@ struct RangeView: View {
                 radiusView(circle)
             }.padding()
             Map {
-                let coordinate = circle.location.coordinate
-                Marker(coordinate: coordinate) {}
+                let coordinate = circle.location
+                Marker(coordinate: coordinate.location) {}
                 MapCircle(
-                    center: coordinate,
+                    center: coordinate.location,
                     radius: circle.units.asMeters(circle.radius)
                 )
                 .foregroundStyle(.clear)
@@ -81,7 +81,7 @@ struct RangeView: View {
             }.padding()
             Map {
                 if let bounds = regionInfo.bounds {
-                    MapPolyline(coordinates: bounds.coordinates)
+                    MapPolyline(coordinates: bounds.coordinates.locations)
                         .stroke(.blue, lineWidth: 5)
                 }
             }
@@ -93,7 +93,7 @@ struct RangeView: View {
     let none: RangeType? = nil
     let region = RangeType.region(.kings)
     let radius = RangeType.radius(
-        CircleModel(location: CLLocation(latitude: 40.67,
+        CircleModel(location: Coordinate(latitude: 40.67,
                                          longitude: -73.97),
                     radius: 2.3,
                     units: .miles))

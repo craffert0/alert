@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B1FAB9D2F11B2860002EF60 /* URLNetwork in Frameworks */ = {isa = PBXBuildFile; productRef = 3B1FAB9C2F11B2860002EF60 /* URLNetwork */; };
+		3B520C4E2F15855C009DA370 /* AlertAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 3B520C4D2F15855C009DA370 /* AlertAPI */; };
+		3B520D082F1594F3009DA370 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = 3B520D072F1594F3009DA370 /* OpenAPIURLSession */; };
 		3B59C3B92D9D7B2F00A695C7 /* Schema in Frameworks */ = {isa = PBXBuildFile; productRef = 3B59C3B82D9D7B2F00A695C7 /* Schema */; };
 		3B8A70812E5675DC0050D63F /* SwiftUtil in Frameworks */ = {isa = PBXBuildFile; productRef = 3B8A70802E5675DC0050D63F /* SwiftUtil */; };
 /* End PBXBuildFile section */
@@ -72,6 +75,9 @@
 			files = (
 				3B8A70812E5675DC0050D63F /* SwiftUtil in Frameworks */,
 				3B59C3B92D9D7B2F00A695C7 /* Schema in Frameworks */,
+				3B520C4E2F15855C009DA370 /* AlertAPI in Frameworks */,
+				3B520D082F1594F3009DA370 /* OpenAPIURLSession in Frameworks */,
+				3B1FAB9D2F11B2860002EF60 /* URLNetwork in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,12 +98,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B1FAA2B2F11900B0002EF60 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		3BEF408F2D9ADB5C00817F9C = {
 			isa = PBXGroup;
 			children = (
 				3BEF409A2D9ADB5C00817F9C /* eBirdAlert */,
 				3BEF40AD2D9ADB5D00817F9C /* eBirdAlertTests */,
 				3BEF40B72D9ADB5D00817F9C /* eBirdAlertUITests */,
+				3B1FAA2B2F11900B0002EF60 /* Frameworks */,
 				3BEF40992D9ADB5C00817F9C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -134,6 +148,9 @@
 			packageProductDependencies = (
 				3B59C3B82D9D7B2F00A695C7 /* Schema */,
 				3B8A70802E5675DC0050D63F /* SwiftUtil */,
+				3B1FAB9C2F11B2860002EF60 /* URLNetwork */,
+				3B520C4D2F15855C009DA370 /* AlertAPI */,
+				3B520D072F1594F3009DA370 /* OpenAPIURLSession */,
 			);
 			productName = eBirdAlert;
 			productReference = 3BEF40982D9ADB5C00817F9C /* eBirdAlert.app */;
@@ -220,6 +237,9 @@
 			packageReferences = (
 				3B59C3BC2D9D7DC300A695C7 /* XCLocalSwiftPackageReference "Schema" */,
 				3B8A707F2E5675DC0050D63F /* XCRemoteSwiftPackageReference "swiftutil" */,
+				3B1FAB9B2F11B2860002EF60 /* XCLocalSwiftPackageReference "URLNetwork" */,
+				3B520C4C2F15855C009DA370 /* XCLocalSwiftPackageReference "AlertAPI" */,
+				3B520D062F1594F3009DA370 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3BEF40992D9ADB5C00817F9C /* Products */;
@@ -423,6 +443,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = eBirdAlert/eBirdAlert.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEVELOPMENT_ASSET_PATHS = "\"eBirdAlert/Preview Content\"";
@@ -458,6 +479,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = eBirdAlert/eBirdAlert.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEVELOPMENT_ASSET_PATHS = "\"eBirdAlert/Preview Content\"";
@@ -598,6 +620,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		3B1FAB9B2F11B2860002EF60 /* XCLocalSwiftPackageReference "URLNetwork" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = URLNetwork;
+		};
+		3B520C4C2F15855C009DA370 /* XCLocalSwiftPackageReference "AlertAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = AlertAPI;
+		};
 		3B59C3BC2D9D7DC300A695C7 /* XCLocalSwiftPackageReference "Schema" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Schema;
@@ -605,6 +635,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3B520D062F1594F3009DA370 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-urlsession";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
 		3B8A707F2E5675DC0050D63F /* XCRemoteSwiftPackageReference "swiftutil" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@gitlab.com:craffert0/swiftutil.git";
@@ -616,6 +654,19 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3B1FAB9C2F11B2860002EF60 /* URLNetwork */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = URLNetwork;
+		};
+		3B520C4D2F15855C009DA370 /* AlertAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AlertAPI;
+		};
+		3B520D072F1594F3009DA370 /* OpenAPIURLSession */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B520D062F1594F3009DA370 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */;
+			productName = OpenAPIURLSession;
+		};
 		3B59C3B82D9D7B2F00A695C7 /* Schema */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Schema;

@@ -20,57 +20,69 @@ extension RangeType: @retroactive Equatable {
 }
 
 extension RangeType {
-    var notableRequest: URLRequest {
+    private func queryItems(back daysBack: Int? = nil,
+                            and item: URLQueryItem? = nil) -> [URLQueryItem]
+    {
+        var items = [
+            URLQueryItem(name: "detail", value: "full"),
+            URLQueryItem(name: "hotspot", value: "false"),
+        ]
+        if let daysBack {
+            items += [URLQueryItem(name: "back", value: "\(daysBack)")]
+        }
+        if let item {
+            items += [item]
+        }
+        return items
+    }
+
+    func notableRequest(back daysBack: Int) -> URLRequest {
         switch self {
         case let .region(region):
             URLRequest(
                 eBirdPath: "data/obs/\(region.code)/recent/notable",
-                queryItems: PreferencesModel.global.queryItems
+                queryItems: queryItems(back: daysBack)
             )
 
         case let .radius(circle):
             URLRequest(
                 eBirdPath: "data/obs/geo/recent/notable",
-                queryItems: PreferencesModel.global.queryItems + [
-                    circle.queryItem,
-                ],
+                queryItems: queryItems(back: daysBack, and: circle.queryItem),
                 withLocation: circle.location
             )
         }
     }
 
-    var allRequest: URLRequest {
+    func allRequest(back daysBack: Int) -> URLRequest {
         switch self {
         case let .region(region):
             URLRequest(
                 eBirdPath: "data/obs/\(region.code)/recent",
-                queryItems: PreferencesModel.global.queryItems
+                queryItems: queryItems(back: daysBack)
             )
 
         case let .radius(circle):
             URLRequest(
                 eBirdPath: "data/obs/geo/recent",
-                queryItems: PreferencesModel.global.queryItems + [
-                    circle.queryItem,
-                ],
+                queryItems: queryItems(back: daysBack, and: circle.queryItem),
                 withLocation: circle.location
             )
         }
     }
 
-    func birdRequest(for speciesCode: String) -> URLRequest {
+    func birdRequest(back daysBack: Int,
+                     for speciesCode: String) -> URLRequest
+    {
         switch self {
         case let .region(region):
             URLRequest(
                 eBirdPath: "data/obs/\(region.code)/recent/\(speciesCode)",
-                queryItems: PreferencesModel.global.queryItems
+                queryItems: queryItems(back: daysBack)
             )
         case let .radius(circle):
             URLRequest(
                 eBirdPath: "data/obs/geo/recent/\(speciesCode)",
-                queryItems: PreferencesModel.global.queryItems + [
-                    circle.queryItem,
-                ],
+                queryItems: queryItems(back: daysBack, and: circle.queryItem),
                 withLocation: circle.location
             )
         }

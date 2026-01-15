@@ -1,0 +1,239 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
+
+openapi: "3.0.3"
+info:
+  title: eBird Alert API
+  version: 1.0.0
+servers:
+  - url: https://alert-api.rafferty.net/
+    description: "Notification Server for eBird Alert!"
+paths:
+  /api/v1/notableQuery:
+    post:
+      operationId: postNotableQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotableQuery'
+      responses:
+        '202':
+          description: A success response for the accepted value.
+        '401':
+          description: The token provided is not valid.
+  /admin/newUser:
+    post:
+      operationId: newUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUserRequest'
+      responses:
+        '201':
+          description: The newly created user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '409':
+          description: There is already a user by that name.
+  /admin/user:
+    get:
+      operationId: getUser
+      parameters:
+        - name: name
+          required: true
+          in: query
+          description: The name used in the returned greeting.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get the user with that name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: No such user
+  /admin/users:
+    get:
+      operationId: getUsers
+      responses:
+        '200':
+          description: Get all the users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'      
+  /admin/devices:
+    get:
+      operationId: getDevices
+      responses:
+        '200':
+          description: All the devices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+  /admin/trigger:
+    post:
+      operationId: trigger
+      responses:
+        '202':
+          description: triggered
+  /admin/fake:
+    post:
+      operationId: sendFake
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendFakeRequest'
+      responses:
+        '202':
+          description: sent
+        '404':
+          description: No such device
+components:
+  schemas:
+    NotableQuery:
+      type: object
+      properties:
+        userToken:
+          type: string
+          description: The token for the authorized user.
+        deviceId:
+          type: string
+          description: Hex string of the ID of the device that did the query.
+        range:
+          $ref: '#/components/schemas/Range'
+          description: Range of the query.
+        daysBack:
+          type: integer
+          description: Number of days back to query.
+        results:
+          type: array
+          items:
+            type: string
+      required:
+        - userToken
+        - deviceId
+        - range
+        - daysBack
+        - results
+    Range:
+      oneOf:
+        - $ref: '#/components/schemas/RegionInfo'
+        - $ref: '#/components/schemas/Circle'
+    RegionInfo:
+      type: object
+      properties:
+        result:
+          type: string
+        code:
+          type: string
+        type:
+          type: string
+          enum: [custom, country, subnational1, subnational2]
+      required:
+        - result
+        - code
+        - type
+    Circle:
+      type: object
+      properties:
+        location:
+          $ref: '#/components/schemas/Location'
+        radius:
+          type: number
+          format: double
+        units:
+          type: string
+          enum: [kilometers, miles]
+      required:
+        - location
+        - radius
+        - units
+    Location:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+        lng:
+          type: number
+          format: double
+      required:
+        - lat
+        - lng
+    SendFakeRequest:
+      type: object
+      properties:
+        deviceId:
+          type: string
+        birds:
+          type: array
+          items:
+            type: string
+      required:
+        - deviceId
+        - birds
+    NewUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        token:
+          type: string
+      required:
+        - id
+        - name
+        - token
+    Device:
+      type: object
+      properties:
+        user:
+          type: string
+        deviceId:
+          type: string
+        registerTime:
+          type: string
+        range:
+          $ref: '#/components/schemas/Range'
+        daysBack:
+          type: integer
+        deviceSpecies:
+          type: array
+          items:
+            type: string
+        mostRecentPushSpecies:
+          type: array
+          items:
+            type: string
+        mostRecentUpdate:
+          type: string
+      required:
+        - deviceId
+        - registerTime
+        - daysBack
+        - deviceSpecies
+        - mostRecentPushSpecies

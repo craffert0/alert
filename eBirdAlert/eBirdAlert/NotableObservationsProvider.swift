@@ -13,11 +13,12 @@ class NotableObservationsProvider {
 
     init(client: ObservationsClient,
          checklistDataService: ChecklistDataService,
-         locationService: LocationService)
+         locationService: LocationService,
+         remoteNotificationService: RemoteNotificationService? = nil)
     {
-        provider = ObservationsProvider(locationService: locationService) { range in
+        provider = ObservationsProvider(locationService: locationService) { range, daysBack in
             let observations =
-                try await client.observations(in: range).collate()
+                try await client.observations(in: range, back: daysBack).collate()
             for o in observations {
                 for l in o.locations {
                     for e in l.observations {
@@ -25,6 +26,11 @@ class NotableObservationsProvider {
                     }
                 }
             }
+            remoteNotificationService?.register(
+                range: range,
+                daysBack: daysBack,
+                birdsSeen: observations
+            )
             return observations
         }
     }

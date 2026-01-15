@@ -2,9 +2,9 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import Combine
-import CoreLocation
 import Schema
 import SwiftUI
+import URLNetwork
 
 class PreferencesModel: ObservableObject {
     static let global = PreferencesModel()
@@ -18,12 +18,14 @@ class PreferencesModel: ObservableObject {
     @AppStorage("settings.mapDirectionsType")
     var directionsType: MapDirectionsOption = .none
     @AppStorage("settings.notifyNotable") var notifyNotable: Bool = false
+    @AppStorage("settings.userToken") var userToken: String?
     @AppStorage("settings.notable.sort")
     var notableSort: ObservationSortOption = .byTime
     @AppStorage("settings.locals.sort")
     var localsSort: ObservationSortOption = .byTaxon
     @Published var debugMode: Bool = false
     let maxDistance: Double = 250
+    var deviceToken: Data?
 }
 
 extension PreferencesModel {
@@ -35,20 +37,7 @@ extension PreferencesModel {
         }
     }
 
-    var queryItems: [URLQueryItem] {
-        [
-            URLQueryItem(name: "detail", value: "full"),
-            URLQueryItem(name: "hotspot", value: "false"),
-            URLQueryItem(name: "back", value: "\(daysBack)"),
-        ]
-    }
-
-    var geoQueryItems: [URLQueryItem] {
-        queryItems + [URLQueryItem(name: "dist",
-                                   value: "\(distUnits.asKilometers(distValue))")]
-    }
-
-    func range(for location: CLLocation?,
+    func range(for location: Coordinate?,
                with service: eBirdRegionService) async throws -> RangeType
     {
         switch rangeOption {
@@ -66,6 +55,19 @@ extension PreferencesModel {
                     service.getInfo(for: service.getCensusTract(
                         for: location).code))
             }
+        }
+    }
+
+    var notificationType: NotificationType {
+        if !notifyNotable {
+            .none
+        } else if let userToken,
+                  userToken != "",
+                  let deviceToken
+        {
+            .server(userToken, deviceToken)
+        } else {
+            .local
         }
     }
 }

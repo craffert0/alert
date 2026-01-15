@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-import CoreLocation
 import Foundation
 
 public final class eBirdRegionInfo: Codable, Sendable {
@@ -20,7 +19,7 @@ public final class eBirdRegionInfo: Codable, Sendable {
         public let maxY: Double
     }
 
-    init(
+    public init(
         bounds: Bounds? = nil,
         result: String,
         code: String,
@@ -52,10 +51,10 @@ extension eBirdRegionInfo: Identifiable {
 }
 
 extension eBirdRegionInfo {
-    func contains(_ location: CLLocation) -> Bool {
+    func contains(_ location: Coordinate) -> Bool {
         guard let bounds else { return true }
-        let lat = location.coordinate.latitude
-        let lng = location.coordinate.longitude
+        let lat = location.latitude
+        let lng = location.longitude
         return
             bounds.minX - 0.14 <= lng &&
             lng <= bounds.maxX + 0.14 &&

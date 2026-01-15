@@ -2,6 +2,7 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 import MapKit
+import Schema
 import SwiftUI
 
 struct RangePreferenceView: View {
@@ -35,7 +36,7 @@ struct RangePreferenceView: View {
                 Map {
                     UserAnnotation()
                     MapCircle(
-                        center: location.coordinate,
+                        center: location.location,
                         radius: preferences.distUnits.asMeters(preferences.distValue)
                     )
                     .foregroundStyle(.clear)
@@ -54,7 +55,7 @@ struct RangePreferenceView: View {
     let noLocation = LocationService()
     let brooklyn: LocationService = {
         let l = LocationService()
-        l.location = CLLocation(latitude: 40.65, longitude: -74)
+        l.location = Coordinate(latitude: 40.65, longitude: -74)
         return l
     }()
     TabView {

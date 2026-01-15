@@ -4,6 +4,7 @@
 import MapKit
 import Schema
 import SwiftUI
+import URLNetwork
 
 struct LocalRegionView: View {
     var regionService: any eBirdRegionService
@@ -29,7 +30,7 @@ struct LocalRegionView: View {
     private var mapView: some View {
         Map(selection: preferences.$regionCode) {
             ForEach(regions) { info in
-                Marker(info.result, coordinate: info.coordinate)
+                Marker(info.result, coordinate: info.coordinate.location)
                     .tag(info.code)
                 if let bounds = info.bounds {
                     box(for: bounds,
@@ -56,7 +57,7 @@ struct LocalRegionView: View {
     private func box(for bounds: eBirdRegionInfo.Bounds,
                      with selected: Bool) -> some MapContent
     {
-        MapPolyline(coordinates: bounds.coordinates)
+        MapPolyline(coordinates: bounds.coordinates.locations)
             .stroke(selected ? .blue : .red,
                     lineWidth: selected ? 5 : 2)
     }

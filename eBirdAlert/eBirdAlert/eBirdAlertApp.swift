@@ -27,7 +27,8 @@ struct eBirdAlertApp: App {
         let notableProvider =
             NotableObservationsProvider(client: client,
                                         checklistDataService: swiftDataService,
-                                        locationService: locationService)
+                                        locationService: locationService,
+                                        remoteNotificationService: RemoteNotificationService())
 
         let recentProvider =
             RecentObservationsProvider(
@@ -67,7 +68,7 @@ struct eBirdAlertApp: App {
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .background,
-               PreferencesModel.global.notifyNotable
+               case .local = PreferencesModel.global.notificationType
             {
                 try? refreshService.schedule()
             }
