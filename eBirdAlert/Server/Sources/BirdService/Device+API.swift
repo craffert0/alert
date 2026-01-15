@@ -11,7 +11,7 @@ extension Device {
                                   range: range,
                                   daysBack: daysBack,
                                   deviceResult: deviceResult,
-                                  mostRecentResult: mostRecentResult)
+                                  mostRecentPush: mostRecentPush)
     }
 
     convenience init(from query: Components.Schemas.NotableQuery) {
@@ -25,6 +25,6 @@ extension Device {
         daysBack = query.daysBack
         range = query.range
         deviceResult = query.results
-        mostRecentResult = query.results
+        mostRecentPush = []
     }
 }

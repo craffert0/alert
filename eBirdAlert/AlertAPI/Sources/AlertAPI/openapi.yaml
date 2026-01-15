@@ -223,7 +223,7 @@ components:
           type: array
           items:
             type: string
-        mostRecentResult:
+        mostRecentPush:
           type: array
           items:
             type: string

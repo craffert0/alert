@@ -22,7 +22,7 @@ final class Device: Model, @unchecked Sendable {
     @Field(key: "deviceResult") var deviceResult: [String]
 
     // Every N minutes update
-    @Field(key: "mostRecentResult") var mostRecentResult: [String]
+    @Field(key: "mostRecentPush") var mostRecentPush: [String]
     @Timestamp(
         key: "mostRecentUpdate",
         on: .update

@@ -14,36 +14,31 @@ enum TestError: Error {
     case unexpectedNotification
 }
 
+extension Device {
+    static let kRange = RangeType.region(.kings).api
+    static let kDaysBack = 3
+
+    convenience init(deviceId: String,
+                     deviceResult: [String])
+    {
+        self.init()
+        self.deviceId = deviceId
+        range = Device.kRange
+        daysBack = Device.kDaysBack
+        self.deviceResult = deviceResult
+        mostRecentPush = []
+    }
+}
+
 @Suite struct DevicesRunnerTest {
     let provider: MockModelProvider
     let birdService: MockeBirdService
     let notificationService: MockNotificationService
     let runner: DevicesRunner
 
-    let kRange = RangeType.region(.kings).api
-    let kDaysBack = 3
-
-    private func device(deviceId: String? = nil,
-                        deviceResult: [String],
-                        mostRecentResult: [String]) -> Device
-    {
-        let device = Device()
-        if let deviceId {
-            device.deviceId = deviceId
-        }
-        device.range = kRange
-        device.daysBack = kDaysBack
-        device.deviceResult = deviceResult
-        device.mostRecentResult = mostRecentResult
-        return device
-    }
-
-    private func setup(_ deviceResult: [String],
-                       mostRecentResult: [String]? = nil)
-    {
-        let device = device(deviceId: "deviceId",
-                            deviceResult: deviceResult,
-                            mostRecentResult: mostRecentResult ?? deviceResult)
+    private func setup(_ deviceResult: [String]) {
+        let device = Device(deviceId: "deviceId",
+                            deviceResult: deviceResult)
 
         stub(provider) { stub in
             when(stub.getDevices())
@@ -58,7 +53,8 @@ enum TestError: Error {
                      _ badgeCount: Int? = nil) async throws
     {
         stub(birdService) { stub in
-            when(stub.getNotable(in: equal(to: kRange.model), back: kDaysBack))
+            when(stub.getNotable(in: equal(to: Device.kRange.model),
+                                 back: Device.kDaysBack))
                 .thenReturn(result.fakes)
         }
         if let expected, let badgeCount {
@@ -88,7 +84,7 @@ enum TestError: Error {
         runner = DevicesRunner(provider: provider,
                                birdService: birdService,
                                notificationService: notificationService,
-                               logger: Logger(label: "testy"))
+                               logger: Logger(label: "DevicesRunnerTest"))
     }
 
     @Test func noDevices() async throws {
@@ -114,11 +110,13 @@ enum TestError: Error {
 
     @Test func allDifferentBirds() async throws {
         let deviceResult = ["cangoo", "blwwhi"]
-        let mostRecentResult = ["cangoo", "blwwhi", "cuckoo"]
-        let latestResult = ["blwwhi", "cuckoo", "horlar"]
-        let expected = ["f-horlar"]
-        setup(deviceResult, mostRecentResult: mostRecentResult)
-        try await run(latestResult, expected, 2)
+        setup(deviceResult)
+        try await run(["cangoo", "blwwhi", "cuckoo"],
+                      ["f-cuckoo"],
+                      1)
+        try await run(["blwwhi", "cuckoo", "horlar"],
+                      ["f-cuckoo", "f-horlar"],
+                      2)
     }
 
     @Test func iterativeBadgeCount() async throws {
@@ -127,10 +125,12 @@ enum TestError: Error {
         try await run(["cangoo", "blwwhi", "horlar", "cuckoo"],
                       ["f-horlar", "f-cuckoo"],
                       2)
-        try await run(["cangoo", "blwwhi", "horlar", "cuckoo"], nil, nil)
+        try await run(["cangoo", "blwwhi", "horlar", "cuckoo"])
         try await run(["blwwhi", "horlar", "cuckoo", "chicken"],
-                      ["f-chicken"],
+                      ["f-horlar", "f-cuckoo", "f-chicken"],
                       3)
-        try await run(["blwwhi", "horlar", "cuckoo"], nil, nil)
+        try await run(["blwwhi", "horlar", "cuckoo"],
+                      ["f-horlar", "f-cuckoo"],
+                      2)
     }
 }

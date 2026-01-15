@@ -27,24 +27,19 @@ struct DevicesRunner: Sendable {
             try await birdService.getNotable(in: range.model,
                                              back: device.daysBack)
         let nowBirds = Set(nowInfos.map(\.speciesCode))
-        let oldBirds = Set(device.mostRecentResult)
-        let newBirds = nowBirds.subtracting(oldBirds)
-        if !newBirds.isEmpty {
-            logger.info("new birds \(device.id?.uuidString ?? "<>"): \(newBirds)")
-            let birdNames = newBirds.map { code in
+        let pushBirds = nowBirds.subtracting(device.deviceResult)
+        if pushBirds != Set(device.mostRecentPush) {
+            logger.info("new birds \(device.id?.uuidString ?? "<>"): \(pushBirds)")
+            let birdNames = pushBirds.map { code in
                 nowInfos.first(where: { $0.speciesCode == code })!.comName
             }
-            let deviceBirds = Set(device.deviceResult)
-            let badgeCount = nowBirds.subtracting(deviceBirds).count
             try await notificationService.notify(device.deviceId,
                                                  newBirds: Set(birdNames),
-                                                 badgeCount: badgeCount)
+                                                 badgeCount: pushBirds.count)
+            device.mostRecentPush = Array(pushBirds)
+            try await provider.update(device: device)
         } else {
             logger.info("same old \(device.id?.uuidString ?? "<>")")
-        }
-        if nowBirds != oldBirds {
-            device.mostRecentResult = Array(nowBirds)
-            try await provider.update(device: device)
         }
     }
 }
