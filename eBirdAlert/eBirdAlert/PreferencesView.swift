@@ -8,7 +8,6 @@ struct PreferencesView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @State var daysBack: Double = .init(PreferencesModel.global.daysBack)
     @State var showLicense: Bool = false
-    @State var userToken: String = PreferencesModel.global.userToken ?? ""
     private let service: eBirdRegionService = URLSession.region
 
     private var githubMarkdown =
@@ -108,16 +107,6 @@ struct PreferencesView: View {
                     }
                 }
             }
-            TextField("User Token", text: $userToken)
-                .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
-                .onSubmit {
-                    if userToken == "" {
-                        preferences.userToken = nil
-                    } else {
-                        preferences.userToken = userToken
-                    }
-                }
         }
     }
 }
