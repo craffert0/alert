@@ -219,11 +219,11 @@ components:
           $ref: '#/components/schemas/Range'
         daysBack:
           type: integer
-        deviceResult:
+        deviceSpecies:
           type: array
           items:
             type: string
-        mostRecentPush:
+        mostRecentPushSpecies:
           type: array
           items:
             type: string

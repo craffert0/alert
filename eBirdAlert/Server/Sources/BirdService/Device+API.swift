@@ -10,8 +10,8 @@ extension Device {
                                   deviceId: deviceId,
                                   range: range,
                                   daysBack: daysBack,
-                                  deviceResult: deviceResult,
-                                  mostRecentPush: mostRecentPush)
+                                  deviceSpecies: deviceSpecies,
+                                  mostRecentPushSpecies: mostRecentPushSpecies)
     }
 
     convenience init(from query: Components.Schemas.NotableQuery) {
@@ -24,7 +24,7 @@ extension Device {
         registerTime = .now
         daysBack = query.daysBack
         range = query.range
-        deviceResult = query.results
-        mostRecentPush = []
+        deviceSpecies = query.results
+        mostRecentPushSpecies = []
     }
 }

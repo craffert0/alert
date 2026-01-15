@@ -71,7 +71,7 @@ struct ServiceHandler: APIProtocol {
             device.update(from: q)
             try await provider.update(device: device)
             logger.info(
-                "notableQuery: updated \(device.id?.uuidString ?? "<>")"
+                "notableQuery: updated \(device.name)"
             )
             return .accepted
         }
@@ -83,7 +83,7 @@ struct ServiceHandler: APIProtocol {
         let device = Device(from: q)
         try await provider.create(device: device, for: user)
         logger.info(
-            "notableQuery: created \(device.id?.uuidString ?? "<>") for \(user.name)"
+            "notableQuery: created \(device.name) for \(user.name)"
         )
         return .accepted
     }

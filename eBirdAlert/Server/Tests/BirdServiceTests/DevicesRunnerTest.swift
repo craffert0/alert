@@ -19,14 +19,14 @@ extension Device {
     static let kDaysBack = 3
 
     convenience init(deviceId: String,
-                     deviceResult: [String])
+                     deviceSpecies: [String])
     {
         self.init()
         self.deviceId = deviceId
         range = Device.kRange
         daysBack = Device.kDaysBack
-        self.deviceResult = deviceResult
-        mostRecentPush = []
+        self.deviceSpecies = deviceSpecies
+        mostRecentPushSpecies = []
     }
 }
 
@@ -36,9 +36,9 @@ extension Device {
     let notificationService: MockNotificationService
     let runner: DevicesRunner
 
-    private func setup(_ deviceResult: [String]) {
+    private func setup(_ deviceSpecies: [String]) {
         let device = Device(deviceId: "deviceId",
-                            deviceResult: deviceResult)
+                            deviceSpecies: deviceSpecies)
 
         stub(provider) { stub in
             when(stub.getDevices())
@@ -101,16 +101,16 @@ extension Device {
     }
 
     @Test func newBirds() async throws {
-        let deviceResult = ["cangoo", "blwwhi"]
+        let deviceSpecies = ["cangoo", "blwwhi"]
         let latestResult = ["blwwhi", "cuckoo", "horlar"]
         let expected = ["f-cuckoo", "f-horlar"]
-        setup(deviceResult)
+        setup(deviceSpecies)
         try await run(latestResult, expected, 2)
     }
 
     @Test func allDifferentBirds() async throws {
-        let deviceResult = ["cangoo", "blwwhi"]
-        setup(deviceResult)
+        let deviceSpecies = ["cangoo", "blwwhi"]
+        setup(deviceSpecies)
         try await run(["cangoo", "blwwhi", "cuckoo"],
                       ["f-cuckoo"],
                       1)

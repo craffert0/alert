@@ -19,10 +19,10 @@ final class Device: Model, @unchecked Sendable {
     @Field(key: "registerTime") var registerTime: Date
     @Field(key: "rangeData") var rangeData: Data
     @Field(key: "daysBack") var daysBack: Int
-    @Field(key: "deviceResult") var deviceResult: [String]
+    @Field(key: "deviceSpecies") var deviceSpecies: [String]
 
     // Every N minutes update
-    @Field(key: "mostRecentPush") var mostRecentPush: [String]
+    @Field(key: "mostRecentPushSpecies") var mostRecentPushSpecies: [String]
     @Timestamp(
         key: "mostRecentUpdate",
         on: .update
@@ -38,6 +38,8 @@ final class Device: Model, @unchecked Sendable {
             }
         }
     }
+
+    var name: String { id?.uuidString ?? "<>" }
 
     init() {}
 }
