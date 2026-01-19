@@ -16,7 +16,7 @@ extension APNSClient<JSONDecoder, JSONEncoder> {
                     keyIdentifier: keyIdentifier,
                     teamIdentifier: teamIdentifier
                 ),
-                environment: .development
+                environment: .production
             ),
             eventLoopGroupProvider: .createNew,
             responseDecoder: JSONDecoder(),
