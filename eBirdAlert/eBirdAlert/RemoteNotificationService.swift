@@ -25,7 +25,9 @@ struct RemoteNotificationService {
                         range: range.api,
                         daysBack: daysBack,
                         results: birdsSeen.map(\.speciesCode)
-                    ))))
+                    )
+                ))
+            )
         }
     }
 }

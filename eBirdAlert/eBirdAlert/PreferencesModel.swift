@@ -53,7 +53,9 @@ extension PreferencesModel {
                 guard let location else { throw eBirdServiceError.noLocation }
                 return try await .region(
                     service.getInfo(for: service.getCensusTract(
-                        for: location).code))
+                        for: location
+                    ).code)
+                )
             }
         }
     }

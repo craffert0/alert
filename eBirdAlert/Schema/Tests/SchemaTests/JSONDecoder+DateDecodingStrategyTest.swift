@@ -29,7 +29,7 @@ struct Wrapper: Codable {
             f.timeZone = TimeZone.current
             f.locale = Locale(identifier: "en_US_POSIX")
             f.dateFormat = "yyyy-MM-dd HH:mm"
-            let expected = f.date(from: d)!
+            let expected = try #require(f.date(from: d))
             let actual = try parse(d)
             #expect(actual == expected)
         }
@@ -45,7 +45,7 @@ struct Wrapper: Codable {
             f.timeZone = TimeZone.current
             f.locale = Locale(identifier: "en_US_POSIX")
             f.dateFormat = "yyyy-MM-dd"
-            let expected = f.date(from: d)!
+            let expected = try #require(f.date(from: d))
             let actual = try parse(d)
             #expect(actual == expected)
         }

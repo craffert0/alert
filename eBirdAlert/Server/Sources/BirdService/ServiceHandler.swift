@@ -47,7 +47,8 @@ struct ServiceHandler: APIProtocol {
         -> Operations.GetUsers.Output
     {
         try await .ok(.init(
-            body: .json(provider.getUsers().map(\.response))))
+            body: .json(provider.getUsers().map(\.response))
+        ))
     }
 
     func getDevices(_: Operations.GetDevices.Input) async throws

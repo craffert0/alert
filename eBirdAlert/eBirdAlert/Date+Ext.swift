@@ -19,7 +19,8 @@ extension Date {
     var yesterday: Date {
         Calendar.current.startOfDay(
             for: Calendar.current.date(byAdding: .day,
-                                       value: -1, to: self)!)
+                                       value: -1, to: self)!
+        )
     }
 
     func relative(to other: Date = Date.now) -> String {

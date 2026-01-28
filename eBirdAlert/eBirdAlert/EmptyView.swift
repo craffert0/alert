@@ -84,7 +84,8 @@ struct EmptyView: View {
                                                        longitude: -74),
                                   radius: 2.3,
                                   units: .miles
-                              )))
+                              )
+                          ))
             }
         }
         Tab("none", systemImage: "environments.circle") {

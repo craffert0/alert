@@ -32,7 +32,7 @@ extension eBirdObservation {
             m[o.id] = (m[o.id] ?? []) + [o]
         }
         for (_, v) in m {
-            let first = try v.first!.json
+            let first = try #require(v.first?.json)
             for o in v {
                 #expect(try first == o.json)
             }
@@ -42,7 +42,7 @@ extension eBirdObservation {
     @Test func raw_parse() async throws {
         let observations = try await raw_observations
         try #require(observations.count == 182)
-        let o = observations.first!
+        let o = try #require(observations.first)
         #expect(o.speciesCode == "louwat")
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd hh:mm"

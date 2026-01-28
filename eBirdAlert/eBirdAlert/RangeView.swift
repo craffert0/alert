@@ -9,10 +9,6 @@ struct RangeView: View {
     let range: RangeType?
     @State var showMap: Bool = false
 
-    init(range: RangeType?) {
-        self.range = range
-    }
-
     var body: some View {
         HStack {
             if let range {
@@ -96,7 +92,8 @@ struct RangeView: View {
         CircleModel(location: Coordinate(latitude: 40.67,
                                          longitude: -73.97),
                     radius: 2.3,
-                    units: .miles))
+                    units: .miles)
+    )
     TabView {
         Tab("None", systemImage: "environments.circle") {
             RangeView(range: none)

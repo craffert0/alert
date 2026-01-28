@@ -14,10 +14,6 @@ struct LocalRegionView: View {
     @State var error: eBirdServiceError? = nil
     @ObservedObject var preferences = PreferencesModel.global
 
-    init(regionService: any eBirdRegionService) {
-        self.regionService = regionService
-    }
-
     var body: some View {
         VStack {
             Text(title)

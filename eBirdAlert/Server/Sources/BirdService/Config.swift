@@ -47,5 +47,6 @@ extension Config {
         try! JSONDecoder()
             .decode(Config.self,
                     from: FileManager.default.contents(
-                        atPath: NSHomeDirectory() + "/.ebirdrc")!)
+                        atPath: NSHomeDirectory() + "/.ebirdrc"
+                    )!)
 }

@@ -33,7 +33,8 @@ class SwiftDataService {
             FetchDescriptor<Checklist>(
                 predicate: #Predicate { $0.id == id },
                 sortBy: []
-            )).first
+            )
+        ).first
     }
 }
 

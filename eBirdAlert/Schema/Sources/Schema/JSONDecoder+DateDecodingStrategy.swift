@@ -25,6 +25,7 @@ public extension JSONDecoder.DateDecodingStrategy {
         // Oh well.
         throw DecodingError.dataCorrupted(
             DecodingError.Context(codingPath: d.codingPath,
-                                  debugDescription: raw))
+                                  debugDescription: raw)
+        )
     }
 }

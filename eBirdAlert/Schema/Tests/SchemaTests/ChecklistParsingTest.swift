@@ -11,7 +11,7 @@ import Testing
             let path = Bundle.module.url(forResource: name,
                                          withExtension: "json")
             try #require(path != nil)
-            let json = try Data(contentsOf: path!)
+            let json = try Data(contentsOf: #require(path))
             let d = JSONDecoder()
             d.dateDecodingStrategy = .eBirdStyle
             let checklist = try d.decode(eBirdChecklist.self, from: json)
