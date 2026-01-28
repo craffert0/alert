@@ -16,6 +16,7 @@ final class Device: Model, @unchecked Sendable {
     @Field(key: "deviceId") var deviceId: String
 
     // From postNotableQuery
+    @Field(key: "deviceType") var deviceType: Components.Schemas.DeviceType
     @Field(key: "registerTime") var registerTime: Date
     @Field(key: "rangeData") var rangeData: Data
     @Field(key: "daysBack") var daysBack: Int

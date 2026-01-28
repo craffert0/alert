@@ -35,10 +35,10 @@ extension Config {
         }
     }
 
-    var apnsClient: APNSClient<JSONDecoder, JSONEncoder> {
-        try! .init(teamIdentifier: apnTeamIdentifier,
-                   keyIdentifier: apnKeyIdentifier,
-                   privateKey: apnPrivateKey)
+    var notificationService: NotificationService {
+        try! APNSNotificationService(teamIdentifier: apnTeamIdentifier,
+                                     keyIdentifier: apnKeyIdentifier,
+                                     privateKey: apnPrivateKey)
     }
 }
 

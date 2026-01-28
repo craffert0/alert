@@ -23,6 +23,7 @@ extension Device {
     {
         self.init()
         self.deviceId = deviceId
+        deviceType = .production
         range = Device.kRange
         daysBack = Device.kDaysBack
         self.deviceSpecies = deviceSpecies
@@ -60,6 +61,7 @@ extension Device {
         if let expected, let badgeCount {
             stub(notificationService) { stub in
                 when(stub.notify("deviceId",
+                                 deviceType: any(),
                                  newBirds: equal(to: Set(expected)),
                                  badgeCount: badgeCount))
                     .then { _ in }
@@ -67,6 +69,7 @@ extension Device {
         } else {
             stub(notificationService) { stub in
                 when(stub.notify("deviceId",
+                                 deviceType: any(),
                                  newBirds: any(),
                                  badgeCount: anyInt()))
                     .thenThrow(TestError.unexpectedNotification)

@@ -9,6 +9,7 @@ extension Device {
         Components.Schemas.Device(
             user: $user.value?.name,
             deviceId: deviceId,
+            deviceType: deviceType,
             registerTime: registerTime.formatted(.iso8601),
             range: range,
             daysBack: daysBack,
@@ -25,6 +26,8 @@ extension Device {
     }
 
     func update(from query: Components.Schemas.NotableQuery) {
+        deviceId = query.deviceId
+        deviceType = query.deviceType ?? .production
         registerTime = .now
         daysBack = query.daysBack
         range = query.range
