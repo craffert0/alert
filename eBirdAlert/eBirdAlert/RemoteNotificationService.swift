@@ -22,6 +22,7 @@ struct RemoteNotificationService {
                     .init(
                         userToken: userToken,
                         deviceId: deviceId.hex,
+                        deviceType: .current,
                         range: range.api,
                         daysBack: daysBack,
                         results: birdsSeen.map(\.speciesCode)
