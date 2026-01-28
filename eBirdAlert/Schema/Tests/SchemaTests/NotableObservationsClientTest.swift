@@ -32,7 +32,7 @@ extension eBirdObservation {
             m[o.id] = (m[o.id] ?? []) + [o]
         }
         for (_, v) in m {
-            let first = try #require(v.first?.json)
+            let first = try #require(v.first).json
             for o in v {
                 #expect(try first == o.json)
             }
