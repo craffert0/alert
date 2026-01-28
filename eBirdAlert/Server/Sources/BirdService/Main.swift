@@ -15,7 +15,7 @@ struct Main {
         let application = try await Vapor.Application.make(config: config)
         let modelProvider: ModelProvider = application
         let birdService: eBirdService = URLSession.shared
-        let notificationService: NotificationService = config.apnsClient
+        let notificationService = config.notificationService
 
         // Hook together the objects.
         let runner = DevicesRunner(provider: modelProvider,

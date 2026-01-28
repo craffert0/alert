@@ -51,6 +51,10 @@ let package = Package(
                     package: "APNSwift"
                 ),
                 .product(
+                    name: "APNSURLSession",
+                    package: "APNSwift"
+                ),
+                .product(
                     name: "OpenAPIVapor",
                     package: "swift-openapi-vapor"
                 ),

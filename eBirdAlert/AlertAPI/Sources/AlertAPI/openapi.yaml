@@ -115,6 +115,8 @@ components:
         deviceId:
           type: string
           description: Hex string of the ID of the device that did the query.
+        deviceType:
+          $ref: '#/components/schemas/DeviceType'
         range:
           $ref: '#/components/schemas/Range'
           description: Range of the query.
@@ -181,6 +183,8 @@ components:
       properties:
         deviceId:
           type: string
+        deviceType:
+          $ref: '#/components/schemas/DeviceType'
         birds:
           type: array
           items:
@@ -192,6 +196,8 @@ components:
       type: object
       properties:
         name:
+          type: string
+        token:
           type: string
       required:
         - name
@@ -215,6 +221,8 @@ components:
           type: string
         deviceId:
           type: string
+        deviceType:
+          $ref: '#/components/schemas/DeviceType'
         registerTime:
           type: string
         range:
@@ -237,3 +245,6 @@ components:
         - daysBack
         - deviceSpecies
         - mostRecentPushSpecies
+    DeviceType:
+      type: string
+      enum: [development, production]

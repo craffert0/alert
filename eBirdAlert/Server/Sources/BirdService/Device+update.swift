@@ -25,6 +25,7 @@ extension Device {
                 nowObs.first(where: { $0.speciesCode == code })!.comName
             }
             try await notificationService.notify(deviceId,
+                                                 deviceType: deviceType,
                                                  newBirds: Set(birdNames),
                                                  badgeCount: birdNames.count)
             mostRecentPushSpecies = Array(pushSpecies)

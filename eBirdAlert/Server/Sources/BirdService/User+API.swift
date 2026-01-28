@@ -7,6 +7,6 @@ extension User {
     convenience init(from request: Components.Schemas.NewUserRequest) {
         self.init()
         name = request.name
-        token = String.random(size: 12)
+        token = request.token ?? String.random(size: 12)
     }
 }

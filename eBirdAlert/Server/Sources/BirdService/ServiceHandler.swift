@@ -94,6 +94,7 @@ struct ServiceHandler: APIProtocol {
     {
         guard case let .json(q) = input.body else { return .notFound }
         try await notificationService.notify(q.deviceId,
+                                             deviceType: q.deviceType ?? .production,
                                              newBirds: Set(q.birds),
                                              badgeCount: q.birds.count)
         return .accepted
