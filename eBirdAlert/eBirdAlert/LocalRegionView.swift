@@ -36,6 +36,9 @@ struct LocalRegionView: View {
             UserAnnotation()
         }
         .mapStyle(.standard(pointsOfInterest: []))
+        .onMapCameraChange(frequency: .onEnd) { updateContext in
+            updateRegions(updateContext)
+        }
     }
 
     private var title: String {
@@ -63,7 +66,10 @@ struct LocalRegionView: View {
             guard let location = locationService.location else {
                 throw eBirdServiceError.noLocation
             }
-            try await regions = regionService.getRegions(near: location)
+            try await regions =
+                regionService.getRegions(at: location,
+                                         around: .init(latitudeDelta: 0.4,
+                                                       longitudeDelta: 0.3))
             if let code = preferences.regionCode,
                !regions.contains(where: { $0.code == code }),
                let region = try? await regionService.getInfo(for: code)
@@ -74,5 +80,9 @@ struct LocalRegionView: View {
             self.error = eBirdServiceError.from(error)
             showError = true
         }
+    }
+
+    private func updateRegions(_ context: MapCameraUpdateContext) {
+        print(context.region)
     }
 }
