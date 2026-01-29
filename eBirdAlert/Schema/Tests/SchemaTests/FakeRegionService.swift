@@ -33,7 +33,7 @@ public extension FakeRegionService {
 
 extension FakeRegionService: eBirdRegionService {
     enum ServiceError: Error {
-        case noSubregions
+        case noSubregions(String)
         case noInfo
     }
 
@@ -46,7 +46,7 @@ extension FakeRegionService: eBirdRegionService {
                 return s.result
             }
         }
-        throw ServiceError.noSubregions
+        throw ServiceError.noSubregions(region.code)
     }
 
     public func getInfo(for regionCode: String)

@@ -14,15 +14,15 @@ import Testing
         let service = try FakeRegionService.from(resource: "SampleRegionData")
         let result =
             try await service.getRegions(
-                near: Coordinate(latitude: 40.67, longitude: -73.97)
+                at: .init(latitude: 40.67, longitude: -73.97),
+                around: .init(latitudeDelta: 0.40, longitudeDelta: 0.30)
             ).sorted(by: { a, b in a.code < b.code })
-        try #require(result.count == 7)
-        #expect(result[0].result == "Bergen, New Jersey, United States")
-        #expect(result[1].result == "Hudson, New Jersey, United States")
-        #expect(result[2].result == "Bronx, New York, United States")
-        #expect(result[3].result == "Kings, New York, United States")
-        #expect(result[4].result == "New York, New York, United States")
-        #expect(result[5].result == "Queens, New York, United States")
-        #expect(result[6].result == "Richmond, New York, United States")
+        try #require(result.count == 6)
+        #expect(result[0].result == "Hudson, New Jersey, United States")
+        #expect(result[1].result == "Bronx, New York, United States")
+        #expect(result[2].result == "Kings, New York, United States")
+        #expect(result[3].result == "New York, New York, United States")
+        #expect(result[4].result == "Queens, New York, United States")
+        #expect(result[5].result == "Richmond, New York, United States")
     }
 }
