@@ -7,14 +7,11 @@ import SwiftUI
 import URLNetwork
 
 struct LocalRegionView: View {
-    enum LoadingState {
-        case loading, skip, allowed, updating
-    }
-
     var regionService: any eBirdRegionService
     @Environment(LocationService.self) var locationService
+    @State var position: MapCameraPosition = .automatic
     @State var regions: [eBirdRegionInfo] = []
-    @State var loading: LoadingState = .loading
+    @State var isLoading: Bool = true
     @State var showError: Bool = false
     @State var error: eBirdServiceError? = nil
     @ObservedObject var preferences = PreferencesModel.global
@@ -29,7 +26,7 @@ struct LocalRegionView: View {
     }
 
     private var mapView: some View {
-        Map(selection: preferences.$regionCode) {
+        Map(position: $position, selection: preferences.$regionCode) {
             ForEach(regions) { info in
                 Marker(info.result, coordinate: info.coordinate.location)
                     .tag(info.code)
@@ -42,7 +39,9 @@ struct LocalRegionView: View {
         }
         .mapStyle(.standard(pointsOfInterest: []))
         .onMapCameraChange(frequency: .onEnd) { updateContext in
-            updateRegions(updateContext)
+            if position.positionedByUser {
+                updateRegions(updateContext)
+            }
         }
     }
 
@@ -71,30 +70,23 @@ struct LocalRegionView: View {
             guard let location = locationService.location else {
                 throw eBirdServiceError.noLocation
             }
-            loading = .loading
+            isLoading = true
             regions = try await getRegions(
                 at: location,
                 around: .init(latitudeDelta: 0.4,
                               longitudeDelta: 0.3)
             )
-            loading = .skip
+            isLoading = false
         } catch {
             self.error = eBirdServiceError.from(error)
             showError = true
-            loading = .allowed
+            isLoading = false
         }
     }
 
     private func updateRegions(_ context: MapCameraUpdateContext) {
-        switch loading {
-        case .loading, .updating:
-            return
-        case .skip:
-            loading = .allowed
-            return
-        case .allowed:
-            loading = .updating
-        }
+        guard !isLoading else { return }
+        isLoading = true
         Task {
             do {
                 let regions = try await getRegions(
@@ -103,13 +95,13 @@ struct LocalRegionView: View {
                 )
                 Task { @MainActor in
                     self.regions = regions
-                    loading = .allowed
+                    isLoading = false
                 }
             } catch {
                 Task { @MainActor in
-                    loading = .skip
                     self.error = eBirdServiceError.from(error)
                     showError = true
+                    isLoading = false
                 }
             }
         }
