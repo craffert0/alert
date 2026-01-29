@@ -7,9 +7,14 @@ import SwiftUI
 import URLNetwork
 
 struct LocalRegionView: View {
+    enum LoadingState {
+        case loading, skip, allowed, updating
+    }
+
     var regionService: any eBirdRegionService
     @Environment(LocationService.self) var locationService
     @State var regions: [eBirdRegionInfo] = []
+    @State var loading: LoadingState = .loading
     @State var showError: Bool = false
     @State var error: eBirdServiceError? = nil
     @ObservedObject var preferences = PreferencesModel.global
@@ -66,23 +71,64 @@ struct LocalRegionView: View {
             guard let location = locationService.location else {
                 throw eBirdServiceError.noLocation
             }
-            try await regions =
-                regionService.getRegions(at: location,
-                                         around: .init(latitudeDelta: 0.4,
-                                                       longitudeDelta: 0.3))
-            if let code = preferences.regionCode,
-               !regions.contains(where: { $0.code == code }),
-               let region = try? await regionService.getInfo(for: code)
-            {
-                regions.append(region)
-            }
+            loading = .loading
+            regions = try await getRegions(
+                at: location,
+                around: .init(latitudeDelta: 0.4,
+                              longitudeDelta: 0.3)
+            )
+            loading = .skip
         } catch {
             self.error = eBirdServiceError.from(error)
             showError = true
+            loading = .allowed
         }
     }
 
     private func updateRegions(_ context: MapCameraUpdateContext) {
-        print(context.region)
+        switch loading {
+        case .loading, .updating:
+            return
+        case .skip:
+            loading = .allowed
+            return
+        case .allowed:
+            loading = .updating
+        }
+        Task {
+            do {
+                let regions = try await getRegions(
+                    at: .init(from: context.region.center),
+                    around: .init(from: context.region.span)
+                )
+                Task { @MainActor in
+                    self.regions = regions
+                    loading = .allowed
+                }
+            } catch {
+                Task { @MainActor in
+                    loading = .skip
+                    self.error = eBirdServiceError.from(error)
+                    showError = true
+                }
+            }
+        }
+    }
+
+    private func getRegions(at location: Coordinate,
+                            around span: CoordinateSpan) async throws
+        -> [eBirdRegionInfo]
+    {
+        let regions =
+            try await regionService.getRegions(at: location,
+                                               around: span)
+        if let code = preferences.regionCode,
+           !regions.contains(where: { $0.code == code }),
+           let region = try? await regionService.getInfo(for: code)
+        {
+            return regions + [region]
+        } else {
+            return regions
+        }
     }
 }
