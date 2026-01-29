@@ -10,7 +10,11 @@ struct RecentObservationsView: View {
     @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
+    @State var searchText: String = ""
     var observationSort: ObservationSortOption { preferences.localsSort }
+    var restrictedObservations: [eBirdRecentObservation] {
+        provider.observations.restrict(by: searchText)
+    }
 
     init(provider: RecentObservationsProvider) {
         self.provider = provider
@@ -52,6 +56,7 @@ struct RecentObservationsView: View {
                 .navigationBarTitleDisplayMode(.inline)
             }
         }
+        .searchable(text: $searchText)
         .task {
             await model.load()
         }
@@ -68,7 +73,7 @@ struct RecentObservationsView: View {
 
     private var listView: some View {
         Group {
-            if let grouped = observationSort.group(provider.observations) {
+            if let grouped = observationSort.group(restrictedObservations) {
                 List {
                     ForEach(grouped, id: \.0) { pair in
                         Section(pair.0.rawValue) {
@@ -79,7 +84,7 @@ struct RecentObservationsView: View {
                     }
                 }
             } else {
-                List(observationSort.sort(provider.observations)) { o in
+                List(observationSort.sort(restrictedObservations)) { o in
                     link(for: o)
                 }
             }

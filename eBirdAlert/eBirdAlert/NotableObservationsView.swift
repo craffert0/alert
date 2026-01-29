@@ -11,7 +11,11 @@ struct NotableObservationsView: View {
     @State var model: ObservationsProviderModel
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
+    @State var searchText: String = ""
     var observationSort: ObservationSortOption { preferences.notableSort }
+    var restrictedObservations: [BirdObservations] {
+        provider.observations.restrict(by: searchText)
+    }
 
     init(provider: NotableObservationsProvider) {
         self.provider = provider
@@ -53,6 +57,7 @@ struct NotableObservationsView: View {
                 .navigationBarTitleDisplayMode(.inline)
             }
         }
+        .searchable(text: $searchText)
         .task {
             await model.load()
             try? await notificationService.clearBadgeCount()
@@ -70,7 +75,7 @@ struct NotableObservationsView: View {
 
     private var listView: some View {
         Group {
-            if let grouped = observationSort.group(provider.observations) {
+            if let grouped = observationSort.group(restrictedObservations) {
                 List {
                     ForEach(grouped, id: \.0) { pair in
                         Section(pair.0.rawValue) {
@@ -81,7 +86,7 @@ struct NotableObservationsView: View {
                     }
                 }
             } else {
-                List(observationSort.sort(provider.observations)) { o in
+                List(observationSort.sort(restrictedObservations)) { o in
                     link(for: o)
                 }
             }

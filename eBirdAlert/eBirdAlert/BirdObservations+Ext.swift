@@ -21,3 +21,7 @@ extension BirdObservations: ObservationSortable {
 
     public var obsDt: Date { latestSighting }
 }
+
+extension BirdObservations: Matchable {
+    var matchText: String { comName }
+}

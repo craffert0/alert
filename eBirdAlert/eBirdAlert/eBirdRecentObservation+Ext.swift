@@ -19,6 +19,10 @@ extension eBirdRecentObservation: ObservationSortable {
     }
 }
 
+extension eBirdRecentObservation: Matchable {
+    var matchText: String { comName }
+}
+
 extension eBirdRecentObservation: ChecklistDataServiceObservation {}
 
 extension eBirdRecentObservation: eBirdObservationProtocol {}
