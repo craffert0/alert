@@ -44,7 +44,9 @@ struct RecentObservationsView: View {
             } else {
                 VStack {
                     HStack {
-                        Text(preferences.daysBackString)
+                        DaysBackPickerView {
+                            await model.load()
+                        }
                         Spacer()
                         SortPickerView(
                             observationSort: preferences.$localsSort
