@@ -32,7 +32,7 @@ struct LocationView: View {
                     }
                 }
             } else {
-                Text("TODO: oops")
+                Text("Select a county.")
             }
         }
         .task {
