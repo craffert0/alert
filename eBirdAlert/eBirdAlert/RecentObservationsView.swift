@@ -36,27 +36,31 @@ struct RecentObservationsView: View {
 
     private var mainView: some View {
         NavigationStack {
-            LocationView {
-                await model.load()
-            }
-            if !model.isLoading, provider.observations.isEmpty {
-                EmptyView(name: "local", range: provider.loadedRange)
-            } else {
-                VStack {
-                    HStack {
-                        DaysBackPickerView {
-                            await model.load()
+            VStack {
+                ObservationPreferencesView(model: model,
+                                           sort: preferences.$localsSort)
+                if !model.isLoading, provider.observations.isEmpty {
+                    EmptyView(name: "local", range: provider.loadedRange)
+                } else {
+                    GroupedListView(observations: restrictedObservations,
+                                    sort: preferences.localsSort,
+                                    model: model)
+                    { o in
+                        NavigationLink {
+                            RecentBirdView(o: o,
+                                           provider: BirdObservationsProvider(
+                                               for: o.speciesCode,
+                                               locationService: locationService
+                                           ))
+                        } label: {
+                            Text(o.obsDt, relativeTo: now)
+                            Text(o.comName)
                         }
-                        Spacer()
-                        SortPickerView(
-                            observationSort: preferences.$localsSort
-                        )
-                    }.padding()
-                    listView
+                    }
+                    .navigationTitle("Locals")
                 }
-                .navigationTitle("Locals")
-                .navigationBarTitleDisplayMode(.inline)
             }
+            .navigationBarTitleDisplayMode(.inline)
         }
         .searchable(text: $searchText)
         .task {
@@ -70,42 +74,6 @@ struct RecentObservationsView: View {
                     distance.formatted(.eBirdFormat) + " " +
                     units.rawValue + " in order to find some.")
             }
-        }
-    }
-
-    private var listView: some View {
-        Group {
-            if let grouped = observationSort.group(restrictedObservations) {
-                List {
-                    ForEach(grouped, id: \.0) { pair in
-                        Section(pair.0.rawValue) {
-                            ForEach(pair.1) { o in
-                                link(for: o)
-                            }
-                        }
-                    }
-                }
-            } else {
-                List(observationSort.sort(restrictedObservations)) { o in
-                    link(for: o)
-                }
-            }
-        }
-        .refreshable {
-            await model.refresh()
-        }
-    }
-
-    private func link(for o: eBirdRecentObservation) -> some View {
-        NavigationLink {
-            RecentBirdView(o: o,
-                           provider: BirdObservationsProvider(
-                               for: o.speciesCode,
-                               locationService: locationService
-                           ))
-        } label: {
-            Text(o.obsDt, relativeTo: now)
-            Text(o.comName)
         }
     }
 }

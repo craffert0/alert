@@ -4,6 +4,7 @@
 import SwiftUI
 
 struct DaysBackPickerView: View {
+    @ObservedObject var preferences = PreferencesModel.global
     private var daysBackBinding: Binding<Int>
 
     init(onChange: @escaping (() async -> Void)) {

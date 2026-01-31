@@ -37,27 +37,28 @@ struct NotableObservationsView: View {
 
     private var mainView: some View {
         NavigationStack {
-            LocationView {
-                await model.load()
-            }
-            if !model.isLoading, provider.observations.isEmpty {
-                EmptyView(name: "rare", range: provider.loadedRange)
-            } else {
-                VStack {
-                    HStack {
-                        DaysBackPickerView {
-                            await model.load()
+            VStack {
+                ObservationPreferencesView(model: model,
+                                           sort: preferences.$notableSort)
+                if !model.isLoading, provider.observations.isEmpty {
+                    EmptyView(name: "rare", range: provider.loadedRange)
+                } else {
+                    GroupedListView(observations: restrictedObservations,
+                                    sort: preferences.notableSort,
+                                    model: model)
+                    { o in
+                        NavigationLink {
+                            BirdObservationsView(o)
+                        } label: {
+                            Text(o.latestSighting, relativeTo: now)
+                            Text(o.comName)
+                            Text("(\(o.locations.total_count))")
                         }
-                        Spacer()
-                        SortPickerView(
-                            observationSort: preferences.$notableSort
-                        )
-                    }.padding()
-                    listView
+                    }
+                    .navigationTitle("Rarities")
                 }
-                .navigationTitle("Rarities")
-                .navigationBarTitleDisplayMode(.inline)
             }
+            .navigationBarTitleDisplayMode(.inline)
         }
         .searchable(text: $searchText)
         .task {
@@ -72,39 +73,6 @@ struct NotableObservationsView: View {
                     distance.formatted(.eBirdFormat) + " " +
                     units.rawValue + " in order to find some.")
             }
-        }
-    }
-
-    private var listView: some View {
-        Group {
-            if let grouped = observationSort.group(restrictedObservations) {
-                List {
-                    ForEach(grouped, id: \.0) { pair in
-                        Section(pair.0.rawValue) {
-                            ForEach(pair.1) { o in
-                                link(for: o)
-                            }
-                        }
-                    }
-                }
-            } else {
-                List(observationSort.sort(restrictedObservations)) { o in
-                    link(for: o)
-                }
-            }
-        }
-        .refreshable {
-            await model.refresh()
-        }
-    }
-
-    private func link(for o: BirdObservations) -> some View {
-        NavigationLink {
-            BirdObservationsView(o)
-        } label: {
-            Text(o.latestSighting, relativeTo: now)
-            Text(o.comName)
-            Text("(\(o.locations.total_count))")
         }
     }
 }
