@@ -41,6 +41,13 @@ struct ContentView: View {
         .onReceive(center.publisher(for: .navigateToTab)) { notification in
             if let tab = notification.object as? TabKind {
                 selectedTab = tab
+                Task { @MainActor in
+                    switch tab {
+                    case .rarities: try? await notableProvider?.refresh()
+                    case .locals: try? await recentObservationsProvider?.refresh()
+                    default: break
+                    }
+                }
             }
         }
     }
