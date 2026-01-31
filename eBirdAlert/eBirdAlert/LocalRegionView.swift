@@ -61,7 +61,7 @@ struct LocalRegionView: View {
                      with selected: Bool) -> some MapContent
     {
         MapPolyline(coordinates: bounds.coordinates.locations)
-            .stroke(selected ? .blue : .red,
+            .stroke(selected ? .primary : .secondary,
                     lineWidth: selected ? 5 : 2)
     }
 
