@@ -63,6 +63,13 @@ class Server(server.Server):
     def checklist(self, subId):
         return self.get("product/checklist/view/" + subId)
 
+    def feed(self, regionCode):
+        return self.get("product/lists/" + regionCode)
+
+    def date(self, regionCode, y, m, d):
+        return self.get(f"product/lists/{regionCode}/{y}/{m}/{d}",
+                        f"&maxResults=100")
+
     def taxonomy(self, species):
         return self.get("ref/taxonomy/ebird", f"&species={species}")
 
@@ -70,12 +77,15 @@ class Server(server.Server):
 def main():
     server = Server()
     # print(json.dumps(server.nearest("yebfly"), indent=2))
-    print(json.dumps(server.species("US-NY"), indent=2))
+    # print(json.dumps(server.species("US-NY"), indent=2))
+    print(json.dumps(server.feed(regionCode), indent=2))
+    # print(json.dumps(server.date(regionCode, 2026, 2, 9), indent=2))
     # print(json.dumps(server.nearby("yebfly"), indent=2))
     # print(json.dumps(server.regionobs(regionCode), indent=2))
     # print(json.dumps(server.taxonomy("louwat,commer"), indent=2))
     # print(json.dumps(server.notable(), indent=2))
-    # print(json.dumps(server.checklist("S222156738"), indent=2))
+    # print(json.dumps(server.checklist("aS298701156"), indent=2))
+    # print(json.dumps(server.checklist("S298700566"), indent=2))
 
 
 if __name__ == "__main__":
