@@ -14,7 +14,7 @@ struct GroupedListView<Observation: ObservationSortable & Identifiable, Content:
             if let grouped = sort.group(observations) {
                 List {
                     ForEach(grouped, id: \.0) { pair in
-                        Section(pair.0.rawValue) {
+                        Section(pair.0.comName) {
                             ForEach(pair.1) { o in
                                 link(o)
                             }

@@ -8,5 +8,5 @@ protocol ObservationSortable {
     var comName: String { get }
     var obsDt: Date { get }
     var taxonOrder: Double { get }
-    var order: eBirdOrder { get }
+    var family: eBirdFamily { get }
 }

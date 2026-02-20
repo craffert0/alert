@@ -14,6 +14,16 @@ extension ObservationSortOption: CaseIterable, Identifiable {
 }
 
 extension ObservationSortOption {
+    var viewString: String {
+        switch self {
+        case .byTime: "By Time"
+        case .byName: "By Name"
+        case .byTaxon: "By Family"
+        }
+    }
+}
+
+extension ObservationSortOption {
     func sort<T: ObservationSortable>(_ observations: [T]) -> [T] {
         switch self {
         case .byName:
@@ -32,11 +42,11 @@ extension ObservationSortOption {
     }
 
     func group<T: ObservationSortable>(_ observations: [T])
-        -> [(eBirdOrder, [T])]?
+        -> [(eBirdFamily, [T])]?
     {
         guard self == .byTaxon else { return nil }
         return Dictionary(grouping: observations) {
-            $0.order
+            $0.family
         }.sorted {
             $0.key < $1.key
         }.map {
