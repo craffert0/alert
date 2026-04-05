@@ -1,0 +1,179 @@
+#! /opt/homebrew/bin/python3
+
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
+
+import functools
+import html
+import json
+import os.path
+import server
+import sys
+from datetime import datetime
+from pathlib import Path
+
+
+def header(title):
+    return f"""
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>{title}</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+  </head>
+  <body>
+"""
+
+
+kTrailer = """
+  </body>
+</html>
+"""
+
+kTableStart = """
+    <table>
+      <thead>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Comment</th>
+      </thead>
+      <tbody>
+"""
+
+kTableEnd = """
+      </tbody>
+    </table>
+"""
+
+
+kGetParams = "&back=2"
+
+
+def link(tag, href):
+    return f'<a href="{href}">{tag}</a>'
+
+
+def td(text):
+    return f"<td>{text}</td>\n"
+
+
+def tr(location, date, comment):
+    return "<tr>" + td(location) + td(date) + td(comment) + "</tr>\n"
+
+
+def load_taxonomy():
+    return {
+        js["speciesCode"]: js
+        for js in json.loads(
+            Path(
+                os.path.join(
+                    os.path.dirname(__file__),
+                    "../eBirdAlert/eBirdAlert/Assets/taxonomy.json",
+                )
+            ).read_text()
+        )
+    }
+
+
+class Server(server.Server):
+    def birds(self):
+        return self.get("data/obs/US-NY-047/recent", kGetParams)
+
+    def bird(self, species):
+        return self.get(f"data/obs/US-NY-047/recent/{species}", kGetParams)
+
+    @functools.cache
+    def checklist(self, subId):
+        return self.get("product/checklist/view/" + subId)
+
+
+class Person:
+    def __init__(self, json):
+        self.name = json["name"]
+        self.output = json["output"]
+        self.lifers = set(json["lifers"])
+
+    def hits(self, species):
+        return species - self.lifers
+
+
+class Sighting:
+    def __init__(self, json, server):
+        self.json = json
+        self.date = datetime.strptime(json["obsDt"], "%Y-%m-%d %H:%M")
+        speciesCode = json["speciesCode"]
+        obses = [
+            ob
+            for ob in server.checklist(json["subId"])["obs"]
+            if ob["speciesCode"] == speciesCode
+        ]
+        if len(obses) == 1:
+            self.obs = obses[0]
+        else:
+            self.obs = {}
+
+    def row(self):
+        subId = self.json["subId"]
+        if self.json["locationPrivate"]:
+            href = f"https://www.google.com/maps/search/?q={self.json["lat"]},{self.json["lng"]}"
+        else:
+            href = f"https://ebird.org/hotspot/{self.json["locId"]}"
+        comment = self.obs.get("comments", "Checklist")
+        if self.obs.get("mediaCounts", {}).get("P", 0) > 0:
+            comment = "📷️ " + comment
+        return tr(
+            link(html.escape(self.json["locName"]), href),
+            self.date.strftime("%b&nbsp;%-d %-I:%M%p"),
+            link(comment, f"https://ebird.org/checklist/{subId}"),
+        )
+
+
+class Species:
+    def __init__(self, speciesCode, taxon, server):
+        self.speciesCode = speciesCode
+        self.comName = taxon["comName"]
+        self.taxonOrder = taxon["taxonOrder"]
+        self.sightings = sorted(
+            [Sighting(x, server) for x in server.bird(speciesCode)],
+            key=lambda s: s.date,
+            reverse=True,
+        )
+
+
+def main():
+    updated = datetime.now().strftime("<p>Updated: %b %-d %-I%p</p>\n")
+    taxonomy = load_taxonomy()
+    people = [Person(x) for x in json.load(sys.stdin)["people"]]
+    server = Server()
+    nearby = {s["speciesCode"] for s in server.birds()}
+    allhits = set.union(*[p.hits(nearby) for p in people])
+    allspecies = {s: Species(s, taxonomy[s], server) for s in allhits}
+    for p in people:
+        title = p.name.title()
+        with open(p.output, "w", encoding="utf-8") as of:
+            of.write(header(title))
+            hits = p.hits(nearby)
+            if len(hits) == 0:
+                of.write(f"<h2>No Target Species Seen For {title}</h2>")
+                of.write(updated)
+            else:
+                of.write(f"<h2>Target Species For {title}</h2>\n")
+                of.write(updated)
+                for species in sorted(
+                    [allspecies[code] for code in hits],
+                    key=lambda s: s.taxonOrder,
+                ):
+                    of.write(
+                        f"<details><summary>{species.comName}</summary>\n"
+                    )
+                    of.write(kTableStart)
+                    for sighting in species.sightings:
+                        of.write(sighting.row())
+                    of.write(kTableEnd)
+                    of.write("</details>\n")
+            of.write(kTrailer)
+
+
+if __name__ == "__main__":
+    main()
