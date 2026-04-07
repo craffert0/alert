@@ -102,6 +102,7 @@ class Sighting:
     def __init__(self, json, server):
         self.json = json
         self.date = datetime.strptime(json["obsDt"], "%Y-%m-%d %H:%M")
+        self.dateName = self.date.strftime("%b&nbsp;%-d %-I:%M%p")
         speciesCode = json["speciesCode"]
         obses = [
             ob
@@ -114,7 +115,6 @@ class Sighting:
             self.obs = {}
 
     def row(self):
-        subId = self.json["subId"]
         if self.json["locationPrivate"]:
             href = f"https://www.google.com/maps/search/?q={self.json["lat"]},{self.json["lng"]}"
         else:
@@ -122,10 +122,13 @@ class Sighting:
         comment = self.obs.get("comments", "Checklist")
         if self.obs.get("mediaCounts", {}).get("P", 0) > 0:
             comment = "📷️ " + comment
+            checklist = self.json["subId"] + "?view=photos"
+        else:
+            checklist = self.json["subId"]
         return tr(
             link(html.escape(self.json["locName"]), href),
-            self.date.strftime("%b&nbsp;%-d %-I:%M%p"),
-            link(comment, f"https://ebird.org/checklist/{subId}"),
+            self.dateName,
+            link(comment, f"https://ebird.org/checklist/{checklist}"),
         )
 
 
@@ -139,6 +142,7 @@ class Species:
             key=lambda s: s.date,
             reverse=True,
         )
+        self.title = f"{self.comName} ({self.sightings[0].dateName})"
 
 
 def main():
@@ -164,9 +168,7 @@ def main():
                     [allspecies[code] for code in hits],
                     key=lambda s: s.taxonOrder,
                 ):
-                    of.write(
-                        f"<details><summary>{species.comName}</summary>\n"
-                    )
+                    of.write(f"<details><summary>{species.title}</summary>\n")
                     of.write(kTableStart)
                     for sighting in species.sightings:
                         of.write(sighting.row())
