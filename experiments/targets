@@ -12,6 +12,8 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+kRegions = ["US-NY-047", "US-NY-061"]  # Brooklyn & Manhattan
+
 
 def header(title):
     return f"""
@@ -77,11 +79,11 @@ def load_taxonomy():
 
 
 class Server(server.Server):
-    def birds(self):
-        return self.get("data/obs/US-NY-047/recent", kGetParams)
+    def birds(self, region):
+        return self.get(f"data/obs/{region}/recent", kGetParams)
 
-    def bird(self, species):
-        return self.get(f"data/obs/US-NY-047/recent/{species}", kGetParams)
+    def bird(self, region, species):
+        return self.get(f"data/obs/{region}/recent/{species}", kGetParams)
 
     @functools.cache
     def checklist(self, subId):
@@ -101,8 +103,13 @@ class Person:
 class Sighting:
     def __init__(self, json, server):
         self.json = json
-        self.date = datetime.strptime(json["obsDt"], "%Y-%m-%d %H:%M")
-        self.dateName = self.date.strftime("%b&nbsp;%-d %-I:%M%p")
+        obsDt = json["obsDt"]
+        if len(obsDt) == 16:
+            self.date = datetime.strptime(obsDt, "%Y-%m-%d %H:%M")
+            self.dateName = self.date.strftime("%b&nbsp;%-d %-I:%M%p")
+        else:
+            self.date = datetime.strptime(obsDt, "%Y-%m-%d")
+            self.dateName = self.date.strftime("%b&nbsp;%-d")
         speciesCode = json["speciesCode"]
         obses = [
             ob
@@ -138,7 +145,11 @@ class Species:
         self.comName = taxon["comName"]
         self.taxonOrder = taxon["taxonOrder"]
         self.sightings = sorted(
-            [Sighting(x, server) for x in server.bird(speciesCode)],
+            [
+                Sighting(x, server)
+                for r in kRegions
+                for x in server.bird(r, speciesCode)
+            ],
             key=lambda s: s.date,
             reverse=True,
         )
@@ -150,7 +161,7 @@ def main():
     taxonomy = load_taxonomy()
     people = [Person(x) for x in json.load(sys.stdin)["people"]]
     server = Server()
-    nearby = {s["speciesCode"] for s in server.birds()}
+    nearby = {s["speciesCode"] for r in kRegions for s in server.birds(r)}
     allhits = set.union(*[p.hits(nearby) for p in people])
     allspecies = {s: Species(s, taxonomy[s], server) for s in allhits}
     for p in people:
