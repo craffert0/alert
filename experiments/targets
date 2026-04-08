@@ -12,6 +12,8 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+kRegions = ["US-NY-047", "US-NY-061"]  # Brooklyn & Manhattan
+
 
 def header(title):
     return f"""
@@ -77,11 +79,11 @@ def load_taxonomy():
 
 
 class Server(server.Server):
-    def birds(self):
-        return self.get("data/obs/US-NY-047/recent", kGetParams)
+    def birds(self, region):
+        return self.get(f"data/obs/{region}/recent", kGetParams)
 
-    def bird(self, species):
-        return self.get(f"data/obs/US-NY-047/recent/{species}", kGetParams)
+    def bird(self, region, species):
+        return self.get(f"data/obs/{region}/recent/{species}", kGetParams)
 
     @functools.cache
     def checklist(self, subId):
@@ -101,7 +103,13 @@ class Person:
 class Sighting:
     def __init__(self, json, server):
         self.json = json
-        self.date = datetime.strptime(json["obsDt"], "%Y-%m-%d %H:%M")
+        obsDt = json["obsDt"]
+        if len(obsDt) == 16:
+            self.date = datetime.strptime(obsDt, "%Y-%m-%d %H:%M")
+            self.dateName = self.date.strftime("%b&nbsp;%-d %-I:%M%p")
+        else:
+            self.date = datetime.strptime(obsDt, "%Y-%m-%d")
+            self.dateName = self.date.strftime("%b&nbsp;%-d")
         speciesCode = json["speciesCode"]
         obses = [
             ob
@@ -114,7 +122,6 @@ class Sighting:
             self.obs = {}
 
     def row(self):
-        subId = self.json["subId"]
         if self.json["locationPrivate"]:
             href = f"https://www.google.com/maps/search/?q={self.json["lat"]},{self.json["lng"]}"
         else:
@@ -122,10 +129,13 @@ class Sighting:
         comment = self.obs.get("comments", "Checklist")
         if self.obs.get("mediaCounts", {}).get("P", 0) > 0:
             comment = "📷️ " + comment
+            checklist = self.json["subId"] + "?view=photos"
+        else:
+            checklist = self.json["subId"]
         return tr(
             link(html.escape(self.json["locName"]), href),
-            self.date.strftime("%b&nbsp;%-d %-I:%M%p"),
-            link(comment, f"https://ebird.org/checklist/{subId}"),
+            self.dateName,
+            link(comment, f"https://ebird.org/checklist/{checklist}"),
         )
 
 
@@ -135,10 +145,15 @@ class Species:
         self.comName = taxon["comName"]
         self.taxonOrder = taxon["taxonOrder"]
         self.sightings = sorted(
-            [Sighting(x, server) for x in server.bird(speciesCode)],
+            [
+                Sighting(x, server)
+                for r in kRegions
+                for x in server.bird(r, speciesCode)
+            ],
             key=lambda s: s.date,
             reverse=True,
         )
+        self.title = f"{self.comName} ({self.sightings[0].dateName})"
 
 
 def main():
@@ -146,7 +161,7 @@ def main():
     taxonomy = load_taxonomy()
     people = [Person(x) for x in json.load(sys.stdin)["people"]]
     server = Server()
-    nearby = {s["speciesCode"] for s in server.birds()}
+    nearby = {s["speciesCode"] for r in kRegions for s in server.birds(r)}
     allhits = set.union(*[p.hits(nearby) for p in people])
     allspecies = {s: Species(s, taxonomy[s], server) for s in allhits}
     for p in people:
@@ -164,9 +179,7 @@ def main():
                     [allspecies[code] for code in hits],
                     key=lambda s: s.taxonOrder,
                 ):
-                    of.write(
-                        f"<details><summary>{species.comName}</summary>\n"
-                    )
+                    of.write(f"<details><summary>{species.title}</summary>\n")
                     of.write(kTableStart)
                     for sighting in species.sightings:
                         of.write(sighting.row())
