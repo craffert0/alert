@@ -89,6 +89,12 @@ class Server(server.Server):
     def checklist(self, subId):
         return self.get("product/checklist/view/" + subId)
 
+    def checklistObs(self, subId):
+        try:
+            return self.checklist(subId)["obs"]
+        except:
+            return []
+
 
 class Person:
     def __init__(self, json):
@@ -113,7 +119,7 @@ class Sighting:
         speciesCode = json["speciesCode"]
         obses = [
             ob
-            for ob in server.checklist(json["subId"])["obs"]
+            for ob in server.checklistObs(json["subId"])
             if ob["speciesCode"] == speciesCode
         ]
         if len(obses) == 1:
