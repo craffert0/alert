@@ -7,6 +7,7 @@ protocol LocationProtocol {
     var locName: String { get }
     var lat: Double { get }
     var lng: Double { get }
+    var hotspotId: String? { get }
 }
 
 extension LocationProtocol {

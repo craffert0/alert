@@ -8,4 +8,8 @@ extension LocationObservations: @retroactive Identifiable {
     public var id: String { locId }
 }
 
-extension LocationObservations: LocationProtocol {}
+extension LocationObservations: LocationProtocol {
+    var hotspotId: String? {
+        observations.first!.hotspotId
+    }
+}

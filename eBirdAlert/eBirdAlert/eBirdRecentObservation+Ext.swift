@@ -25,4 +25,8 @@ extension eBirdRecentObservation: Matchable {
 
 extension eBirdRecentObservation: ChecklistDataServiceObservation {}
 
-extension eBirdRecentObservation: eBirdObservationProtocol {}
+extension eBirdRecentObservation: eBirdObservationProtocol {
+    var hotspotId: String? {
+        locationPrivate ? nil : locId
+    }
+}

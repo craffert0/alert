@@ -3,7 +3,11 @@
 
 import Schema
 
-extension eBirdObservation: LocationProtocol {}
+extension eBirdObservation: LocationProtocol {
+    var hotspotId: String? {
+        locationPrivate ? nil : locId
+    }
+}
 
 extension eBirdObservation: ChecklistDataServiceObservation {}
 
