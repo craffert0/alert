@@ -4,7 +4,7 @@
 import Foundation
 import Testing
 
-@Suite struct ArrayTest {
+struct ArrayTest {
     @Test func notificationFormatTest() {
         #expect(["one"].notificationFormat == "one")
         #expect(["one", "two"].notificationFormat == "one, two")

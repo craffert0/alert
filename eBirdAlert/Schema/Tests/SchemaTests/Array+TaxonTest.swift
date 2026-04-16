@@ -5,7 +5,7 @@ import Foundation
 import Schema
 import Testing
 
-@Suite struct ArrayTaxonTest {
+struct ArrayTaxonTest {
     @Test func parse() throws {
         let url = try #require(Bundle.module.url(forResource: "taxonomy",
                                                  withExtension: "json"))

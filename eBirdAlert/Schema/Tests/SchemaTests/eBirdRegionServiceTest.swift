@@ -5,7 +5,7 @@ import Foundation
 import Schema
 import Testing
 
-@Suite struct eBirdRegionServiceTest {
+struct eBirdRegionServiceTest {
     @Test func math() {
         #expect(2 + 2 == 4)
     }

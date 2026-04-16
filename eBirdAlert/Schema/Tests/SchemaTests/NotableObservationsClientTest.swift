@@ -16,7 +16,7 @@ extension eBirdObservation {
     }
 }
 
-@Suite struct NotableObservationsClientTest {
+struct NotableObservationsClientTest {
     let service = eBirdServiceFake(notableName: "20250402T1030")
 
     var raw_observations: [eBirdObservation] {

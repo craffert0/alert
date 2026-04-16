@@ -4,7 +4,7 @@
 import Foundation
 import Testing
 
-@Suite struct PusherTest {
+struct PusherTest {
     @Test func math() {
         #expect(2 + 2 == 4)
     }
