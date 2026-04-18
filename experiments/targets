@@ -185,7 +185,21 @@ def main():
                     [allspecies[code] for code in hits],
                     key=lambda s: s.taxonOrder,
                 ):
-                    of.write(f"<details><summary>{species.title}</summary>\n")
+                    of.write(f"<details><summary>{species.title} ")
+                    of.write(
+                        link(
+                            "eBird",
+                            f"https://ebird.org/species/{species.speciesCode}",
+                        )
+                    )
+                    of.write(" - ")
+                    of.write(
+                        link(
+                            "Macaulay",
+                            f"https://search.macaulaylibrary.org/catalog?taxonCode={species.speciesCode}",
+                        )
+                    )
+                    of.write("</summary>\n")
                     of.write(kTableStart)
                     for sighting in species.sightings:
                         of.write(sighting.row())
