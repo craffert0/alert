@@ -23,6 +23,7 @@ struct SecretPreferencesView: View {
                     TextField("User Token", text: $userToken)
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
+                        .font(.body.monospaced())
                         .onSubmit {
                             if userToken == "" {
                                 preferences.userToken = nil

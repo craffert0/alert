@@ -32,6 +32,7 @@ struct AuthenticationKeyView: View {
                     textField
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
+                        .font(.body.monospaced())
                         .onSubmit {
                             submit()
                         }
