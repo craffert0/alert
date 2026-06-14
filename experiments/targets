@@ -9,6 +9,7 @@ import json
 import os.path
 import server
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -80,13 +81,16 @@ def load_taxonomy():
 
 class Server(server.Server):
     def birds(self, region):
+        time.sleep(2)
         return self.get(f"data/obs/{region}/recent", kGetParams)
 
     def bird(self, region, species):
+        time.sleep(2)
         return self.get(f"data/obs/{region}/recent/{species}", kGetParams)
 
     @functools.cache
     def checklist(self, subId):
+        time.sleep(2)
         return self.get("product/checklist/view/" + subId)
 
     def checklistObs(self, subId):
