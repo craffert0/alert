@@ -24,7 +24,6 @@ class PreferencesModel: ObservableObject {
     @AppStorage("settings.locals.sort")
     var localsSort: ObservationSortOption = .byTaxon
     @Published var debugMode: Bool = false
-    let maxDistance: Double = 250
     var deviceToken: Data?
 }
 
