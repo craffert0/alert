@@ -12,6 +12,7 @@ struct NotableObservationsView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
     @State var searchText: String = ""
+    @State var updater: Bool = false
     var observationSort: ObservationSortOption { preferences.notableSort }
     var restrictedObservations: [BirdObservations] {
         provider.observations.restrict(by: searchText)
@@ -40,6 +41,7 @@ struct NotableObservationsView: View {
             VStack {
                 ObservationPreferencesView(model: model,
                                            sort: preferences.$notableSort)
+                    .id(updater)
                 if !model.isLoading, provider.observations.isEmpty {
                     EmptyView(name: "rare", range: provider.loadedRange)
                 } else {
@@ -66,6 +68,9 @@ struct NotableObservationsView: View {
             try? await notificationService.clearBadgeCount()
         }
         .alert(isPresented: $model.showError, error: model.error) { _ in
+            Button("OK") {
+                updater.toggle()
+            }
         } message: { e in
             e.view
         }
