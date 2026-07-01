@@ -67,12 +67,7 @@ struct NotableObservationsView: View {
         }
         .alert(isPresented: $model.showError, error: model.error) { _ in
         } message: { e in
-            if case let .expandedArea(distance, units) = e {
-                Text("eBird could not find birds in the original range," +
-                    " so we expanded the range to " +
-                    distance.formatted(.eBirdFormat) + " " +
-                    units.rawValue + " in order to find some.")
-            }
+            e.view
         }
     }
 }

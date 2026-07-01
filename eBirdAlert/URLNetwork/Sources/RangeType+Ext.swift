@@ -47,7 +47,10 @@ extension RangeType {
         case let .radius(circle):
             URLRequest(
                 eBirdPath: "data/obs/geo/recent/notable",
-                queryItems: queryItems(back: daysBack, and: circle.queryItem),
+                queryItems: queryItems(
+                    back: daysBack,
+                    and: circle.queryItem(maxRadius: .maxNotableDistance)
+                ),
                 withLocation: circle.location
             )
         }
@@ -64,7 +67,10 @@ extension RangeType {
         case let .radius(circle):
             URLRequest(
                 eBirdPath: "data/obs/geo/recent",
-                queryItems: queryItems(back: daysBack, and: circle.queryItem),
+                queryItems: queryItems(
+                    back: daysBack,
+                    and: circle.queryItem(maxRadius: .maxLocalDistance)
+                ),
                 withLocation: circle.location
             )
         }
@@ -82,7 +88,10 @@ extension RangeType {
         case let .radius(circle):
             URLRequest(
                 eBirdPath: "data/obs/geo/recent/\(speciesCode)",
-                queryItems: queryItems(back: daysBack, and: circle.queryItem),
+                queryItems: queryItems(
+                    back: daysBack,
+                    and: circle.queryItem(maxRadius: .maxLocalDistance)
+                ),
                 withLocation: circle.location
             )
         }

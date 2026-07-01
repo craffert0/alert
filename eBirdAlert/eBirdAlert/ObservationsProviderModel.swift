@@ -32,11 +32,11 @@ class ObservationsProviderModel {
         try await provider.load()
         while provider.isEmpty,
               preferences.rangeOption == .radius,
-              preferences.distValue < preferences.maxDistance
+              preferences.distValue < .maxNotableDistance
         {
             retried = true
             preferences.distValue =
-                min(2 * preferences.distValue, preferences.maxDistance)
+                min(2 * preferences.distValue, .maxNotableDistance)
             try await provider.load()
         }
 
