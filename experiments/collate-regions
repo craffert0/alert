@@ -1,0 +1,35 @@
+#! /opt/homebrew/bin/python3
+
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
+
+import argparse
+import json
+import pathlib
+import sys
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(prog="collate-regions")
+    parser.add_argument("path", type=pathlib.Path)
+    return parser.parse_args(sys.argv[1:])
+
+
+def load(region):
+    with region.open() as ri:
+        r = json.load(ri)
+        subpath = region.parent / f"{region.name[:-8]}.subr.js"
+        if subpath.exists():
+            with subpath.open() as si:
+                r["subregionCodes"] = json.load(si)
+        return r
+
+
+def main(args):
+    regions = sorted(args.path.glob("*.info.js"), key=lambda f: f.name[:-8])
+    loaded = [load(x) for x in regions]
+    print(json.dumps(loaded, sort_keys=True))
+
+
+if __name__ == "__main__":
+    main(parse_args())

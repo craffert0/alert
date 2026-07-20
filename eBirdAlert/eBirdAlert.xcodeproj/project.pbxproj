@@ -647,8 +647,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@gitlab.com:craffert0/swiftutil.git";
 			requirement = {
-				kind = exactVersion;
-				version = 1.0.0;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

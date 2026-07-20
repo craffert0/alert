@@ -3,9 +3,9 @@
 
 import Foundation
 
-public extension [Taxon] {
-    static func from(_ url: URL) throws -> [Taxon] {
-        try JSONDecoder().decode([Taxon].self,
+public extension Array where Element: Decodable {
+    static func from(_ url: URL) throws -> [Element] {
+        try JSONDecoder().decode([Element].self,
                                  from: Data(contentsOf: url))
     }
 }

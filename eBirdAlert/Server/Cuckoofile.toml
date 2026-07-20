@@ -21,6 +21,7 @@ sources = [
 
 # cuckoo thinks these two classes are protocols
 exclude = [
+    "FixedRegionService",
     "NotableObservationsClient",
     "RecentObservationsClient",
 ]
