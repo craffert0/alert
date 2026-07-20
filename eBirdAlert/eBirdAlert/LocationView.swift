@@ -9,7 +9,7 @@ struct LocationView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @State var showRange: Bool = false
     @State var range: RangeType? = nil
-    private let service: eBirdRegionService = URLSession.region
+    private let service: eBirdRegionService = FixedRegionService.global
     private let censusService: CensusService = URLSession.shared
     private let onChange: (() async -> Void)?
 
