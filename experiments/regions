@@ -1,0 +1,81 @@
+#! /opt/homebrew/bin/python3
+
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
+
+import argparse
+import json
+import pathlib
+import re
+import server
+import sys
+import time
+
+kNextRegion = {
+    "custom": "country",
+    "country": "subnational1",
+    "subnational1": "subnational2",
+}
+
+
+class Server(server.Server):
+    def __init__(self, outdir):
+        self.outdir = outdir
+        outdir.mkdir(parents=True, exist_ok=True)
+        super(Server, self).__init__()
+
+    def download(self, regionCode):
+        for r in self.subregions(self.region(regionCode)):
+            self.download(r)
+
+    def region(self, regionCode):
+        p = self.outdir / f"{regionCode}.info.js"
+        if p.exists():
+            with p.open() as f:
+                return json.load(f)
+        else:
+            print(f"cache {regionCode}")
+            time.sleep(0.25)
+            x = self.get("ref/region/info/" + regionCode)
+            x.pop("parent", None)
+            with p.open(mode="w") as f:
+                json.dump(x, f, sort_keys=True)
+            return x
+
+    def subregions(self, region):
+        regionType = kNextRegion.get(region["type"], None)
+        regionCode = region["code"]
+        if regionType is None:
+            return []
+        p = self.outdir / f"{regionCode}.subr.js"
+        if p.exists():
+            with p.open() as f:
+                return json.load(f)
+        else:
+            print(f"cachesubr {regionCode}")
+            time.sleep(0.25)
+            a = [
+                x["code"]
+                for x in self.get(
+                    f"ref/region/list/{regionType}/{regionCode}"
+                )
+            ]
+            with p.open(mode="w") as f:
+                json.dump(a, f, sort_keys=True)
+            return a
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(prog="regions")
+    parser.add_argument("regionCode")
+    parser.add_argument("outdir", type=pathlib.Path)
+    return parser.parse_args(sys.argv[1:])
+
+
+def main(args):
+    server = Server(args.outdir)
+    server.download(args.regionCode)
+
+
+if __name__ == "__main__":
+    main(parse_args())
