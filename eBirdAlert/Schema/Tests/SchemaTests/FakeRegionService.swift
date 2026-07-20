@@ -59,10 +59,4 @@ extension FakeRegionService: eBirdRegionService {
         }
         throw ServiceError.noInfo
     }
-
-    public func getCensusTract(for _: Coordinate) async throws
-        -> CensusTract
-    {
-        throw ServiceError.noInfo
-    }
 }

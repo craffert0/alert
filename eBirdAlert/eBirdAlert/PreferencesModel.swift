@@ -29,7 +29,8 @@ class PreferencesModel: ObservableObject {
 
 extension PreferencesModel {
     func range(for location: Coordinate?,
-               with service: eBirdRegionService) async throws -> RangeType
+               with service: eBirdRegionService,
+               and censusService: CensusService) async throws -> RangeType
     {
         switch rangeOption {
         case .radius:
@@ -43,7 +44,7 @@ extension PreferencesModel {
             } else {
                 guard let location else { throw eBirdServiceError.noLocation }
                 return try await .region(
-                    service.getInfo(for: service.getCensusTract(
+                    service.getInfo(for: censusService.getCensusTract(
                         for: location
                     ).code)
                 )

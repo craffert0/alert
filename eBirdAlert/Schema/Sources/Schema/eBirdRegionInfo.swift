@@ -8,7 +8,6 @@ public final class eBirdRegionInfo: Codable, Sendable {
     public let result: String
     public let code: String
     public let type: eBirdRegionType
-    public let parent: eBirdRegionInfo?
     public let longitude: Double
     public let latitude: Double
 
@@ -24,7 +23,6 @@ public final class eBirdRegionInfo: Codable, Sendable {
         result: String,
         code: String,
         type: eBirdRegionType,
-        parent: eBirdRegionInfo? = nil,
         longitude: Double = 0.0,
         latitude: Double = 0.0
     ) {
@@ -32,7 +30,6 @@ public final class eBirdRegionInfo: Codable, Sendable {
         self.result = result
         self.code = code
         self.type = type
-        self.parent = parent
         self.longitude = longitude
         self.latitude = latitude
     }

@@ -3,7 +3,6 @@
 
 public extension eBirdRegion {
     static let kings = eBirdRegion(
-        code: "US-NY-047",
-        name: "Kings"
+        code: "US-NY-047"
     )
 }
