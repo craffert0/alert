@@ -21,7 +21,13 @@ def load(region):
         subpath = region.parent / f"{region.name[:-8]}.subr.js"
         if subpath.exists():
             with subpath.open() as si:
-                r["subregionCodes"] = json.load(si)
+                subregionCodes = [
+                    x
+                    for x in json.load(si)
+                    if (region.parent / f"{x}.info.js").exists()
+                ]
+                if len(subregionCodes) != 0:
+                    r["subregionCodes"] = subregionCodes
         return r
 
 
