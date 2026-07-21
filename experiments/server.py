@@ -13,10 +13,20 @@ class Server:
         self.headers = {"x-ebirdapitoken": rc["apikey"]}
         self.conn = HTTPSConnection("api.ebird.org")
 
+    def reset(self):
+        self.conn = HTTPSConnection("api.ebird.org")
+
     def get(self, path, params=""):
         fullpath = "/v2/" + path + "?fmt=json" + params
         req = self.conn.request("GET", fullpath, headers=self.headers)
         response = self.conn.getresponse()
         if response.status != 200:
-            raise RuntimeError(f"{response.status}: {response.reason}")
+            raise ServerException(response.status, response.reason)
         return json.loads(response.read())
+
+
+class ServerException(RuntimeError):
+    def __init__(self, status, reason):
+        self.status = status
+        self.reason = reason
+        super(RuntimeError, self).__init__(f"{status}: {reason}")
