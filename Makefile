@@ -33,4 +33,4 @@ lint:
 
 regen:
 	cd experiments ; ./generate_taxonomy ../eBirdAlert/Schema/Sources/Schema/eBirdFamily.swift > ../eBirdAlert/eBirdAlert/Assets/taxonomy.json
-	experiments/collate-regions ./static_regions > eBirdAlert/eBirdAlert/Assets/regions.json
+	experiments/collate-regions ~/Scratch/static_regions > eBirdAlert/eBirdAlert/Assets/regions.csv

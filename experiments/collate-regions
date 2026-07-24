@@ -31,10 +31,30 @@ def load(region):
         return r
 
 
+def dump(r):
+    b = r.get("bounds", {"maxX": 0, "maxY": 0, "minX": 0, "minY": 0})
+    code = r["code"]
+    result = r["result"]
+    latitude = r["latitude"]
+    longitude = r["longitude"]
+    ttype = r["type"]
+    bounds_minX = b["minX"]
+    bounds_maxX = b["maxX"]
+    bounds_minY = b["minY"]
+    bounds_maxY = b["maxY"]
+    subregions = ",".join(r.get("subregionCodes", []))
+    print(
+        f'"{code}","{result}",{latitude:0.6f},{longitude:0.6f},"{ttype}",{bounds_minX:0.6f},{bounds_maxX:0.6f},{bounds_minY:0.6f},{bounds_maxY:0.6f},"{subregions}"'
+    )
+
+
 def main(args):
+    print(
+        "code,result,latitude,longitude,type,bounds_minX,bounds_maxX,bounds_minY,bounds_maxY,subregions"
+    )
     regions = sorted(args.path.glob("*.info.js"), key=lambda f: f.name[:-8])
-    loaded = [load(x) for x in regions]
-    print(json.dumps(loaded, sort_keys=True))
+    for r in [load(x) for x in regions]:
+        dump(r)
 
 
 if __name__ == "__main__":
