@@ -18,11 +18,21 @@ let package = Package(
     ],
 
     dependencies: [
+        .package(
+            url: "git@gitlab.com:craffert0/swiftutil.git",
+            .upToNextMajor(from: "1.0.0")
+        ),
     ],
 
     targets: [
         .target(
-            name: "Schema"
+            name: "Schema",
+            dependencies: [
+                .product(
+                    name: "SwiftUtil",
+                    package: "swiftutil"
+                ),
+            ]
         ),
         .testTarget(
             name: "SchemaTests",
@@ -35,6 +45,7 @@ let package = Package(
                 .process("Checklists/S222245597.json"),
                 .process("Checklists/S273904108.json"),
                 .process("Others/SampleRegionData.json"),
+                .process("../../../eBirdAlert/Assets/regions.csv"),
                 .process("../../../eBirdAlert/Assets/taxonomy.json"),
             ]
         ),

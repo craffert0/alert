@@ -52,7 +52,6 @@ public extension eBirdRegionInfo {
         result: "New York, United States",
         code: "US-NY",
         type: .subnational1,
-        parent: .us,
         longitude: -75.809842,
         latitude: 42.75358
     )
@@ -62,7 +61,6 @@ public extension eBirdRegionInfo {
         result: "Kings, New York, United States",
         code: "US-NY-047",
         type: .subnational2,
-        parent: .ny,
         longitude: -73.947918,
         latitude: 40.6551515
     )
@@ -72,7 +70,6 @@ public extension eBirdRegionInfo {
         result: "Queens, New York, United States",
         code: "US-NY-081",
         type: .subnational2,
-        parent: .ny,
         longitude: -73.836956,
         latitude: 40.671608
     )

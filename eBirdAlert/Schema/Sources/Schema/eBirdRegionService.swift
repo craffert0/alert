@@ -6,8 +6,6 @@ public protocol eBirdRegionService {
                        as type: eBirdRegionType) async throws -> [eBirdRegion]
 
     func getInfo(for regionCode: String) async throws -> eBirdRegionInfo
-
-    func getCensusTract(for location: Coordinate) async throws -> CensusTract
 }
 
 public extension eBirdRegionService {

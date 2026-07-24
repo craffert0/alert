@@ -5,21 +5,13 @@ import MapKit
 import Schema
 import SwiftUI
 
-extension eBirdRegionInfo {
-    var thread: [eBirdRegionInfo] {
-        guard let parent else { return [self] }
-        return [self] + parent.thread
-    }
-}
-
 struct eBirdRegionInfoView: View {
     @State var info: eBirdRegionInfo
 
     var body: some View {
         VStack {
             Text(info.result).font(.headline)
-            Text(info.thread.map(\.code).reversed().joined(separator: " => "))
-                .font(.subheadline)
+            Text(info.code).font(.subheadline)
             Text(info.type.rawValue).font(.subheadline)
             if let bounds = info.bounds {
                 mapView(bounds)
