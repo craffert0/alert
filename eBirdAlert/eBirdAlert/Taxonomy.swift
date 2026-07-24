@@ -8,24 +8,17 @@ import SwiftUtil
 class Taxonomy {
     static let global = Taxonomy()
 
-    lazy var taxa: [Taxon] = {
+    private lazy var loader: FixedTaxonLoader = {
         let url = Bundle.main.url(forResource: "taxonomy",
-                                  withExtension: "json")!
-        return try! .from(url)
+                                  withExtension: "csv")!
+        return try! FixedTaxonLoader(taxa: .fromCSV(url))
     }()
 
     func search(string: String) -> [Taxon] {
-        taxa.filter { $0.contains(string: string) }
+        loader.search(string: string)
     }
 
     func find(for speciesCode: String) -> Taxon? {
-        let it = taxa.lowerBound(of: speciesCode,
-                                 comp: { $0.speciesCode < $1 })
-        guard it != taxa.endIndex,
-              taxa[it].speciesCode == speciesCode
-        else {
-            return nil
-        }
-        return taxa[it]
+        loader.find(for: speciesCode)
     }
 }

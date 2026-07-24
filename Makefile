@@ -32,5 +32,5 @@ lint:
 	swiftformat -q --swiftversion 6 --disable wrapPropertyBodies,docComments .
 
 regen:
-	cd experiments ; ./generate_taxonomy ../eBirdAlert/Schema/Sources/Schema/eBirdFamily.swift > ../eBirdAlert/eBirdAlert/Assets/taxonomy.json
+	cd experiments ; ./generate_taxonomy ../eBirdAlert/Schema/Sources/Schema/eBirdFamily.swift > ../eBirdAlert/eBirdAlert/Assets/taxonomy.csv
 	experiments/collate-regions ~/Scratch/static_regions > eBirdAlert/eBirdAlert/Assets/regions.csv

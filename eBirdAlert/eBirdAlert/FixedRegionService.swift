@@ -11,7 +11,7 @@ class FixedRegionService: eBirdRegionService {
     private lazy var loader: FixedRegionLoader = {
         let url = Bundle.main.url(forResource: "regions",
                                   withExtension: "csv")!
-        return try! FixedRegionLoader(infos: [eBirdRegionInfo].fromCSV(url))
+        return try! FixedRegionLoader(infos: .fromCSV(url))
     }()
 
     func getSubRegions(of region: RegionCodeProvider,

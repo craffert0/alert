@@ -3,36 +3,6 @@
 
 import Foundation
 
-private extension String {
-    mutating func parseString() throws -> String {
-        guard removeFirst() == "\"",
-              let end = firstIndex(of: "\"")
-        else {
-            throw DecodingError.dataCorrupted(
-                .init(codingPath: [], debugDescription: self)
-            )
-        }
-        let result = prefix(upTo: end)
-        removeSubrange(startIndex ... end)
-        if !isEmpty {
-            removeFirst()
-        }
-        return String(result)
-    }
-
-    mutating func parseDouble() throws -> Double {
-        guard let end = firstIndex(of: ","),
-              let result = Double(prefix(upTo: end))
-        else {
-            throw DecodingError.dataCorrupted(
-                .init(codingPath: [], debugDescription: self)
-            )
-        }
-        removeSubrange(startIndex ... end)
-        return result
-    }
-}
-
 private extension eBirdRegionInfo.Bounds {
     static func from(minX: Double, maxX: Double,
                      minY: Double, maxY: Double) -> eBirdRegionInfo.Bounds?
@@ -83,7 +53,7 @@ private struct Parser {
     }
 }
 
-public extension Array {
+public extension [eBirdRegionInfo] {
     static func fromCSV(_ url: URL) throws -> [eBirdRegionInfo] {
         var lines = try String(data: Data(contentsOf: url), encoding: .utf8)!.split(separator: "\n")
         let parser = try Parser(String(lines.removeFirst()))

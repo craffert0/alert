@@ -46,7 +46,7 @@ let package = Package(
                 .process("Checklists/S273904108.json"),
                 .process("Others/SampleRegionData.json"),
                 .process("../../../eBirdAlert/Assets/regions.csv"),
-                .process("../../../eBirdAlert/Assets/taxonomy.json"),
+                .process("../../../eBirdAlert/Assets/taxonomy.csv"),
             ]
         ),
     ]

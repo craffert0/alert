@@ -7,8 +7,8 @@ import Testing
 
 struct FixedRegionLoaderTest {
     let loader = FixedRegionLoader(infos: {
-        try! .from(Bundle.module.url(forResource: "regions",
-                                     withExtension: "json")!)
+        try! .fromCSV(Bundle.module.url(forResource: "regions",
+                                        withExtension: "csv")!)
     }())
 
     @Test func ny() throws {

@@ -8,7 +8,7 @@ import Testing
 struct ArrayTaxonTest {
     @Test func parse() throws {
         let url = try #require(Bundle.module.url(forResource: "taxonomy",
-                                                 withExtension: "json"))
-        _ = try [Taxon].from(url)
+                                                 withExtension: "csv"))
+        _ = try [Taxon].fromCSV(url)
     }
 }

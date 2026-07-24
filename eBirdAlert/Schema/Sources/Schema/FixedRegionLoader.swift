@@ -3,7 +3,7 @@
 
 import SwiftUtil
 
-public class FixedRegionLoader {
+public struct FixedRegionLoader {
     private let infos: [eBirdRegionInfo]
 
     public init(infos: [eBirdRegionInfo]) {
