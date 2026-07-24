@@ -6,11 +6,11 @@ import Schema
 import Testing
 
 struct ArrayeBirdRegionInfoTest {
-    @Test func basic() async throws {
+    @Test func basic() throws {
         let url = try #require(Bundle.module.url(forResource: "regions",
                                                  withExtension: "csv"))
         let loader =
-            try await FixedRegionLoader(infos: [eBirdRegionInfo].fromCSV(url))
+            try FixedRegionLoader(infos: [eBirdRegionInfo].fromCSV(url))
         let us = try #require(loader.getInfo(for: "US"))
         #expect(us.code == "US")
         #expect(us.result == "United States")

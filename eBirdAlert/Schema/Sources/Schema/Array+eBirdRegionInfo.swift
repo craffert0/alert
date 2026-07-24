@@ -84,16 +84,10 @@ private struct Parser {
 }
 
 public extension Array {
-    static func fromCSV(_ url: URL) async throws -> [eBirdRegionInfo] {
-        var result: [eBirdRegionInfo] = []
-        var parser: Parser?
-        for try await line in url.lines {
-            if let parser {
-                try result.append(parser.parse(line))
-            } else {
-                try parser = Parser(line)
-            }
-        }
-        return result
+    static func fromCSV(_ url: URL) throws -> [eBirdRegionInfo] {
+        var lines = try String(data: Data(contentsOf: url), encoding: .utf8)!.split(separator: "\n")
+        let parser = try Parser(String(lines.removeFirst()))
+
+        return try lines.map { try parser.parse(String($0)) }
     }
 }
