@@ -4,8 +4,6 @@
 import Foundation
 import Schema
 
-let validStatus = 200 ... 299
-
 extension URLSession: @retroactive eBirdService {
     public func getNotable(in range: RangeType,
                            back daysBack: Int) async throws
