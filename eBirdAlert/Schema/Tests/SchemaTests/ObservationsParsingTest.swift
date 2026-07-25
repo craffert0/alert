@@ -5,7 +5,7 @@ import Foundation
 import Schema
 import Testing
 
-@Suite struct ObservationsParsingTest {
+struct ObservationsParsingTest {
     @Test func basic() throws {
         let path = Bundle.module.url(forResource: "20250402T1030",
                                      withExtension: "json")

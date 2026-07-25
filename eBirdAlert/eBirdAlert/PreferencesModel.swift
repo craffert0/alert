@@ -29,14 +29,6 @@ class PreferencesModel: ObservableObject {
 }
 
 extension PreferencesModel {
-    var daysBackString: String {
-        if daysBack == 1 {
-            "Past day"
-        } else {
-            "Past \(daysBack) days"
-        }
-    }
-
     func range(for location: Coordinate?,
                with service: eBirdRegionService) async throws -> RangeType
     {

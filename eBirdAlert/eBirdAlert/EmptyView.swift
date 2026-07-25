@@ -23,7 +23,6 @@ struct EmptyView: View {
             }
         }
         .navigationTitle("No \(name.capitalized) Birds")
-        .navigationBarTitleDisplayMode(.large)
     }
 
     private func infoView(_ info: eBirdRegionInfo) -> some View {

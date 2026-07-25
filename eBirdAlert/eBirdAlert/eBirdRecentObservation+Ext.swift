@@ -14,11 +14,19 @@ extension eBirdRecentObservation: ObservationSortable {
         taxon?.taxonOrder ?? 9_999_999
     }
 
-    var order: eBirdOrder {
-        taxon?.order ?? .Unknown
+    var family: eBirdFamily {
+        taxon?.familyCode ?? .unknown
     }
+}
+
+extension eBirdRecentObservation: Matchable {
+    var matchText: String { comName }
 }
 
 extension eBirdRecentObservation: ChecklistDataServiceObservation {}
 
-extension eBirdRecentObservation: eBirdObservationProtocol {}
+extension eBirdRecentObservation: eBirdObservationProtocol {
+    var hotspotId: String? {
+        locationPrivate ? nil : locId
+    }
+}

@@ -9,7 +9,7 @@ struct Wrapper: Codable {
     let date: Date
 }
 
-@Suite struct JSONDecoder_DateDecodingStrategyTest {
+struct JSONDecoder_DateDecodingStrategyTest {
     func parse(_ s: String) throws -> Date {
         let d = JSONDecoder()
         d.dateDecodingStrategy = .eBirdStyle

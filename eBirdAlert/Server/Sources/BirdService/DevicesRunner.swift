@@ -4,7 +4,7 @@
 import Logging
 import Schema
 
-struct DevicesRunner: Sendable {
+struct DevicesRunner {
     let provider: ModelProvider
     let birdService: eBirdService
     let notificationService: NotificationService

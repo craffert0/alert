@@ -5,7 +5,7 @@ import Foundation
 import Schema
 import Testing
 
-@Suite struct DistanceUnitsTest {
+struct DistanceUnitsTest {
     @Test func asMiles() {
         #expect(DistanceUnits.miles.asMiles(10) == 10)
         #expect(abs(DistanceUnits.kilometers.asMiles(10) - 6.2) < 0.1)

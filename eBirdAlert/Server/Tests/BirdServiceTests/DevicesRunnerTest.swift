@@ -31,7 +31,7 @@ extension Device {
     }
 }
 
-@Suite struct DevicesRunnerTest {
+struct DevicesRunnerTest {
     let provider: MockModelProvider
     let birdService: MockeBirdService
     let notificationService: MockNotificationService

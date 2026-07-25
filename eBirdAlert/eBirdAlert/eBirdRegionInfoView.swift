@@ -30,7 +30,7 @@ struct eBirdRegionInfoView: View {
     private func mapView(_ bounds: eBirdRegionInfo.Bounds) -> some View {
         Map {
             Marker(coordinate: info.coordinate.location) {}
-            MapPolyline(coordinates: bounds.coordinates.locations)
+            MapPolyline(coordinates: bounds.diamond.locations)
                 .stroke(.blue, lineWidth: 5)
         }
     }

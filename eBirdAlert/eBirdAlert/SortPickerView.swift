@@ -9,7 +9,7 @@ struct SortPickerView: View {
     var body: some View {
         Picker("Sort", selection: $observationSort) {
             ForEach(ObservationSortOption.allCases) { option in
-                Text("Sort \(option.rawValue)")
+                Text("Sort \(option.viewString)")
             }
         }
     }

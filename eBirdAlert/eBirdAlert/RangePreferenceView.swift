@@ -15,10 +15,9 @@ struct RangePreferenceView: View {
             HStack {
                 Button("Done") { dismiss() }
                 Spacer()
-                Text("Location Style")
                 Picker("Location", selection: preferences.$rangeOption) {
-                    Text("Nearby").tag(RangeOption.radius)
-                    Text("County").tag(RangeOption.region)
+                    Text("Search nearby").tag(RangeOption.radius)
+                    Text("Search by county").tag(RangeOption.region)
                 }
             }.padding()
             switch preferences.rangeOption {

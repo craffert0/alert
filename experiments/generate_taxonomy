@@ -14,28 +14,38 @@ def taxoo():
     return server.get("ref/taxonomy/ebird")
 
 
-def get_orders(taxon):
+def get_families(taxon):
     d = dict()
     for x in taxon:
-        d[x.get("order", "Unknown")] = x["taxonOrder"]
-    return [x[0] for x in sorted(d.items(), key=lambda i: i[1])]
+        d[x.get("familyCode", "unknown")] = [x["taxonOrder"],
+                                             x.get("familyComName", "Others")]
+    return [[x[0], x[1][1]] for x in sorted(d.items(), key=lambda i: i[1][0])]
 
 
-def generate_order(fp, orders):
+def generate_families(fp, families):
     print(f"// Generated {datetime.datetime.now()}", file=fp)
     print(f"", file=fp)
-    print("public enum eBirdOrder: String {", file=fp)
-    for k in orders:
-        print(f"    case {k}", file=fp)
+    print("public enum eBirdFamily: String {", file=fp)
+    for kv in families:
+        print(f"    case {kv[0]}", file=fp)
     print("}", file=fp)
     print("", file=fp)
-    print("extension eBirdOrder {", file=fp)
+    print("extension eBirdFamily {", file=fp)
     print("    var sortKey: Int {", file=fp)
     print("        switch self {", file=fp)
     i = 0
-    for k in orders:
-        print(f"        case .{k}: {i}", file=fp)
+    for kv in families:
+        print(f"        case .{kv[0]}: {i}", file=fp)
         i += 1
+    print("        }", file=fp)
+    print("    }", file=fp)
+    print("}", file=fp)
+    print("", file=fp)
+    print("extension eBirdFamily {", file=fp)
+    print("    public var comName: String {", file=fp)
+    print("        switch self {", file=fp)
+    for kv in families:
+        print(f"        case .{kv[0]}: \"{kv[1]}\"", file=fp)
     print("        }", file=fp)
     print("    }", file=fp)
     print("}", file=fp)
@@ -44,14 +54,14 @@ def generate_order(fp, orders):
 def main(argv):
     everything = taxoo()
     with open(argv[1], mode="w") as fp:
-        generate_order(fp, get_orders(everything))
+        generate_families(fp, get_families(everything))
 
     taxon = [
         {
             "speciesCode": x["speciesCode"],
             "comName": x["comName"],
             "taxonOrder": x["taxonOrder"],
-            "order": x.get("order", "Unknown"),
+            "familyCode": x.get("familyCode", "unknown"),
         }
         for x in everything
     ]

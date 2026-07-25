@@ -17,25 +17,45 @@ public extension eBirdRegionService {
         try await getInfo(for: provider.code)
     }
 
-    func getRegions(near location: Coordinate) async throws -> [eBirdRegionInfo] {
-        try await getRegions(location, .world, .world, .custom)
+    func getRegions(at location: Coordinate,
+                    around span: CoordinateSpan) async throws
+        -> [eBirdRegionInfo]
+    {
+        try await getRegions(location, span, .world, .world, .custom)
     }
 
     private func getRegions(_ location: Coordinate,
+                            _ span: CoordinateSpan,
                             _ region: eBirdRegion,
                             _ info: eBirdRegionInfo,
                             _ type: eBirdRegionType)
         async throws -> [eBirdRegionInfo]
     {
-        guard let subtype = type.subtype else {
-            return [info]
+        if region.code == "XX" {
+            return []
         }
+        guard let subtype = type.subtype else {
+            if info.within(span, around: location) {
+                return [info]
+            } else {
+                return []
+            }
+        }
+        let subregions = try await getSubRegions(of: region, as: subtype)
+        if subregions.isEmpty {
+            if info.within(span, around: location) {
+                return [info]
+            } else {
+                return []
+            }
+        }
+
         var result: [eBirdRegionInfo] = []
-        for subregion in try await getSubRegions(of: region, as: subtype) {
+        for subregion in subregions {
             let info = try await getInfo(of: subregion)
-            if info.contains(location) {
+            if info.touches(span, around: location) {
                 result += try await getRegions(
-                    location, subregion, info, subtype
+                    location, span, subregion, info, subtype
                 )
             }
         }

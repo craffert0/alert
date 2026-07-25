@@ -23,7 +23,7 @@ struct SecretPreferencesView: View {
                             }
                         }
                 }
-            }.navigationBarTitle("Secret Preferences")
+            }.navigationBarTitle("Secret Settings")
         }
     }
 }

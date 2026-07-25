@@ -28,18 +28,24 @@ struct eBirdObservationView: View {
             if let hasMedia = obs?.hasMedia, hasMedia {
                 photosView
             }
+            if case let .value(actual) = checklist.status {
+                listView(actual)
+            } else {
+                topCommentsView
+            }
+        }
+        .navigationTitle(e.obsDt.eBirdFormatted)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var topCommentsView: some View {
+        Group {
             if let comments = obs?.comments {
                 Text(comments)
                     .textSelection(.enabled)
                     .padding()
             }
-            if case let .value(actual) = checklist.status {
-                Divider()
-                checklistView(actual)
-            }
         }
-        .navigationTitle(e.obsDt.eBirdFormatted)
-        .navigationBarTitleDisplayMode(.inline)
     }
 
     private var userView: some View {
@@ -66,25 +72,30 @@ struct eBirdObservationView: View {
         }
     }
 
-    private func checklistView(_ actual: eBirdChecklist) -> some View {
-        VStack {
-            Label("Checklist", systemImage: "globe.americas")
+    private func listView(_ actual: eBirdChecklist) -> some View {
+        List {
+            topCommentsView
+            HStack {
+                Image(systemName: "globe.americas")
+                Text("Checklist")
+                Image(systemName: "globe.europe.africa")
+            }.frame(maxWidth: .infinity, alignment: .center)
+
             if let comments = actual.comments {
                 Text(comments)
                     .textSelection(.enabled)
                     .padding()
             }
-            List(
+            ForEach(
                 actual.obs.compactMap {
                     $0.speciesCode != e.speciesCode ? $0 : nil
                 }
             ) {
                 ObsView(obs: $0)
             }
-            .listStyle(.grouped)
-            .refreshable {
-                await checklist.refresh()
-            }
+        }
+        .refreshable {
+            await checklist.refresh()
         }
     }
 
@@ -112,10 +123,12 @@ struct eBirdObservationView: View {
 }
 
 #Preview {
-    eBirdObservationView(
-        eBirdObservation.fake,
-        in: Checklist(for: "fake",
-                      date: Date.now,
-                      status: .value(checklist: .fake))
-    )
+    NavigationStack {
+        eBirdObservationView(
+            eBirdObservation.fake,
+            in: Checklist(for: "fake",
+                          date: Date.now,
+                          status: .value(checklist: .fake))
+        )
+    }
 }

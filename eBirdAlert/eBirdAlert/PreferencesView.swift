@@ -17,12 +17,6 @@ struct PreferencesView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Range") {
-                    LocationView().frame(maxWidth: .infinity,
-                                         alignment: .center)
-                    daysView
-                }
-
                 Section("Map") {
                     mapTypeView
                     directionsTypeView
@@ -32,21 +26,6 @@ struct PreferencesView: View {
 
                 copyrightView
             }.navigationBarTitle("eBird Alert!")
-        }
-    }
-
-    private var daysView: some View {
-        HStack {
-            Label("", systemImage: "calendar.circle")
-
-            Slider(value: $daysBack, in: 1 ... 8, step: 1.0) {
-                _ in preferences.daysBack = Int(daysBack)
-            }
-
-            Text(
-                "\(Int(daysBack)) day" +
-                    (Int(daysBack) == 1 ? "" : "s")
-            )
         }
     }
 

@@ -3,7 +3,7 @@
 
 import Testing
 
-@Suite struct SetTest {
+struct SetTest {
     @Test func basic() {
         let x = Set<String>()
         let x1 = Set<String>(["one"])

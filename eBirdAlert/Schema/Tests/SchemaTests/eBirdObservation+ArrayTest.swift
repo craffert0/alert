@@ -12,7 +12,7 @@ private func dump(json e: any Encodable) throws {
     print(String(data: data, encoding: .utf8)!)
 }
 
-@Suite struct eBirdObservation_ArrayTest {
+struct eBirdObservation_ArrayTest {
     @Test func collate() async throws {
         let client =
             NotableObservationsClient(

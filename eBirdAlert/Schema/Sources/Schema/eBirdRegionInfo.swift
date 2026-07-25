@@ -51,14 +51,34 @@ extension eBirdRegionInfo: Identifiable {
 }
 
 extension eBirdRegionInfo {
-    func contains(_ location: Coordinate) -> Bool {
+    func touches(_ span: CoordinateSpan,
+                 around location: Coordinate) -> Bool
+    {
         guard let bounds else { return true }
         let lat = location.latitude
         let lng = location.longitude
+        let dLat = span.latitudeDelta
+        let dLng = span.longitudeDelta
         return
-            bounds.minX - 0.14 <= lng &&
-            lng <= bounds.maxX + 0.14 &&
-            bounds.minY - 0.14 <= lat &&
-            lat <= bounds.maxY + 0.14
+            bounds.minX - dLng <= lng &&
+            lng <= bounds.maxX + dLng &&
+            bounds.minY - dLat <= lat &&
+            lat <= bounds.maxY + dLat
+    }
+
+    func within(_ span: CoordinateSpan,
+                around location: Coordinate) -> Bool
+    {
+        guard let bounds else { return true }
+        let lat = location.latitude
+        let lng = location.longitude
+        let dLat = span.latitudeDelta
+        let dLng = span.longitudeDelta
+
+        return
+            lng - dLng <= bounds.minX &&
+            bounds.maxX <= lng + dLng &&
+            lat - dLat <= bounds.minY &&
+            bounds.maxY <= lat + dLat
     }
 }

@@ -15,9 +15,13 @@ extension BirdObservations: ObservationSortable {
         taxon?.taxonOrder ?? 9_999_999
     }
 
-    var order: eBirdOrder {
-        taxon?.order ?? .Unknown
+    var family: eBirdFamily {
+        taxon?.familyCode ?? .unknown
     }
 
     public var obsDt: Date { latestSighting }
+}
+
+extension BirdObservations: Matchable {
+    var matchText: String { comName }
 }
