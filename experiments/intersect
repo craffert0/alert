@@ -5,7 +5,6 @@
 
 import argparse
 import csv
-import json
 import server
 import sys
 
@@ -40,9 +39,12 @@ def comNames(csvfile, location):
 
 
 def species_mapping():
-    with open("../eBirdAlert/eBirdAlert/Assets/taxonomy.json", "r") as taxon:
+    with open("../eBirdAlert/eBirdAlert/Assets/taxonomy.csv", "r") as taxon:
         return dict(
-            [[x["speciesCode"], x["comName"]] for x in json.load(taxon)]
+            [
+                [x["speciesCode"], x["comName"]]
+                for x in csv.DictReader(taxon, delimiter=",")
+            ]
         )
 
 

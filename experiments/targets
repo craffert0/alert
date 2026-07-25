@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
+import csv
 import functools
 import html
 import json
@@ -66,17 +67,11 @@ def tr(location, date, comment):
 
 
 def load_taxonomy():
-    return {
-        js["speciesCode"]: js
-        for js in json.loads(
-            Path(
-                os.path.join(
-                    os.path.dirname(__file__),
-                    "../eBirdAlert/eBirdAlert/Assets/taxonomy.json",
-                )
-            ).read_text()
-        )
-    }
+    with open("../eBirdAlert/eBirdAlert/Assets/taxonomy.csv", "r") as taxon:
+        return {
+            js["speciesCode"]: js
+            for js in csv.DictReader(taxon, delimiter=",")
+        }
 
 
 class Server(server.Server):
@@ -153,7 +148,7 @@ class Species:
     def __init__(self, speciesCode, taxon, server):
         self.speciesCode = speciesCode
         self.comName = taxon["comName"]
-        self.taxonOrder = taxon["taxonOrder"]
+        self.taxonOrder = Double(taxon["taxonOrder"])
         self.sightings = sorted(
             [
                 Sighting(x, server)
