@@ -12,7 +12,7 @@ class ObservationsProvider<T>: ObservationsProviderProtocol {
     var loadedDaysBack: Int?
     private let locationService: LocationService
     private let loader: (RangeType, Int) async throws -> [T]
-    private let service: eBirdRegionService = URLSession.region
+    private let service: eBirdRegionService = FixedRegionService.global
     private let censusService: CensusService = URLSession.shared
     private let preferences = PreferencesModel.global
     private var lastLoadTime: Date?

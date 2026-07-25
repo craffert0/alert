@@ -4,8 +4,6 @@
 import Foundation
 
 extension URLSession {
-    public static let region = URLSession(configuration: .region)
-
     func object<Output: Decodable>(
         for request: URLRequest
     ) async throws -> Output {
@@ -18,13 +16,6 @@ extension URLSession {
         guard validStatus.contains(response.statusCode) else {
             // Normally 403 on error
             throw eBirdServiceError.httpError(statusCode: response.statusCode)
-        }
-
-        if self == .region {
-            configuration.urlCache?.storeCachedResponse(
-                CachedURLResponse(response: response, data: data),
-                for: request
-            )
         }
 
         return try object(from: data)
