@@ -6,6 +6,22 @@ import Schema
 import SwiftUI
 import URLNetwork
 
+private let kMaxRegions = 384
+
+private extension eBirdRegionInfo {
+    var marker: some MapContent {
+        Marker(result, coordinate: coordinate.location).tag(code)
+    }
+}
+
+private extension eBirdRegionInfo.Bounds {
+    func box(fancy: Bool = true) -> some MapContent {
+        MapPolyline(coordinates: diamond.locations)
+            .stroke(fancy ? .primary : .secondary,
+                    lineWidth: fancy ? 5 : 2)
+    }
+}
+
 struct LocalRegionView: View {
     var regionService: any eBirdRegionService
     @Environment(LocationService.self) var locationService
@@ -27,15 +43,18 @@ struct LocalRegionView: View {
 
     private var mapView: some View {
         Map(position: $position, selection: preferences.$regionCode) {
-            ForEach(regions) { info in
-                Marker(info.result, coordinate: info.coordinate.location)
-                    .tag(info.code)
-                if let bounds = info.bounds {
-                    box(for: bounds,
-                        with: info.code == preferences.regionCode)
-                }
-            }
             UserAnnotation()
+            if regions.count < kMaxRegions {
+                ForEach(regions) { info in
+                    info.marker
+                    info.bounds?.box(fancy: info.code == preferences.regionCode)
+                }
+            } else if let info = regions.first(
+                where: { $0.code == preferences.regionCode }
+            ) {
+                info.marker
+                info.bounds?.box()
+            }
         }
         .mapStyle(.standard(pointsOfInterest: []))
         .onMapCameraChange(frequency: .onEnd) { updateContext in
