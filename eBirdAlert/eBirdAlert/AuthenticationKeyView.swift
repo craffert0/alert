@@ -52,21 +52,20 @@ struct AuthenticationKeyView: View {
         }
     }
 
+    @ViewBuilder
     private var textField: some View {
-        Group {
-            if visibleText {
-                TextField(kTitleKey,
-                          text: $applicationKey,
-                          prompt: kPrompt)
-                    .focused($textFocused)
-                    .onAppear { textFocused = true }
-            } else {
-                SecureField(kTitleKey,
-                            text: $applicationKey,
-                            prompt: kPrompt)
-                    .focused($secureFocused)
-                    .onAppear { secureFocused = true }
-            }
+        if visibleText {
+            TextField(kTitleKey,
+                      text: $applicationKey,
+                      prompt: kPrompt)
+                .focused($textFocused)
+                .onAppear { textFocused = true }
+        } else {
+            SecureField(kTitleKey,
+                        text: $applicationKey,
+                        prompt: kPrompt)
+                .focused($secureFocused)
+                .onAppear { secureFocused = true }
         }
     }
 
