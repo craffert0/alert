@@ -29,6 +29,20 @@ public extension eBirdRegionInfo.Bounds {
         minY: 40.542167,
         maxY: 40.801049
     )
+
+    static let nyc = eBirdRegionInfo.Bounds(
+        minX: -74.024261,
+        maxX: -73.910477,
+        minY: 40.700421,
+        maxY: 40.878583
+    )
+
+    static let bronx = eBirdRegionInfo.Bounds(
+        minX: -73.935837,
+        maxX: -73.764442,
+        minY: 40.781665,
+        maxY: 40.920102
+    )
 }
 
 public extension eBirdRegionInfo {
@@ -72,5 +86,23 @@ public extension eBirdRegionInfo {
         type: .subnational2,
         longitude: -73.836956,
         latitude: 40.671608
+    )
+
+    static let nyc = eBirdRegionInfo(
+        bounds: .nyc,
+        result: "New York, New York, United States",
+        code: "US-NY-061",
+        type: .subnational2,
+        longitude: -73.967369,
+        latitude: 40.789502
+    )
+
+    static let bronx = eBirdRegionInfo(
+        bounds: .bronx,
+        result: "Bronx, New York, United States",
+        code: "US-NY-005",
+        type: .subnational2,
+        longitude: -73.850139,
+        latitude: 40.850883
     )
 }

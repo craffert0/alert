@@ -10,7 +10,6 @@ struct LocationView: View {
     @State var showRange: Bool = false
     @State var range: RangeType? = nil
     private let service: eBirdRegionService = FixedRegionService.global
-    private let censusService: CensusService = URLSession.shared
     private let onChange: (() async -> Void)?
 
     init(onChange: (() async -> Void)? = nil) {
@@ -59,8 +58,7 @@ struct LocationView: View {
     private func loadRangeDidChange() async -> Bool {
         let oldRange = range
         range = try? await preferences.range(for: locationService.location,
-                                             with: service,
-                                             and: censusService)
+                                             with: service)
         return range != oldRange
     }
 }

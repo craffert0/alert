@@ -37,7 +37,7 @@ struct LocalRegionView: View {
             Text(title)
             mapView
         }
-        .task { await load() }
+        .task { load() }
         .alert(isPresented: $showError, error: error) {}
     }
 
@@ -84,13 +84,13 @@ struct LocalRegionView: View {
                     lineWidth: selected ? 5 : 2)
     }
 
-    private func load() async {
+    private func load() {
         do {
             guard let location = locationService.location else {
                 throw eBirdServiceError.noLocation
             }
             isLoading = true
-            regions = try await getRegions(
+            regions = try getRegions(
                 at: location,
                 around: .init(latitudeDelta: 0.4,
                               longitudeDelta: 0.3)
@@ -108,7 +108,7 @@ struct LocalRegionView: View {
         isLoading = true
         Task {
             do {
-                let regions = try await getRegions(
+                let regions = try getRegions(
                     at: .init(from: context.region.center),
                     around: .init(from: context.region.span)
                 )
@@ -127,15 +127,15 @@ struct LocalRegionView: View {
     }
 
     private func getRegions(at location: Coordinate,
-                            around span: CoordinateSpan) async throws
+                            around span: CoordinateSpan) throws
         -> [eBirdRegionInfo]
     {
         let regions =
-            try await regionService.getRegions(at: location,
-                                               around: span)
+            try regionService.getRegions(at: location,
+                                         around: span)
         if let code = preferences.regionCode,
            !regions.contains(where: { $0.code == code }),
-           let region = try? await regionService.getInfo(for: code)
+           let region = try? regionService.getInfo(for: code)
         {
             return regions + [region]
         } else {

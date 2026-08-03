@@ -15,12 +15,12 @@ class FixedRegionService: eBirdRegionService {
     }()
 
     func getSubRegions(of region: RegionCodeProvider,
-                       as _: eBirdRegionType) async throws -> [eBirdRegion]
+                       as _: eBirdRegionType) throws -> [eBirdRegion]
     {
         loader.getSubRegions(of: region)
     }
 
-    func getInfo(for regionCode: String) async throws -> eBirdRegionInfo {
+    func getInfo(for regionCode: String) throws -> eBirdRegionInfo {
         guard let info = loader.getInfo(for: regionCode) else {
             throw eBirdServiceError.noRegion(regionCode: regionCode)
         }

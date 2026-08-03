@@ -50,7 +50,7 @@ extension eBirdRegionInfo: Identifiable {
     public var id: String { code }
 }
 
-extension eBirdRegionInfo {
+public extension eBirdRegionInfo {
     func touches(_ span: CoordinateSpan,
                  around location: Coordinate) -> Bool
     {
@@ -64,6 +64,14 @@ extension eBirdRegionInfo {
             lng <= bounds.maxX + dLng &&
             bounds.minY - dLat <= lat &&
             lat <= bounds.maxY + dLat
+    }
+
+    func contains(location: Coordinate) -> Bool {
+        guard let bounds else { return false }
+        return bounds.minX < location.longitude &&
+            bounds.maxX > location.longitude &&
+            bounds.minY < location.latitude &&
+            bounds.maxY > location.latitude
     }
 
     func within(_ span: CoordinateSpan,
