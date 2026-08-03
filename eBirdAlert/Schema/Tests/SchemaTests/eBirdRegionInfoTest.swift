@@ -6,7 +6,7 @@ import Schema
 import Testing
 
 struct eBirdRegionInfoTest {
-    @Test func basics() {
+    @Test func contains() {
         // lots of overlap down by Newtown Creek
         #expect(eBirdRegionInfo.kings.contains(location: .silvercup))
         #expect(eBirdRegionInfo.queens.contains(location: .silvercup))

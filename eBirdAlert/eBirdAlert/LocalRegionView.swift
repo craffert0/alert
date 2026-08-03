@@ -27,7 +27,6 @@ struct LocalRegionView: View {
     @Environment(LocationService.self) var locationService
     @State var position: MapCameraPosition = .automatic
     @State var regions: [eBirdRegionInfo] = []
-    @State var isLoading: Bool = true
     @State var showError: Bool = false
     @State var error: eBirdServiceError? = nil
     @ObservedObject var preferences = PreferencesModel.global
@@ -85,61 +84,38 @@ struct LocalRegionView: View {
     }
 
     private func load() {
-        do {
-            guard let location = locationService.location else {
-                throw eBirdServiceError.noLocation
-            }
-            isLoading = true
-            regions = try getRegions(
-                at: location,
-                around: .init(latitudeDelta: 0.4,
-                              longitudeDelta: 0.3)
-            )
-            isLoading = false
-        } catch {
-            self.error = eBirdServiceError.from(error)
+        guard let location = locationService.location else {
+            error = eBirdServiceError.noLocation
             showError = true
-            isLoading = false
+            return
         }
+        updateRegions(
+            at: location,
+            around: .init(latitudeDelta: 0.4,
+                          longitudeDelta: 0.3)
+        )
     }
 
     private func updateRegions(_ context: MapCameraUpdateContext) {
-        guard !isLoading else { return }
-        isLoading = true
-        Task {
-            do {
-                let regions = try getRegions(
-                    at: .init(from: context.region.center),
-                    around: .init(from: context.region.span)
-                )
-                Task { @MainActor in
-                    self.regions = regions
-                    isLoading = false
-                }
-            } catch {
-                Task { @MainActor in
-                    self.error = eBirdServiceError.from(error)
-                    showError = true
-                    isLoading = false
-                }
-            }
-        }
+        updateRegions(
+            at: .init(from: context.region.center),
+            around: .init(from: context.region.span)
+        )
     }
 
-    private func getRegions(at location: Coordinate,
-                            around span: CoordinateSpan) throws
-        -> [eBirdRegionInfo]
+    private func updateRegions(at location: Coordinate,
+                               around span: CoordinateSpan)
     {
         let regions =
-            try regionService.getRegions(at: location,
-                                         around: span)
+            regionService.getRegions(at: location,
+                                     around: span)
         if let code = preferences.regionCode,
            !regions.contains(where: { $0.code == code }),
-           let region = try? regionService.getInfo(for: code)
+           let region = regionService.getInfo(for: code)
         {
-            return regions + [region]
+            self.regions = regions + [region]
         } else {
-            return regions
+            self.regions = regions
         }
     }
 }

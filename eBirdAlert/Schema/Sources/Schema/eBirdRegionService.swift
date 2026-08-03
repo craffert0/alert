@@ -3,27 +3,28 @@
 
 public protocol eBirdRegionService {
     func getSubRegions(of region: RegionCodeProvider,
-                       as type: eBirdRegionType) throws -> [eBirdRegion]
+                       as type: eBirdRegionType) -> [eBirdRegion]
 
-    func getInfo(for regionCode: String) throws -> eBirdRegionInfo
+    func getInfo(for regionCode: String) -> eBirdRegionInfo?
 }
 
 public extension eBirdRegionService {
-    func getInfo(of provider: RegionCodeProvider) throws -> eBirdRegionInfo {
-        try getInfo(for: provider.code)
+    func getInfo(of provider: RegionCodeProvider) -> eBirdRegionInfo? {
+        getInfo(for: provider.code)
     }
 }
 
 public extension eBirdRegionService {
-    func getRegions(at location: Coordinate) throws -> [eBirdRegionInfo] {
-        try getRegions(location, .world, .world, .custom)
+    // Get a list of lowest regions containing the location.
+    func getRegions(at location: Coordinate) -> [eBirdRegionInfo] {
+        getRegions(location, .world, .world, .custom)
     }
 
     private func getRegions(_ location: Coordinate,
                             _ region: eBirdRegion,
                             _ info: eBirdRegionInfo,
                             _ type: eBirdRegionType)
-        throws -> [eBirdRegionInfo]
+        -> [eBirdRegionInfo]
     {
         guard region.code != "XX" else { return [] }
 
@@ -34,7 +35,7 @@ public extension eBirdRegionService {
                 return []
             }
         }
-        let subregions = try getSubRegions(of: region, as: subtype)
+        let subregions = getSubRegions(of: region, as: subtype)
         if subregions.isEmpty {
             if info.contains(location: location) {
                 return [info]
@@ -45,9 +46,10 @@ public extension eBirdRegionService {
 
         var result: [eBirdRegionInfo] = []
         for subregion in subregions {
-            let info = try getInfo(of: subregion)
-            if info.contains(location: location) {
-                result += try getRegions(
+            if let info = getInfo(of: subregion),
+               info.contains(location: location)
+            {
+                result += getRegions(
                     location, subregion, info, subtype
                 )
             }
@@ -57,11 +59,13 @@ public extension eBirdRegionService {
 }
 
 public extension eBirdRegionService {
+    // Get a list of lowest regions within the window specified by location &
+    // span.
     func getRegions(at location: Coordinate,
-                    around span: CoordinateSpan) throws
+                    around span: CoordinateSpan)
         -> [eBirdRegionInfo]
     {
-        try getRegions(location, span, .world, .world, .custom)
+        getRegions(location, span, .world, .world, .custom)
     }
 
     private func getRegions(_ location: Coordinate,
@@ -69,7 +73,7 @@ public extension eBirdRegionService {
                             _ region: eBirdRegion,
                             _ info: eBirdRegionInfo,
                             _ type: eBirdRegionType)
-        throws -> [eBirdRegionInfo]
+        -> [eBirdRegionInfo]
     {
         if region.code == "XX" {
             return []
@@ -81,7 +85,7 @@ public extension eBirdRegionService {
                 return []
             }
         }
-        let subregions = try getSubRegions(of: region, as: subtype)
+        let subregions = getSubRegions(of: region, as: subtype)
         if subregions.isEmpty {
             if info.within(span, around: location) {
                 return [info]
@@ -92,9 +96,10 @@ public extension eBirdRegionService {
 
         var result: [eBirdRegionInfo] = []
         for subregion in subregions {
-            let info = try getInfo(of: subregion)
-            if info.touches(span, around: location) {
-                result += try getRegions(
+            if let info = getInfo(of: subregion),
+               info.touches(span, around: location)
+            {
+                result += getRegions(
                     location, span, subregion, info, subtype
                 )
             }
@@ -104,8 +109,10 @@ public extension eBirdRegionService {
 }
 
 public extension eBirdRegionService {
-    func getRegion(at location: Coordinate) throws -> eBirdRegionInfo? {
-        let regions = try getRegions(at: location)
+    // Get the lowest containing region whose center is closest to the
+    // location.
+    func getRegion(at location: Coordinate) -> eBirdRegionInfo? {
+        let regions = getRegions(at: location)
         guard var best = regions.first else { return nil }
         var distance2 = location.distance2(.init(from: best))
         for r in regions {

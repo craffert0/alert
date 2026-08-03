@@ -27,8 +27,7 @@ class ObservationsProvider<T>: ObservationsProviderProtocol {
 
     func load() async throws {
         let location = locationService.location
-        let range = try? await preferences.range(for: location,
-                                                 with: service)
+        let range = try? preferences.range(for: location, with: service)
         if loadedRange == nil ||
             loadedDaysBack == nil ||
             lastLoadTime == nil ||
