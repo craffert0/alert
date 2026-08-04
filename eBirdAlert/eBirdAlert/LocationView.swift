@@ -35,29 +35,23 @@ struct LocationView: View {
                 Text("Select a county.")
             }
         }
-        .task {
-            _ = loadRangeDidChange()
+        .task(id: range) {
+            if range == nil {
+                reloadRange()
+            } else {
+                await onChange()
+            }
         }
         .sheet(isPresented: $showRange,
-               onDismiss: didDismiss)
+               onDismiss: reloadRange)
         {
             RangePreferenceView()
         }
     }
 
-    private func didDismiss() {
-        Task { @MainActor in
-            if loadRangeDidChange() {
-                await onChange()
-            }
-        }
-    }
-
-    private func loadRangeDidChange() -> Bool {
-        let oldRange = range
+    private func reloadRange() {
         range = try? preferences.range(for: locationService.location,
                                        with: service)
-        return range != oldRange
     }
 }
 
