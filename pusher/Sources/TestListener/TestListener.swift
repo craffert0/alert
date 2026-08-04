@@ -7,7 +7,7 @@ import FlyingFox
 struct ExampleHandler: HTTPHandler {
     func handleRequest(_: HTTPRequest) async throws -> HTTPResponse {
         HTTPResponse(statusCode: .ok,
-                     headers: [.contentType: "text/plain; charset=UTF-8"],
+                     headers: .init([.contentType: "text/plain; charset=UTF-8"]),
                      body: "yo!".data(using: .utf8)!)
     }
 }
@@ -20,7 +20,7 @@ struct TestListener: AsyncParsableCommand {
         let server = HTTPServer(port: port)
         await server.appendRoute("GET /api/v1/hello") { _ in
             HTTPResponse(statusCode: .ok,
-                         headers: [.contentType: "text/plain; charset=UTF-8"],
+                         headers: .init([.contentType: "text/plain; charset=UTF-8"]),
                          body: "hello, world".data(using: .utf8)!)
         }
         await server.appendRoute("GET /admin/yo", to: ExampleHandler())
