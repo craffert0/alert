@@ -12,7 +12,7 @@ class ObservationsProvider<T>: ObservationsProviderProtocol {
     var loadedDaysBack: Int?
     private let locationService: LocationService
     private let loader: (RangeType, Int) async throws -> [T]
-    private let service: eBirdRegionService = URLSession.region
+    private let service: eBirdRegionService = FixedRegionService.global
     private let preferences = PreferencesModel.global
     private var lastLoadTime: Date?
 
@@ -27,7 +27,7 @@ class ObservationsProvider<T>: ObservationsProviderProtocol {
 
     func load() async throws {
         let location = locationService.location
-        let range = try? await preferences.range(for: location, with: service)
+        let range = try? preferences.range(for: location, with: service)
         if loadedRange == nil ||
             loadedDaysBack == nil ||
             lastLoadTime == nil ||

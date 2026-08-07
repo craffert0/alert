@@ -24,13 +24,12 @@ class PreferencesModel: ObservableObject {
     @AppStorage("settings.locals.sort")
     var localsSort: ObservationSortOption = .byTaxon
     @Published var debugMode: Bool = false
-    let maxDistance: Double = 250
     var deviceToken: Data?
 }
 
 extension PreferencesModel {
     func range(for location: Coordinate?,
-               with service: eBirdRegionService) async throws -> RangeType
+               with service: eBirdRegionService) throws -> RangeType
     {
         switch rangeOption {
         case .radius:
@@ -40,14 +39,18 @@ extension PreferencesModel {
                                        units: distUnits))
         case .region:
             if let regionCode {
-                return try await .region(service.getInfo(for: regionCode))
+                guard let info = service.getInfo(for: regionCode) else {
+                    throw eBirdServiceError.noRegion(regionCode: regionCode)
+                }
+                return .region(info)
             } else {
-                guard let location else { throw eBirdServiceError.noLocation }
-                return try await .region(
-                    service.getInfo(for: service.getCensusTract(
-                        for: location
-                    ).code)
-                )
+                guard let location else {
+                    throw eBirdServiceError.noLocation
+                }
+                guard let region = service.getRegion(at: location) else {
+                    throw eBirdServiceError.noLocationRegion
+                }
+                return .region(region)
             }
         }
     }

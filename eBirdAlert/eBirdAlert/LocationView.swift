@@ -9,10 +9,10 @@ struct LocationView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @State var showRange: Bool = false
     @State var range: RangeType? = nil
-    private let service: eBirdRegionService = URLSession.region
-    private let onChange: (() async -> Void)?
+    private let service: eBirdRegionService = FixedRegionService.global
+    private let onChange: () async -> Void
 
-    init(onChange: (() async -> Void)? = nil) {
+    init(onChange: @escaping (() async -> Void)) {
         self.onChange = onChange
     }
 
@@ -35,31 +35,23 @@ struct LocationView: View {
                 Text("Select a county.")
             }
         }
-        .task {
-            _ = await loadRangeDidChange()
+        .task(id: range) {
+            if range == nil {
+                reloadRange()
+            } else {
+                await onChange()
+            }
         }
         .sheet(isPresented: $showRange,
-               onDismiss: didDismiss)
+               onDismiss: reloadRange)
         {
             RangePreferenceView()
         }
     }
 
-    private func didDismiss() {
-        Task { @MainActor in
-            if await loadRangeDidChange(),
-               let onChange
-            {
-                await onChange()
-            }
-        }
-    }
-
-    private func loadRangeDidChange() async -> Bool {
-        let oldRange = range
-        range = try? await preferences.range(for: locationService.location,
-                                             with: service)
-        return range != oldRange
+    private func reloadRange() {
+        range = try? preferences.range(for: locationService.location,
+                                       with: service)
     }
 }
 
@@ -67,7 +59,8 @@ struct LocationView: View {
     let locationService: LocationService =
         FixedLocationService(latitude: 41, longitude: -74)
     VStack {
-        LocationView()
-            .environment(locationService)
-    }
+        LocationView {
+            print("load it")
+        }
+    }.environment(locationService)
 }

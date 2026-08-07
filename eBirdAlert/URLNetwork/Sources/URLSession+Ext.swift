@@ -3,31 +3,30 @@
 
 import Foundation
 
-extension URLSession {
-    public static let region = URLSession(configuration: .region)
+private let kMinSleep: Duration = .milliseconds(500)
+private let kMaxSleep: Duration = .seconds(8)
 
+extension URLSession {
     func object<Output: Decodable>(
         for request: URLRequest
     ) async throws -> Output {
-        guard let (data, response) = try await self.data(for: request)
-            as? (Data, HTTPURLResponse)
-        else {
-            throw eBirdServiceError.networkError
-        }
+        var nextSleep = kMinSleep
+        while true {
+            guard let (data, response) = try await self.data(for: request)
+                as? (Data, HTTPURLResponse)
+            else {
+                throw eBirdServiceError.networkError
+            }
 
-        guard validStatus.contains(response.statusCode) else {
-            // Normally 403 on error
-            throw eBirdServiceError.httpError(statusCode: response.statusCode)
+            if (200 ... 299).contains(response.statusCode) {
+                return try object(from: data)
+            } else if response.statusCode == 429, nextSleep <= kMaxSleep {
+                try await Task.sleep(for: nextSleep)
+                nextSleep = nextSleep * 2
+            } else {
+                throw eBirdServiceError.httpError(statusCode: response.statusCode)
+            }
         }
-
-        if self == .region {
-            configuration.urlCache?.storeCachedResponse(
-                CachedURLResponse(response: response, data: data),
-                for: request
-            )
-        }
-
-        return try object(from: data)
     }
 
     func object<Output: Decodable>(from data: Data) throws -> Output {

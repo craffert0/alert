@@ -5,11 +5,10 @@ import Foundation
 
 public struct eBirdRegion: Codable, Sendable {
     public let code: String
-    public let name: String
 }
 
 public extension eBirdRegion {
-    static let world = eBirdRegion(code: "world", name: "World")
+    static let world = eBirdRegion(code: "world")
 }
 
 extension eBirdRegion: Identifiable {

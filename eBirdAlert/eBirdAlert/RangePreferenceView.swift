@@ -46,7 +46,7 @@ struct RangePreferenceView: View {
     }
 
     private var regionView: some View {
-        LocalRegionView(regionService: URLSession.region)
+        LocalRegionView(regionService: FixedRegionService.global)
     }
 }
 

@@ -8,9 +8,9 @@ public final class eBirdRegionInfo: Codable, Sendable {
     public let result: String
     public let code: String
     public let type: eBirdRegionType
-    public let parent: eBirdRegionInfo?
     public let longitude: Double
     public let latitude: Double
+    public let subregionCodes: [String]?
 
     public struct Bounds: Codable, Sendable {
         public let minX: Double
@@ -24,17 +24,17 @@ public final class eBirdRegionInfo: Codable, Sendable {
         result: String,
         code: String,
         type: eBirdRegionType,
-        parent: eBirdRegionInfo? = nil,
         longitude: Double = 0.0,
-        latitude: Double = 0.0
+        latitude: Double = 0.0,
+        subregionCodes: [String]? = nil
     ) {
         self.bounds = bounds
         self.result = result
         self.code = code
         self.type = type
-        self.parent = parent
         self.longitude = longitude
         self.latitude = latitude
+        self.subregionCodes = subregionCodes
     }
 }
 
@@ -50,7 +50,17 @@ extension eBirdRegionInfo: Identifiable {
     public var id: String { code }
 }
 
-extension eBirdRegionInfo {
+public extension eBirdRegionInfo {
+    // Is the location inside this region?
+    func contains(location: Coordinate) -> Bool {
+        guard let bounds else { return false }
+        return bounds.minX < location.longitude &&
+            bounds.maxX > location.longitude &&
+            bounds.minY < location.latitude &&
+            bounds.maxY > location.latitude
+    }
+
+    // Does this region overlap at allwith the box defined by span & location?
     func touches(_ span: CoordinateSpan,
                  around location: Coordinate) -> Bool
     {
@@ -66,6 +76,7 @@ extension eBirdRegionInfo {
             lat <= bounds.maxY + dLat
     }
 
+    // Is this region contained within the box defined by span & location?
     func within(_ span: CoordinateSpan,
                 around location: Coordinate) -> Bool
     {

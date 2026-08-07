@@ -43,7 +43,7 @@ struct DistancePreferencesView: View {
     private var slider: some View {
         HStack {
             Slider(value: distValueReduced,
-                   in: 1.reduced ... preferences.maxDistance.reduced)
+                   in: 1.reduced ... .maxNotableDistance.reduced)
             Text(preferences.distValue.formatted(.eBirdFormat))
         }
     }

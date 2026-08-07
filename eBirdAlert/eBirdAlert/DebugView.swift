@@ -12,7 +12,7 @@ struct DebugView: View {
             Tab("Checklists", systemImage: "list.bullet.circle") {
                 ChecklistsView()
             }
-            Tab("Preferences", systemImage: "flame.circle") {
+            Tab("Secrets", systemImage: "flame.circle") {
                 SecretPreferencesView()
             }
         }

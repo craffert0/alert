@@ -1,0 +1,68 @@
+#! /opt/homebrew/bin/python3
+
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
+
+import argparse
+import json
+import pathlib
+import sys
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(prog="collate-regions")
+    parser.add_argument("path", type=pathlib.Path)
+    return parser.parse_args(sys.argv[1:])
+
+
+def load(region):
+    with region.open() as ri:
+        r = json.load(ri)
+        subpath = region.parent / f"{region.name[:-8]}.subr.js"
+        if subpath.exists():
+            with subpath.open() as si:
+                subregionCodes = [
+                    x
+                    for x in json.load(si)
+                    if (region.parent / f"{x}.info.js").exists()
+                ]
+                if len(subregionCodes) != 0:
+                    r["subregionCodes"] = subregionCodes
+        return r
+
+
+def s(d):
+    if d == 0.0:
+        return "0"
+    else:
+        return f"{d:0.6f}"
+
+
+def dump(r):
+    b = r.get("bounds", {"maxX": 0, "maxY": 0, "minX": 0, "minY": 0})
+    code = r["code"]
+    result = r["result"]
+    latitude = s(r["latitude"])
+    longitude = s(r["longitude"])
+    ttype = r["type"]
+    bounds_minX = s(b["minX"])
+    bounds_maxX = s(b["maxX"])
+    bounds_minY = s(b["minY"])
+    bounds_maxY = s(b["maxY"])
+    subregions = ",".join(r.get("subregionCodes", []))
+    print(
+        f'"{code}","{result}",{latitude},{longitude},"{ttype}",{bounds_minX},{bounds_maxX},{bounds_minY},{bounds_maxY},"{subregions}"'
+    )
+
+
+def main(args):
+    print(
+        "code,result,latitude,longitude,type,bounds_minX,bounds_maxX,bounds_minY,bounds_maxY,subregions"
+    )
+    regions = sorted(args.path.glob("*.info.js"), key=lambda f: f.name[:-8])
+    for r in [load(x) for x in regions]:
+        dump(r)
+
+
+if __name__ == "__main__":
+    main(parse_args())

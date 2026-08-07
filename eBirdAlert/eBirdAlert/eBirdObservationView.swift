@@ -38,13 +38,12 @@ struct eBirdObservationView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
+    @ViewBuilder
     private var topCommentsView: some View {
-        Group {
-            if let comments = obs?.comments {
-                Text(comments)
-                    .textSelection(.enabled)
-                    .padding()
-            }
+        if let comments = obs?.comments {
+            Text(comments)
+                .textSelection(.enabled)
+                .padding()
         }
     }
 

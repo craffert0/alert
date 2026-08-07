@@ -3,12 +3,14 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
+import csv
 import functools
 import html
 import json
 import os.path
 import server
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -65,28 +67,30 @@ def tr(location, date, comment):
 
 
 def load_taxonomy():
-    return {
-        js["speciesCode"]: js
-        for js in json.loads(
-            Path(
-                os.path.join(
-                    os.path.dirname(__file__),
-                    "../eBirdAlert/eBirdAlert/Assets/taxonomy.json",
-                )
-            ).read_text()
-        )
-    }
+    csvf = os.path.join(
+        os.path.dirname(__file__),
+        "../eBirdAlert/eBirdAlert/Assets/taxonomy.csv",
+    )
+
+    with open(csvf, "r") as taxon:
+        return {
+            js["speciesCode"]: js
+            for js in csv.DictReader(taxon, delimiter=",")
+        }
 
 
 class Server(server.Server):
     def birds(self, region):
+        time.sleep(2)
         return self.get(f"data/obs/{region}/recent", kGetParams)
 
     def bird(self, region, species):
+        time.sleep(2)
         return self.get(f"data/obs/{region}/recent/{species}", kGetParams)
 
     @functools.cache
     def checklist(self, subId):
+        time.sleep(2)
         return self.get("product/checklist/view/" + subId)
 
     def checklistObs(self, subId):

@@ -5,8 +5,8 @@ import Foundation
 import Schema
 
 extension CircleModel {
-    var queryItem: URLQueryItem {
-        URLQueryItem(name: "dist",
-                     value: "\(units.asKilometers(radius))")
+    func queryItem(maxRadius: Double) -> URLQueryItem {
+        let radius = min(units.asKilometers(radius), maxRadius)
+        return URLQueryItem(name: "dist", value: String(radius))
     }
 }
