@@ -67,7 +67,12 @@ def tr(location, date, comment):
 
 
 def load_taxonomy():
-    with open("../eBirdAlert/eBirdAlert/Assets/taxonomy.csv", "r") as taxon:
+    csvf = os.path.join(
+        os.path.dirname(__file__),
+        "../eBirdAlert/eBirdAlert/Assets/taxonomy.csv",
+    )
+
+    with open(csvf, "r") as taxon:
         return {
             js["speciesCode"]: js
             for js in csv.DictReader(taxon, delimiter=",")
@@ -148,7 +153,7 @@ class Species:
     def __init__(self, speciesCode, taxon, server):
         self.speciesCode = speciesCode
         self.comName = taxon["comName"]
-        self.taxonOrder = Double(taxon["taxonOrder"])
+        self.taxonOrder = taxon["taxonOrder"]
         self.sightings = sorted(
             [
                 Sighting(x, server)
