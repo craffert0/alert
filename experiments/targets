@@ -171,7 +171,12 @@ def main():
     taxonomy = load_taxonomy()
     people = [Person(x) for x in json.load(sys.stdin)["people"]]
     server = Server()
-    nearby = {s["speciesCode"] for r in kRegions for s in server.birds(r)}
+    nearby = {
+        s["speciesCode"]
+        for r in kRegions
+        for s in server.birds(r)
+        if not "exoticCategory" in s
+    }
     allhits = set.union(*[p.hits(nearby) for p in people])
     allspecies = {s: Species(s, taxonomy[s], server) for s in allhits}
     for p in people:
