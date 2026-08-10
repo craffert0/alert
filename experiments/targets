@@ -51,7 +51,7 @@ kTableEnd = """
 """
 
 
-kGetParams = "&back=2"
+kGetParams = "&back=2&r=" + ",".join(kRegions)
 
 
 def link(tag, href):
@@ -80,13 +80,15 @@ def load_taxonomy():
 
 
 class Server(server.Server):
-    def birds(self, region):
+    def birds(self):
         time.sleep(2)
-        return self.get(f"data/obs/{region}/recent", kGetParams)
+        return self.get(f"data/obs/{kRegions[0]}/recent", kGetParams)
 
-    def bird(self, region, species):
+    def bird(self, species):
         time.sleep(2)
-        return self.get(f"data/obs/{region}/recent/{species}", kGetParams)
+        return self.get(
+            f"data/obs/{kRegions[0]}/recent/{species}", kGetParams
+        )
 
     @functools.cache
     def checklist(self, subId):
@@ -155,11 +157,7 @@ class Species:
         self.comName = taxon["comName"]
         self.taxonOrder = taxon["taxonOrder"]
         self.sightings = sorted(
-            [
-                Sighting(x, server)
-                for r in kRegions
-                for x in server.bird(r, speciesCode)
-            ],
+            [Sighting(x, server) for x in server.bird(speciesCode)],
             key=lambda s: s.date,
             reverse=True,
         )
@@ -171,7 +169,9 @@ def main():
     taxonomy = load_taxonomy()
     people = [Person(x) for x in json.load(sys.stdin)["people"]]
     server = Server()
-    nearby = {s["speciesCode"] for r in kRegions for s in server.birds(r)}
+    nearby = {
+        s["speciesCode"] for s in server.birds() if not "exoticCategory" in s
+    }
     allhits = set.union(*[p.hits(nearby) for p in people])
     allspecies = {s: Species(s, taxonomy[s], server) for s in allhits}
     for p in people:
