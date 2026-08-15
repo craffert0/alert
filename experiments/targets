@@ -3,11 +3,13 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
+import argparse
 import csv
 import functools
 import html
 import json
 import os.path
+import pathlib
 import server
 import sys
 import time
@@ -79,7 +81,29 @@ def load_taxonomy():
         }
 
 
+class Cache:
+    def __init__(self, path):
+        if not path.is_dir():
+            raise RuntimeError(f"{path} is not a directory")
+        self.path = path
+
+    def get(self, style, name):
+        try:
+            with (self.path / f"{style}.{name}.js").open() as i:
+                return json.load(i)
+        except:
+            return None
+
+    def put(self, style, name, value):
+        with (self.path / f"{style}.{name}.js").open(mode="w") as o:
+            json.dump(value, o)
+
+
 class Server(server.Server):
+    def __init__(self, cache):
+        self.cache = cache
+        super(Server, self).__init__()
+
     def birds(self):
         time.sleep(2)
         return self.get(f"data/obs/{kRegions[0]}/recent", kGetParams)
@@ -92,8 +116,13 @@ class Server(server.Server):
 
     @functools.cache
     def checklist(self, subId):
+        cached = self.cache.get("checklist", subId)
+        if cached is not None:
+            return cached
         time.sleep(2)
-        return self.get("product/checklist/view/" + subId)
+        value = self.get("product/checklist/view/" + subId)
+        self.cache.put("checklist", subId, value)
+        return value
 
     def checklistObs(self, subId):
         try:
@@ -164,11 +193,11 @@ class Species:
         self.title = f"{self.comName} ({self.sightings[0].dateName})"
 
 
-def main():
+def main(args):
     updated = datetime.now().strftime("<p>Updated: %b %-d %-I%p</p>\n")
     taxonomy = load_taxonomy()
     people = [Person(x) for x in json.load(sys.stdin)["people"]]
-    server = Server()
+    server = Server(Cache(args.cachedir))
     nearby = {
         s["speciesCode"] for s in server.birds() if not "exoticCategory" in s
     }
@@ -212,5 +241,11 @@ def main():
             of.write(kTrailer)
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(prog="targets")
+    parser.add_argument("-c", "--cachedir", type=pathlib.Path, required=True)
+    return parser.parse_args(sys.argv[1:])
+
+
 if __name__ == "__main__":
-    main()
+    main(parse_args())
