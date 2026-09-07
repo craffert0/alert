@@ -20,7 +20,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "git@gitlab.com:craffert0/swiftutil.git",
-            .upToNextMajor(from: "1.0.0")
+            .upToNextMajor(from: "2.0.0")
         ),
     ],
 

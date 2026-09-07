@@ -3,6 +3,7 @@
 
 import Schema
 import SwiftUI
+import SwiftUIUtil
 
 struct PreferencesView: View {
     @ObservedObject var preferences = PreferencesModel.global
@@ -62,7 +63,7 @@ struct PreferencesView: View {
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity, alignment: .center)
             .sheet(isPresented: $showLicense) {
-                LicenseView(model: LicenseModel())
+                LicenseView(model: .gplV2)
             }
 
             Text(

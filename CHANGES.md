@@ -1,5 +1,7 @@
 # Next
 
+## Use swiftutil's LicenseView
+
 ## Make Photos link jump directly to photo
 
 ## make changing and reloading Range all happen on @Main

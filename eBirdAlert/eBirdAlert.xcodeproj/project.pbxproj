@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B1FAB9D2F11B2860002EF60 /* URLNetwork in Frameworks */ = {isa = PBXBuildFile; productRef = 3B1FAB9C2F11B2860002EF60 /* URLNetwork */; };
+		3B2E5350304E52CA0091154D /* SwiftUIUtil in Frameworks */ = {isa = PBXBuildFile; productRef = 3B2E534F304E52CA0091154D /* SwiftUIUtil */; };
 		3B520C4E2F15855C009DA370 /* AlertAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 3B520C4D2F15855C009DA370 /* AlertAPI */; };
 		3B520D082F1594F3009DA370 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = 3B520D072F1594F3009DA370 /* OpenAPIURLSession */; };
 		3B59C3B92D9D7B2F00A695C7 /* Schema in Frameworks */ = {isa = PBXBuildFile; productRef = 3B59C3B82D9D7B2F00A695C7 /* Schema */; };
@@ -77,6 +78,7 @@
 				3B59C3B92D9D7B2F00A695C7 /* Schema in Frameworks */,
 				3B520C4E2F15855C009DA370 /* AlertAPI in Frameworks */,
 				3B520D082F1594F3009DA370 /* OpenAPIURLSession in Frameworks */,
+				3B2E5350304E52CA0091154D /* SwiftUIUtil in Frameworks */,
 				3B1FAB9D2F11B2860002EF60 /* URLNetwork in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -151,6 +153,7 @@
 				3B1FAB9C2F11B2860002EF60 /* URLNetwork */,
 				3B520C4D2F15855C009DA370 /* AlertAPI */,
 				3B520D072F1594F3009DA370 /* OpenAPIURLSession */,
+				3B2E534F304E52CA0091154D /* SwiftUIUtil */,
 			);
 			productName = eBirdAlert;
 			productReference = 3BEF40982D9ADB5C00817F9C /* eBirdAlert.app */;
@@ -648,7 +651,7 @@
 			repositoryURL = "git@gitlab.com:craffert0/swiftutil.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 2.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -657,6 +660,11 @@
 		3B1FAB9C2F11B2860002EF60 /* URLNetwork */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = URLNetwork;
+		};
+		3B2E534F304E52CA0091154D /* SwiftUIUtil */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B8A707F2E5675DC0050D63F /* XCRemoteSwiftPackageReference "swiftutil" */;
+			productName = SwiftUIUtil;
 		};
 		3B520C4D2F15855C009DA370 /* AlertAPI */ = {
 			isa = XCSwiftPackageProductDependency;
