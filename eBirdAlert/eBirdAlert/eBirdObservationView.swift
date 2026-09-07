@@ -51,7 +51,7 @@ struct eBirdObservationView: View {
         Button(checklist.userDisplayName ?? "Checklist") {
             showChecklist = true
         }.sheet(isPresented: $showChecklist) {
-            SafariView(code: checklist.id, site: .checklist)
+            SafariView(site: .checklist(checklist.id))
         }
     }
 
@@ -59,7 +59,7 @@ struct eBirdObservationView: View {
         Button("\(e.howMany ?? 1) \(e.comName)") {
             showSpecies = true
         }.sheet(isPresented: $showSpecies) {
-            SafariView(code: e.speciesCode, site: .ebird)
+            SafariView(site: .ebird(e.speciesCode))
         }
     }
 
@@ -67,7 +67,8 @@ struct eBirdObservationView: View {
         Button("📸 photos 📸") {
             showPhotos = true
         }.sheet(isPresented: $showPhotos) {
-            SafariView(code: checklist.id, site: .photos)
+            SafariView(site: .photos(checklist.id,
+                                     species: e.speciesCode))
         }
     }
 
@@ -107,7 +108,7 @@ struct eBirdObservationView: View {
                 Button("\(obs.howManyStr ?? "1") \(obs.printableName)") {
                     showSpecies = true
                 }.sheet(isPresented: $showSpecies) {
-                    SafariView(code: obs.speciesCode, site: .ebird)
+                    SafariView(site: .ebird(obs.speciesCode))
                 }
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity, alignment: .center)

@@ -15,7 +15,7 @@ struct BirdButtonsView: View {
             Button("Identify", systemImage: "person.crop.badge.magnifyingglass") {
                 showEBird = true
             }.sheet(isPresented: $showEBird) {
-                SafariView(code: speciesCode, site: .ebird)
+                SafariView(site: .ebird(speciesCode))
             }
 
             Spacer()
@@ -23,7 +23,7 @@ struct BirdButtonsView: View {
             Button("Photos", systemImage: "photo.artframe") {
                 showPhotos = true
             }.sheet(isPresented: $showPhotos) {
-                SafariView(code: speciesCode, site: .macaulay)
+                SafariView(site: .macaulay(speciesCode))
             }
 
             if UIApplication.shared.canOpenURL(URL(eBird: "bawwar")) {
