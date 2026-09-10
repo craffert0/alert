@@ -15,20 +15,20 @@ struct RemoteNotificationService {
         else { return }
 
         Task {
-            let client = try Client(serverURL: Servers.Server1.url(),
-                                    transport: URLSessionTransport())
-            _ = try await client.postNotableQuery(
-                .init(body: .json(
-                    .init(
-                        userToken: userToken,
-                        deviceId: deviceId.hex,
-                        deviceType: .current,
-                        range: range.api,
-                        daysBack: daysBack,
-                        results: birdsSeen.map(\.speciesCode)
-                    )
-                ))
-            )
+            _ = try? await Client(serverURL: Servers.Server1.url(),
+                                  transport: URLSessionTransport())
+                .postNotableQuery(
+                    .init(body: .json(
+                        .init(
+                            userToken: userToken,
+                            deviceId: deviceId.hex,
+                            deviceType: .current,
+                            range: range.api,
+                            daysBack: daysBack,
+                            results: birdsSeen.map(\.speciesCode)
+                        )
+                    ))
+                )
         }
     }
 }
