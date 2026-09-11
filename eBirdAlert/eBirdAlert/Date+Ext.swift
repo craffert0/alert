@@ -4,16 +4,8 @@
 import Foundation
 
 extension Date {
-    var eBirdFormat: FormatStyle {
-        FormatStyle()
-            .month(.abbreviated)
-            .day(.defaultDigits)
-            .hour(.conversationalDefaultDigits(amPM: .abbreviated))
-            .minute()
-    }
-
     var eBirdFormatted: String {
-        formatted(eBirdFormat)
+        formatted(.eBirdFormat)
     }
 
     var yesterday: Date {

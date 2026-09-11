@@ -6,7 +6,7 @@ import Foundation
 public struct eBirdChecklist: Codable, Sendable {
     // public let protocolId: String
     public let locId: String
-    // public let durationHrs: Float
+    public let durationHrs: Float?
     // public let allObsReported: Bool
     public let comments: String?
     public let creationDt: Date

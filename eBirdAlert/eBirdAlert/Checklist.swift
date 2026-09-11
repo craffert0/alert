@@ -28,6 +28,18 @@ final class Checklist {
         return checklist.userDisplayName
     }
 
+    var formattedDates: String {
+        if case let .value(checklist) = status,
+           let durationHrs = checklist.durationHrs
+        {
+            let end =
+                date.addingTimeInterval(3600 * TimeInterval(durationHrs))
+            return "\(date.eBirdFormatted) - \(end.formatted(.timeOnlyFormat))"
+        } else {
+            return date.eBirdFormatted
+        }
+    }
+
     func observation(for speciesCode: String) -> eBirdChecklist.Obs? {
         guard case let .value(checklist) = status else {
             return nil

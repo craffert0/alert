@@ -34,7 +34,7 @@ struct eBirdObservationView: View {
                 topCommentsView
             }
         }
-        .navigationTitle(e.obsDt.eBirdFormatted)
+        .navigationTitle(checklist.formattedDates)
         .navigationBarTitleDisplayMode(.inline)
     }
 
