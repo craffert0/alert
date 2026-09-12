@@ -4,7 +4,7 @@
 import SwiftUI
 
 struct ObservationPreferencesView: View {
-    @State var model: ObservationsProviderModel
+    @State var model: LoadableModel
     @Binding var sort: ObservationSortOption
 
     var body: some View {
