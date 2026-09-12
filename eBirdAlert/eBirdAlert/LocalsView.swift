@@ -88,7 +88,24 @@ struct LocalsView: View {
     @ViewBuilder
     private var contentView: some View {
         if let mainSpecies = model.mainSpecies {
-            Text(mainSpecies.comName)
+            VStack {
+                Text(mainSpecies.sciName)
+                Spacer()
+
+                BirdButtonsView(speciesCode: mainSpecies.speciesCode)
+
+                List(model.speciesObservations) { obs in
+                    HStack {
+                        Text(obs.obsDt, relativeTo: now)
+                        Text(obs.locName)
+                    }
+                }
+                .refreshable {
+                    await model.refreshSpecies()
+                }
+            }
+            .navigationTitle(mainSpecies.comName)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 
