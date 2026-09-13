@@ -18,6 +18,9 @@ struct NotablesView: View {
         } else {
             ZStack(alignment: .center) {
                 splitView
+                    .onChange(of: model.mainSelection) {
+                        model.locationSelection = nil
+                    }
                 if model.isLoading {
                     ProgressView()
                 }
