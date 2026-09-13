@@ -37,17 +37,7 @@ struct NotablesView: View {
 
     private var splitView: some View {
         NavigationSplitView {
-            VStack {
-                ObservationPreferencesView(model: model,
-                                           sort: preferences.$notableSort)
-                mainListView
-                    .searchable(text: $searchText)
-                    .refreshable {
-                        await model.refresh()
-                    }
-            }
-            .navigationTitle("Rarities")
-            .navigationBarTitleDisplayMode(.inline)
+            mainView
         } content: {
             contentView
         } detail: {
@@ -59,6 +49,20 @@ struct NotablesView: View {
 extension NotablesView {
     private var restrictedObservations: [BirdObservations] {
         model.observations.restrict(by: searchText)
+    }
+
+    private var mainView: some View {
+        VStack {
+            ObservationPreferencesView(model: model,
+                                       sort: preferences.$notableSort)
+            mainListView
+                .searchable(text: $searchText)
+                .refreshable {
+                    await model.refresh()
+                }
+        }
+        .navigationTitle("Rarities")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     @ViewBuilder

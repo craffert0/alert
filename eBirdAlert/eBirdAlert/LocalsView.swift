@@ -36,32 +36,32 @@ struct LocalsView: View {
 
     private var splitView: some View {
         NavigationSplitView {
-            VStack {
-                preferencesView
-                mainListView
-                    .searchable(text: $searchText)
-                    .refreshable {
-                        await model.refresh()
-                    }
-            }
-            .navigationTitle("Locals")
-            .navigationBarTitleDisplayMode(.inline)
+            mainView
         } content: {
             contentView
         } detail: {
             detailView
         }
     }
-
-    private var preferencesView: some View {
-        ObservationPreferencesView(model: model,
-                                   sort: preferences.$localsSort)
-    }
 }
 
 extension LocalsView {
     private var restrictedObservations: [eBirdRecentObservation] {
         model.observations.restrict(by: searchText)
+    }
+
+    private var mainView: some View {
+        VStack {
+            ObservationPreferencesView(model: model,
+                                       sort: preferences.$localsSort)
+            mainListView
+                .searchable(text: $searchText)
+                .refreshable {
+                    await model.refresh()
+                }
+        }
+        .navigationTitle("Locals")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     @ViewBuilder
