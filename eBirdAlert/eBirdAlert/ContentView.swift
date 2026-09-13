@@ -13,24 +13,18 @@ struct ContentView: View {
     var notableProvider: NotableObservationsProvider?
     @Environment(\.eBirdAll)
     var recentObservationsProvider: RecentObservationsProvider?
-    @State private var selectedTab: TabKind = .rarities2
+    @State private var selectedTab: TabKind = .rarities
     private let center = NotificationCenter.default
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            NotableObservationsView(provider: notableProvider!)
-                .tabItem {
-                    Label("Rarities", systemImage: "environments.circle")
-                }
-                .tag(TabKind.rarities)
-
             NotablesView(model: .init(provider: notableProvider!,
                                       locationService: locationService,
                                       swiftDataService: swiftDataService))
                 .tabItem {
-                    Label("Rarities2", systemImage: "environments.circle.fill")
+                    Label("Rarities", systemImage: "environments.circle")
                 }
-                .tag(TabKind.rarities2)
+                .tag(TabKind.rarities)
 
             LocalsView(model: .init(provider: recentObservationsProvider!,
                                     locationService: locationService,
