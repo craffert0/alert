@@ -89,7 +89,28 @@ extension NotablesView {
 
 extension NotablesView {
     @ViewBuilder
-    private var contentView: some View {}
+    private var contentView: some View {
+        if let mainObservations = model.mainObservations {
+            VStack {
+                Text(mainObservations.sciName)
+                Spacer()
+
+                BirdButtonsView(speciesCode: mainObservations.speciesCode)
+
+                List(mainObservations.locations,
+                     selection: $model.locationSelection)
+                { l in
+                    HStack {
+                        Text(l.latestSighting, relativeTo: now)
+                        Text(l.locName)
+                        Text("(\(l.observations.count))")
+                    }
+                }
+            }
+            .navigationTitle(mainObservations.comName)
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
 }
 
 extension NotablesView {

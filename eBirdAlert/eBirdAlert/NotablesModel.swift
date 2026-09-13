@@ -8,6 +8,7 @@ import URLNetwork
 @Observable
 class NotablesModel {
     var mainSelection: String?
+    var locationSelection: String?
     var error: eBirdServiceError?
     var showError = false
     var isLoading = false
@@ -16,6 +17,14 @@ class NotablesModel {
     private let swiftDataService: SwiftDataService
 
     var observations: [BirdObservations] { provider.observations }
+
+    var mainObservations: BirdObservations? {
+        if let mainSelection {
+            provider.observations.first { $0.id == mainSelection }
+        } else {
+            nil
+        }
+    }
 
     init(provider: NotableObservationsProvider,
          locationService: LocationService,
