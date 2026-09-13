@@ -8,6 +8,7 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @Environment(LocationService.self) var locationService
+    @Environment(SwiftDataService.self) var swiftDataService
     @Environment(\.eBirdNotable)
     var notableProvider: NotableObservationsProvider?
     @Environment(\.eBirdAll)
@@ -28,7 +29,8 @@ struct ContentView: View {
                 .tag(TabKind.locals)
 
             LocalsView(model: .init(provider: recentObservationsProvider!,
-                                    locationService: locationService))
+                                    locationService: locationService,
+                                    swiftDataService: swiftDataService))
                 .tabItem { Label("Locals3", systemImage: "bird.circle") }
                 .tag(TabKind.locals3)
 

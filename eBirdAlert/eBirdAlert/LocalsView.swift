@@ -11,10 +11,6 @@ struct LocalsView: View {
     @State var model: LocalsModel
     @State var searchText: String = ""
 
-    var restrictedObservations: [eBirdRecentObservation] {
-        model.provider.observations.restrict(by: searchText)
-    }
-
     var body: some View {
         if locationService.location == nil {
             Text("no location 😢")
@@ -39,12 +35,14 @@ struct LocalsView: View {
         NavigationSplitView {
             VStack {
                 preferencesView
-                mainView
+                mainListView
                     .searchable(text: $searchText)
                     .refreshable {
                         await model.refresh()
                     }
             }
+            .navigationTitle("Locals")
+            .navigationBarTitleDisplayMode(.inline)
         } content: {
             contentView
         } detail: {
@@ -52,8 +50,19 @@ struct LocalsView: View {
         }
     }
 
+    private var preferencesView: some View {
+        ObservationPreferencesView(model: model,
+                                   sort: preferences.$localsSort)
+    }
+}
+
+extension LocalsView {
+    private var restrictedObservations: [eBirdRecentObservation] {
+        model.observations.restrict(by: searchText)
+    }
+
     @ViewBuilder
-    private var mainView: some View {
+    private var mainListView: some View {
         if let grouped = preferences.localsSort.group(restrictedObservations) {
             List(selection: $model.mainSelection) {
                 ForEach(grouped, id: \.0) { pair in
@@ -79,12 +88,9 @@ struct LocalsView: View {
             Text(o.comName)
         }
     }
+}
 
-    private var preferencesView: some View {
-        ObservationPreferencesView(model: model,
-                                   sort: preferences.$localsSort)
-    }
-
+extension LocalsView {
     @ViewBuilder
     private var contentView: some View {
         if let mainSpecies = model.mainSpecies {
@@ -94,7 +100,9 @@ struct LocalsView: View {
 
                 BirdButtonsView(speciesCode: mainSpecies.speciesCode)
 
-                List(model.speciesObservations) { obs in
+                List(model.speciesObservations,
+                     selection: $model.locationSelection)
+                { obs in
                     HStack {
                         Text(obs.obsDt, relativeTo: now)
                         Text(obs.locName)
@@ -108,7 +116,15 @@ struct LocalsView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
     }
+}
 
+extension LocalsView {
     @ViewBuilder
-    private var detailView: some View {}
+    private var detailView: some View {
+        if let checklist = model.selectedChecklist,
+           let e = model.selectedLocation
+        {
+            eBirdObservationView(e, in: checklist)
+        }
+    }
 }

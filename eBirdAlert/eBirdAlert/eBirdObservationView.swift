@@ -5,11 +5,11 @@ import Schema
 import SwiftUI
 
 struct eBirdObservationView: View {
-    @State var e: eBirdObservationProtocol
-    @State var checklist: Checklist
-    @State var showChecklist: Bool = false
-    @State var showSpecies: Bool = false
-    @State var showPhotos: Bool = false
+    let e: eBirdObservationProtocol
+    let checklist: Checklist
+    @State private var showChecklist: Bool = false
+    @State private var showSpecies: Bool = false
+    @State private var showPhotos: Bool = false
 
     init(_ e: eBirdObservationProtocol,
          in checklist: Checklist)

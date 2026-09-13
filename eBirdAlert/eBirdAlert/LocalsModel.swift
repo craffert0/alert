@@ -7,13 +7,17 @@ import URLNetwork
 
 @Observable
 class LocalsModel {
-    var provider: RecentObservationsProvider
     var mainSelection: String?
+    var locationSelection: String?
     var error: eBirdServiceError?
     var showError = false
     var isLoading = false
-    private var locationService: LocationService
+    private let provider: RecentObservationsProvider
+    private let locationService: LocationService
+    private let swiftDataService: SwiftDataService
     private var allProviders: [String: BirdObservationsProvider] = [:]
+
+    var observations: [eBirdRecentObservation] { provider.observations }
 
     var mainSpecies: eBirdRecentObservation? {
         if let mainSelection {
@@ -23,11 +27,27 @@ class LocalsModel {
         }
     }
 
+    var selectedLocation: eBirdRecentObservation? {
+        if let locationSelection {
+            speciesObservations.first { $0.id == locationSelection }
+        } else {
+            nil
+        }
+    }
+
+    @MainActor
+    var selectedChecklist: Checklist? {
+        guard let selectedLocation else { return nil }
+        return swiftDataService.load(obs: selectedLocation)
+    }
+
     init(provider: RecentObservationsProvider,
-         locationService: LocationService)
+         locationService: LocationService,
+         swiftDataService: SwiftDataService)
     {
         self.provider = provider
         self.locationService = locationService
+        self.swiftDataService = swiftDataService
     }
 
     func load() async {
