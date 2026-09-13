@@ -51,6 +51,7 @@ class LocalsModel {
     }
 
     func load() async {
+        isLoading = true
         do {
             try await provider.load()
             try await resetProviders()
@@ -58,9 +59,11 @@ class LocalsModel {
             self.error = .from(error)
             showError = true
         }
+        isLoading = false
     }
 
     func refresh() async {
+        isLoading = true
         do {
             try await provider.refresh()
             try await resetProviders()
@@ -68,6 +71,7 @@ class LocalsModel {
             self.error = .from(error)
             showError = true
         }
+        isLoading = false
     }
 
     private func resetProviders() async throws {

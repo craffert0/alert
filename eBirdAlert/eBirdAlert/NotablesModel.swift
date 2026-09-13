@@ -15,6 +15,7 @@ class NotablesModel {
     private let provider: NotableObservationsProvider
     private let locationService: LocationService
     private let swiftDataService: SwiftDataService
+    private let preferences = PreferencesModel.global
 
     var observations: [BirdObservations] { provider.observations }
 
@@ -43,27 +44,46 @@ class NotablesModel {
     }
 
     func load() async {
+        isLoading = true
         do {
-            try await provider.load()
-            try await resetProviders()
+            try await tryLoading()
         } catch {
             self.error = .from(error)
             showError = true
+        }
+        isLoading = false
+    }
+
+    private func tryLoading() async throws {
+        var retried = false
+        try await provider.load()
+        while provider.isEmpty,
+              preferences.rangeOption == .radius,
+              preferences.distValue < .maxNotableDistance
+        {
+            retried = true
+            preferences.distValue =
+                min(2 * preferences.distValue, .maxNotableDistance)
+            try await provider.load()
+        }
+
+        if !provider.isEmpty, retried {
+            throw eBirdServiceError.expandedArea(
+                distance: preferences.distValue,
+                units: preferences.distUnits
+            )
         }
     }
 
     func refresh() async {
+        isLoading = true
         do {
             try await provider.refresh()
-            try await resetProviders()
         } catch {
             self.error = .from(error)
             showError = true
         }
-    }
-
-    private func resetProviders() async throws {
-        // TODO:
+        isLoading = false
     }
 }
 

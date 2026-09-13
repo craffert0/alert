@@ -5,12 +5,14 @@ import Schema
 import SwiftUI
 
 struct NotablesView: View {
+    @Environment(NotificationService.self) private var notificationService
     @Environment(LocationService.self) var locationService
     @Environment(SwiftDataService.self) var swiftDataService
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
     @State var model: NotablesModel
     @State var searchText: String = ""
+    @State var updater: Bool = false
 
     var body: some View {
         if locationService.location == nil {
@@ -27,8 +29,12 @@ struct NotablesView: View {
             }
             .task {
                 await model.load()
+                try? await notificationService.clearBadgeCount()
             }
             .alert(isPresented: $model.showError, error: model.error) { _ in
+                Button("OK") {
+                    updater.toggle()
+                }
             } message: { e in
                 e.view
             }
@@ -55,6 +61,7 @@ extension NotablesView {
         VStack {
             ObservationPreferencesView(model: model,
                                        sort: preferences.$notableSort)
+                .id(updater)
             mainListView
                 .searchable(text: $searchText)
                 .refreshable {
