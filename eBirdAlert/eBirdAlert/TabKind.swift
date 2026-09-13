@@ -2,5 +2,5 @@
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 enum TabKind: String {
-    case rarities, locals, locals3, debug, settings
+    case rarities, locals, debug, settings
 }
