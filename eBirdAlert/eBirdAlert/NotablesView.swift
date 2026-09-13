@@ -118,25 +118,11 @@ extension NotablesView {
     @ViewBuilder
     private var detailView: some View {
         if let locationObservations = model.locationObservations {
-            VStack {
-                LocationButton(location: locationObservations)
-                List(locationObservations.observations) { e in
-                    let c = swiftDataService.load(obs: e)
-                    if let observation = c.observation(for: e.speciesCode),
-                       let comments = observation.comments
-                    {
-                        HStack {
-                            Text(e.obsDt, relativeTo: now)
-                            Text(comments)
-                            if observation.hasMedia {
-                                Text("📸")
-                            }
-                        }
-                    }
-                }
+            NavigationStack {
+                LocationObservationsView(locationObservations)
+                    .navigationTitle(locationObservations.comName)
+                    .navigationBarTitleDisplayMode(.inline)
             }
-            .navigationTitle(model.mainObservations!.comName)
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

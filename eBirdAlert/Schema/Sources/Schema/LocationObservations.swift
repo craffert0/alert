@@ -9,6 +9,7 @@ public struct LocationObservations: Encodable {
     public var lat: Double { observations.first!.lat }
     public var lng: Double { observations.first!.lng }
     public var speciesCode: String { observations.first!.speciesCode }
+    public var comName: String { observations.first!.comName }
     public var latestSighting: Date { observations.first!.obsDt }
     public let observations: [eBirdObservation]
 }
