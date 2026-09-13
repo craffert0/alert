@@ -75,8 +75,8 @@ class LocalsModel {
         if let mainSpecies {
             let provider = BirdObservationsProvider(for: mainSpecies.speciesCode,
                                                     locationService: locationService)
-            allProviders[mainSpecies.speciesCode] = provider
             try await provider.load()
+            allProviders[mainSpecies.speciesCode] = provider
         }
     }
 }
