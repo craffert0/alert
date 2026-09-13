@@ -6,24 +6,27 @@ import SwiftUI
 struct GroupedListView<Observation: ObservationSortable & Identifiable, Content: View>: View {
     let observations: [Observation]
     let sort: ObservationSortOption
-    let model: ObservationsProviderModel
-    let link: (Observation) -> Content
+    let model: LoadableModel
+    let selection: Binding<String?>
+    let content: (Observation) -> Content
 
     var body: some View {
         Group {
             if let grouped = sort.group(observations) {
-                List {
+                List(selection: selection) {
                     ForEach(grouped, id: \.0) { pair in
                         Section(pair.0.comName) {
                             ForEach(pair.1) { o in
-                                link(o)
+                                content(o)
                             }
                         }
                     }
                 }
             } else {
-                List(sort.sort(observations)) { o in
-                    link(o)
+                List(sort.sort(observations),
+                     selection: selection)
+                { o in
+                    content(o)
                 }
             }
         }

@@ -3,4 +3,5 @@
 
 protocol LoadableModel {
     func load() async
+    func refresh() async
 }

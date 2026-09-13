@@ -64,31 +64,16 @@ extension LocalsView {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    @ViewBuilder
     private var mainListView: some View {
-        if let grouped = preferences.localsSort.group(restrictedObservations) {
-            List(selection: $model.mainSelection) {
-                ForEach(grouped, id: \.0) { pair in
-                    Section(pair.0.comName) {
-                        ForEach(pair.1) { o in
-                            mainEntry(o)
-                        }
-                    }
-                }
+        GroupedListView(observations: restrictedObservations,
+                        sort: preferences.localsSort,
+                        model: model,
+                        selection: $model.mainSelection)
+        { o in
+            HStack {
+                Text(o.obsDt, relativeTo: now)
+                Text(o.comName)
             }
-        } else {
-            List(preferences.localsSort.sort(restrictedObservations),
-                 selection: $model.mainSelection)
-            { o in
-                mainEntry(o)
-            }
-        }
-    }
-
-    private func mainEntry(_ o: eBirdRecentObservation) -> some View {
-        HStack {
-            Text(o.obsDt, relativeTo: now)
-            Text(o.comName)
         }
     }
 }
