@@ -26,6 +26,13 @@ class NotablesModel {
         }
     }
 
+    var locationObservations: LocationObservations? {
+        guard let locationSelection,
+              let mainObservations
+        else { return nil }
+        return mainObservations.locations.first { $0.id == locationSelection }
+    }
+
     init(provider: NotableObservationsProvider,
          locationService: LocationService,
          swiftDataService: SwiftDataService)

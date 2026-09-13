@@ -6,6 +6,7 @@ import SwiftUI
 
 struct NotablesView: View {
     @Environment(LocationService.self) var locationService
+    @Environment(SwiftDataService.self) var swiftDataService
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
     @State var model: NotablesModel
@@ -115,5 +116,27 @@ extension NotablesView {
 
 extension NotablesView {
     @ViewBuilder
-    private var detailView: some View {}
+    private var detailView: some View {
+        if let locationObservations = model.locationObservations {
+            VStack {
+                LocationButton(location: locationObservations)
+                List(locationObservations.observations) { e in
+                    let c = swiftDataService.load(obs: e)
+                    if let observation = c.observation(for: e.speciesCode),
+                       let comments = observation.comments
+                    {
+                        HStack {
+                            Text(e.obsDt, relativeTo: now)
+                            Text(comments)
+                            if observation.hasMedia {
+                                Text("📸")
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle(model.mainObservations!.comName)
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
 }
