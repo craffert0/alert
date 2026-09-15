@@ -10,11 +10,6 @@ struct LocationView: View {
     @State var showRange: Bool = false
     @State var range: RangeType? = nil
     private let service: eBirdRegionService = FixedRegionService.global
-    private let onChange: () async -> Void
-
-    init(onChange: @escaping (() async -> Void)) {
-        self.onChange = onChange
-    }
 
     var body: some View {
         Button {
@@ -38,8 +33,6 @@ struct LocationView: View {
         .task(id: range) {
             if range == nil {
                 reloadRange()
-            } else {
-                await onChange()
             }
         }
         .sheet(isPresented: $showRange,
@@ -59,8 +52,6 @@ struct LocationView: View {
     let locationService: LocationService =
         FixedLocationService(latitude: 41, longitude: -74)
     VStack {
-        LocationView {
-            print("load it")
-        }
+        LocationView()
     }.environment(locationService)
 }

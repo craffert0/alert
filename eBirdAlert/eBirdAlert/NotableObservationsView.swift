@@ -39,8 +39,7 @@ struct NotableObservationsView: View {
     private var mainView: some View {
         NavigationStack {
             VStack {
-                ObservationPreferencesView(model: model,
-                                           sort: preferences.$notableSort)
+                ObservationPreferencesView(sort: preferences.$notableSort)
                     .id(updater)
                 if !model.isLoading, provider.observations.isEmpty {
                     EmptyView(name: "rare", range: provider.loadedRange)
@@ -63,6 +62,11 @@ struct NotableObservationsView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .searchable(text: $searchText)
+        .onChange(of: preferences.lookupOption) {
+            Task { @MainActor in
+                await model.load()
+            }
+        }
         .task {
             await model.load()
             try? await notificationService.clearBadgeCount()

@@ -10,4 +10,6 @@
 
 ## replace CensusService with eBirdRegionService implementation
 
+## preferences properly handle multiple windows
+
 # 3.0

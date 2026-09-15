@@ -37,8 +37,7 @@ struct RecentObservationsView: View {
     private var mainView: some View {
         NavigationStack {
             VStack {
-                ObservationPreferencesView(model: model,
-                                           sort: preferences.$localsSort)
+                ObservationPreferencesView(sort: preferences.$localsSort)
                 if !model.isLoading, provider.observations.isEmpty {
                     EmptyView(name: "local", range: provider.loadedRange)
                 } else {
@@ -63,6 +62,11 @@ struct RecentObservationsView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .searchable(text: $searchText)
+        .onChange(of: preferences.lookupOption) {
+            Task { @MainActor in
+                await model.load()
+            }
+        }
         .task {
             await model.load()
         }

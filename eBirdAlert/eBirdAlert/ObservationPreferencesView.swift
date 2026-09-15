@@ -4,17 +4,12 @@
 import SwiftUI
 
 struct ObservationPreferencesView: View {
-    @State var model: ObservationsProviderModel
     @Binding var sort: ObservationSortOption
 
     var body: some View {
-        LocationView {
-            await model.load()
-        }
+        LocationView()
         HStack {
-            DaysBackPickerView {
-                await model.load()
-            }
+            DaysBackPickerView()
             Spacer()
             SortPickerView(
                 observationSort: $sort
