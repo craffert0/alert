@@ -16,16 +16,7 @@ struct LocationView: View {
             showRange = true
         } label: {
             if let range {
-                switch range {
-                case let .region(regionInfo):
-                    Text(regionInfo.result)
-                case let .radius(circle):
-                    HStack {
-                        Text("Within")
-                        Text(circle.radius.formatted(.eBirdFormat))
-                        Text(circle.units.rawValue)
-                    }
-                }
+                range.view
             } else {
                 Text("Select a county.")
             }
@@ -45,6 +36,22 @@ struct LocationView: View {
     private func reloadRange() {
         range = try? preferences.range(for: locationService.location,
                                        with: service)
+    }
+}
+
+private extension RangeType {
+    @ViewBuilder
+    var view: some View {
+        switch self {
+        case let .region(regionInfo):
+            Text(regionInfo.result)
+        case let .radius(circle):
+            HStack {
+                Text("Within")
+                Text(circle.radius.formatted(.eBirdFormat))
+                Text(circle.units.rawValue)
+            }
+        }
     }
 }
 
