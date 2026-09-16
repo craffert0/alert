@@ -59,11 +59,15 @@ extension NotablesView {
 
     private var mainView: some View {
         VStack {
-            ObservationPreferencesView(model: model,
-                                       sort: preferences.$notableSort)
+            ObservationPreferencesView(sort: preferences.$notableSort)
                 .id(updater)
             mainListView
                 .searchable(text: $searchText)
+                .onChange(of: preferences.lookupOption) {
+                    Task { @MainActor in
+                        await model.load()
+                    }
+                }
                 .refreshable {
                     await model.refresh()
                 }
