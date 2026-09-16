@@ -67,4 +67,15 @@ extension PreferencesModel {
             .local
         }
     }
+
+    private var rangeValue: LookupOption.RangeValue {
+        switch rangeOption {
+        case .radius: .radius(distValue, distUnits)
+        case .region: .region(regionCode)
+        }
+    }
+
+    var lookupOption: LookupOption {
+        .init(range: rangeValue, daysBack: daysBack)
+    }
 }

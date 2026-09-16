@@ -5,23 +5,9 @@ import SwiftUI
 
 struct DaysBackPickerView: View {
     @ObservedObject var preferences = PreferencesModel.global
-    private var daysBackBinding: Binding<Int>
-
-    init(onChange: @escaping (() async -> Void)) {
-        daysBackBinding = Binding {
-            PreferencesModel.global.daysBack
-        } set: { newValue in
-            if PreferencesModel.global.daysBack != newValue {
-                PreferencesModel.global.daysBack = newValue
-                Task { @MainActor in
-                    await onChange()
-                }
-            }
-        }
-    }
 
     var body: some View {
-        Picker("Days", selection: daysBackBinding) {
+        Picker("Days", selection: preferences.$daysBack) {
             ForEach(1 ..< 9) { days in
                 Text(days.daysBackString).tag(days)
             }
@@ -31,8 +17,6 @@ struct DaysBackPickerView: View {
 
 #Preview {
     VStack {
-        DaysBackPickerView {
-            print("done")
-        }
+        DaysBackPickerView()
     }
 }

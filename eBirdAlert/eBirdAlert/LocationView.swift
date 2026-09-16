@@ -10,27 +10,13 @@ struct LocationView: View {
     @State var showRange: Bool = false
     @State var range: RangeType? = nil
     private let service: eBirdRegionService = FixedRegionService.global
-    private let onChange: () async -> Void
-
-    init(onChange: @escaping (() async -> Void)) {
-        self.onChange = onChange
-    }
 
     var body: some View {
         Button {
             showRange = true
         } label: {
             if let range {
-                switch range {
-                case let .region(regionInfo):
-                    Text(regionInfo.result)
-                case let .radius(circle):
-                    HStack {
-                        Text("Within")
-                        Text(circle.radius.formatted(.eBirdFormat))
-                        Text(circle.units.rawValue)
-                    }
-                }
+                range.view
             } else {
                 Text("Select a county.")
             }
@@ -38,8 +24,6 @@ struct LocationView: View {
         .task(id: range) {
             if range == nil {
                 reloadRange()
-            } else {
-                await onChange()
             }
         }
         .sheet(isPresented: $showRange,
@@ -55,12 +39,26 @@ struct LocationView: View {
     }
 }
 
+private extension RangeType {
+    @ViewBuilder
+    var view: some View {
+        switch self {
+        case let .region(regionInfo):
+            Text(regionInfo.result)
+        case let .radius(circle):
+            HStack {
+                Text("Within")
+                Text(circle.radius.formatted(.eBirdFormat))
+                Text(circle.units.rawValue)
+            }
+        }
+    }
+}
+
 #Preview {
     let locationService: LocationService =
         FixedLocationService(latitude: 41, longitude: -74)
     VStack {
-        LocationView {
-            print("load it")
-        }
+        LocationView()
     }.environment(locationService)
 }
