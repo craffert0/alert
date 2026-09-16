@@ -10,10 +10,12 @@ struct eBirdAlertApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
     let modelContainer: ModelContainer
+    @ObservedObject var preferences = PreferencesModel.global
     @State var swiftDataService: SwiftDataService
     @State var locationService: LocationService
     @State var notableProvider: NotableObservationsProvider
     @State var recentProvider: RecentObservationsProvider
+    @State var mergedModel: MergedModel
     let notificationService = NotificationService()
     let refreshService: RefreshService
 
@@ -37,6 +39,11 @@ struct eBirdAlertApp: App {
                 locationService: locationService
             )
 
+        let mergedModel = MergedModel(locationService: locationService,
+                                      swiftDataService: swiftDataService,
+                                      notableProvider: notableProvider,
+                                      recentProvider: recentProvider)
+
         let refreshService =
             RefreshService(notificationService: notificationService,
                            notableProvider: notableProvider)
@@ -47,6 +54,7 @@ struct eBirdAlertApp: App {
         self.notableProvider = notableProvider
         self.recentProvider = recentProvider
         self.refreshService = refreshService
+        self.mergedModel = mergedModel
 
         Timer.scheduledTimer(withTimeInterval: 3600, repeats: true) { _ in
             swiftDataService.garbageCollect(daysBack: 8)
@@ -55,10 +63,8 @@ struct eBirdAlertApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(locationService: locationService,
-                        swiftDataService: swiftDataService,
-                        notableProvider: notableProvider,
-                        recentProvider: recentProvider)
+            ContentView(swiftDataService: swiftDataService,
+                        mergedModel: mergedModel)
                 .modelContainer(modelContainer)
                 .environment(swiftDataService)
                 .environment(locationService)
@@ -66,6 +72,18 @@ struct eBirdAlertApp: App {
         }
         .backgroundTask(.appRefresh(id: .refreshCounter)) {
             try? await refreshService.refresh()
+        }
+        .onChange(of: preferences.lookupOption) {
+            Task { @MainActor in
+                await mergedModel.load()
+            }
+        }
+        .onChange(of: locationService.location) { old, _ in
+            if old == nil {
+                Task { @MainActor in
+                    await mergedModel.load()
+                }
+            }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .background,

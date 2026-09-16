@@ -8,8 +8,30 @@ struct LocalsView: View {
     @Environment(LocationService.self) var locationService
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
-    @State var model: LocalsModel
+    @State var model: MergedModel
+    @State var mainSelection: String?
+    @State var locationSelection: String?
     @State var searchText: String = ""
+
+    let swiftDataService: SwiftDataService
+
+    var observations: [eBirdRecentObservation] { model.localObservations }
+
+    var mainSpecies: eBirdRecentObservation? {
+        if let mainSelection {
+            observations.first { $0.id == mainSelection }
+        } else {
+            nil
+        }
+    }
+
+    var selectedLocation: eBirdRecentObservation? {
+        if let locationSelection {
+            speciesObservations.first { $0.id == locationSelection }
+        } else {
+            nil
+        }
+    }
 
     var body: some View {
         if locationService.location == nil {
@@ -17,15 +39,12 @@ struct LocalsView: View {
         } else {
             ZStack(alignment: .center) {
                 splitView
-                    .onChange(of: model.mainSelection) {
-                        model.locationSelection = nil
+                    .onChange(of: mainSelection) {
+                        locationSelection = nil
                     }
                 if model.isLoading {
                     ProgressView()
                 }
-            }
-            .task {
-                await model.load()
             }
             .alert(isPresented: $model.showError, error: model.error) { _ in
             } message: { e in
@@ -47,7 +66,7 @@ struct LocalsView: View {
 
 extension LocalsView {
     private var restrictedObservations: [eBirdRecentObservation] {
-        model.observations.restrict(by: searchText)
+        observations.restrict(by: searchText)
     }
 
     private var mainView: some View {
@@ -55,11 +74,6 @@ extension LocalsView {
             ObservationPreferencesView(sort: preferences.$localsSort)
             mainListView
                 .searchable(text: $searchText)
-                .onChange(of: preferences.lookupOption) {
-                    Task { @MainActor in
-                        await model.load()
-                    }
-                }
                 .refreshable {
                     await model.refresh()
                 }
@@ -72,7 +86,7 @@ extension LocalsView {
         GroupedListView(observations: restrictedObservations,
                         sort: preferences.localsSort,
                         model: model,
-                        selection: $model.mainSelection)
+                        selection: $mainSelection)
         { o in
             HStack {
                 Text(o.obsDt, relativeTo: now)
@@ -85,15 +99,15 @@ extension LocalsView {
 extension LocalsView {
     @ViewBuilder
     private var contentView: some View {
-        if let mainSpecies = model.mainSpecies {
+        if let mainSpecies {
             VStack {
                 Text(mainSpecies.sciName)
                 Spacer()
 
                 BirdButtonsView(speciesCode: mainSpecies.speciesCode)
 
-                List(model.speciesObservations,
-                     selection: $model.locationSelection)
+                List(speciesObservations,
+                     selection: $locationSelection)
                 { obs in
                     HStack {
                         Text(obs.obsDt, relativeTo: now)
@@ -101,7 +115,7 @@ extension LocalsView {
                     }
                 }
                 .refreshable {
-                    await model.refreshSpecies()
+                    await refreshSpecies()
                 }
             }
             .navigationTitle(mainSpecies.comName)
@@ -113,10 +127,24 @@ extension LocalsView {
 extension LocalsView {
     @ViewBuilder
     private var detailView: some View {
-        if let checklist = model.selectedChecklist,
-           let e = model.selectedLocation
-        {
-            eBirdObservationView(e, in: checklist)
+        if let selectedLocation {
+            eBirdObservationView(
+                selectedLocation,
+                in: swiftDataService.load(obs: selectedLocation)
+            )
+        }
+    }
+}
+
+extension LocalsView {
+    var speciesObservations: [eBirdRecentObservation] {
+        guard let mainSpecies else { return [] }
+        return model.speciesObservations(for: mainSpecies.speciesCode)
+    }
+
+    func refreshSpecies() async {
+        if let mainSpecies {
+            await model.refreshSpecies(speciesCode: mainSpecies.speciesCode)
         }
     }
 }

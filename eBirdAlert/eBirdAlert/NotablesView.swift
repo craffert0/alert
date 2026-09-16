@@ -10,9 +10,27 @@ struct NotablesView: View {
     @Environment(SwiftDataService.self) var swiftDataService
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
-    @State var model: NotablesModel
+    @State var model: MergedModel
+    @State var mainSelection: String?
+    @State var locationSelection: String?
     @State var searchText: String = ""
-    @State var updater: Bool = false
+
+    private var observations: [BirdObservations] { model.notableObservations }
+
+    private var mainObservations: BirdObservations? {
+        if let mainSelection {
+            observations.first { $0.id == mainSelection }
+        } else {
+            nil
+        }
+    }
+
+    private var locationObservations: LocationObservations? {
+        guard let locationSelection,
+              let mainObservations
+        else { return nil }
+        return mainObservations.locations.first { $0.id == locationSelection }
+    }
 
     var body: some View {
         if locationService.location == nil {
@@ -20,21 +38,14 @@ struct NotablesView: View {
         } else {
             ZStack(alignment: .center) {
                 splitView
-                    .onChange(of: model.mainSelection) {
-                        model.locationSelection = nil
+                    .onChange(of: mainSelection) {
+                        locationSelection = nil
                     }
                 if model.isLoading {
                     ProgressView()
                 }
             }
-            .task {
-                await model.load()
-                try? await notificationService.clearBadgeCount()
-            }
             .alert(isPresented: $model.showError, error: model.error) { _ in
-                Button("OK") {
-                    updater.toggle()
-                }
             } message: { e in
                 e.view
             }
@@ -54,20 +65,14 @@ struct NotablesView: View {
 
 extension NotablesView {
     private var restrictedObservations: [BirdObservations] {
-        model.observations.restrict(by: searchText)
+        observations.restrict(by: searchText)
     }
 
     private var mainView: some View {
         VStack {
             ObservationPreferencesView(sort: preferences.$notableSort)
-                .id(updater)
             mainListView
                 .searchable(text: $searchText)
-                .onChange(of: preferences.lookupOption) {
-                    Task { @MainActor in
-                        await model.load()
-                    }
-                }
                 .refreshable {
                     await model.refresh()
                 }
@@ -80,7 +85,7 @@ extension NotablesView {
         GroupedListView(observations: restrictedObservations,
                         sort: preferences.notableSort,
                         model: model,
-                        selection: $model.mainSelection)
+                        selection: $mainSelection)
         { o in
             HStack {
                 Text(o.latestSighting, relativeTo: now)
@@ -94,7 +99,7 @@ extension NotablesView {
 extension NotablesView {
     @ViewBuilder
     private var contentView: some View {
-        if let mainObservations = model.mainObservations {
+        if let mainObservations {
             VStack {
                 Text(mainObservations.sciName)
                 Spacer()
@@ -102,7 +107,7 @@ extension NotablesView {
                 BirdButtonsView(speciesCode: mainObservations.speciesCode)
 
                 List(mainObservations.locations,
-                     selection: $model.locationSelection)
+                     selection: $locationSelection)
                 { l in
                     HStack {
                         Text(l.latestSighting, relativeTo: now)
@@ -120,7 +125,7 @@ extension NotablesView {
 extension NotablesView {
     @ViewBuilder
     private var detailView: some View {
-        if let locationObservations = model.locationObservations {
+        if let locationObservations {
             NavigationStack {
                 LocationObservationsView(locationObservations)
                     .navigationTitle(locationObservations.comName)

@@ -59,5 +59,3 @@ class ObservationsProviderModel {
         isLoading = false
     }
 }
-
-extension ObservationsProviderModel: LoadableModel {}
