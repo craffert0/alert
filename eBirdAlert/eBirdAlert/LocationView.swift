@@ -21,14 +21,13 @@ struct LocationView: View {
                 Text("Select a county.")
             }
         }
-        .task(id: range) {
-            if range == nil {
-                reloadRange()
-            }
+        .task {
+            reloadRange()
         }
-        .sheet(isPresented: $showRange,
-               onDismiss: reloadRange)
-        {
+        .onChange(of: preferences.lookupOption) {
+            reloadRange()
+        }
+        .sheet(isPresented: $showRange) {
             RangePreferenceView()
         }
     }

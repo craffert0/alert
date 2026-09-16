@@ -8,12 +8,10 @@ import Schema
 @Observable
 class ObservationsProvider<T>: ObservationsProviderProtocol {
     var observations: [T] = []
-    var loadedRange: RangeType?
-    var loadedDaysBack: Int?
     private let locationService: LocationService
     private let loader: (RangeType, Int) async throws -> [T]
     private let service: eBirdRegionService = FixedRegionService.global
-    private let preferences = PreferencesModel.global
+    private var loadedOption: LookupOption?
     private var lastLoadTime: Date?
 
     init(locationService: LocationService,
@@ -25,36 +23,27 @@ class ObservationsProvider<T>: ObservationsProviderProtocol {
 
     var isEmpty: Bool { observations.isEmpty }
 
-    func load() async throws {
-        let location = locationService.location
-        let range = try? preferences.range(for: location, with: service)
-        if loadedRange == nil ||
-            loadedDaysBack == nil ||
-            lastLoadTime == nil ||
+    func load(option: LookupOption) async throws {
+        if lastLoadTime == nil ||
+            option != loadedOption ||
             observations.isEmpty ||
-            range != loadedRange! ||
-            preferences.daysBack != loadedDaysBack! ||
             Date.now.timeIntervalSince(lastLoadTime!) > 3600
         {
-            if let range {
-                try await forceLoad(in: range)
-            } else {
-                try await forceLoad(in: preferences.range(for: location,
-                                                          with: service))
-            }
+            try await forceLoad(option: option)
+            loadedOption = option
         }
     }
 
     func refresh() async throws {
-        let location = locationService.location
-        try await forceLoad(in: preferences.range(for: location,
-                                                  with: service))
+        guard let loadedOption else { return }
+        try await forceLoad(option: loadedOption)
     }
 
-    private func forceLoad(in range: RangeType) async throws {
-        observations = try await loader(range, preferences.daysBack)
-        loadedRange = range
-        loadedDaysBack = preferences.daysBack
+    private func forceLoad(option: LookupOption) async throws {
+        observations = try await loader(
+            option.range(for: locationService.location, with: service),
+            option.daysBack
+        )
         lastLoadTime = Date.now
     }
 }

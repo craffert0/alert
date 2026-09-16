@@ -3,6 +3,6 @@
 
 protocol ObservationsProviderProtocol {
     var isEmpty: Bool { get }
-    func load() async throws
+    func load(option: LookupOption) async throws
     func refresh() async throws
 }

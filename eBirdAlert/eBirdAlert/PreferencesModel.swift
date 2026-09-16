@@ -31,28 +31,7 @@ extension PreferencesModel {
     func range(for location: Coordinate?,
                with service: eBirdRegionService) throws -> RangeType
     {
-        switch rangeOption {
-        case .radius:
-            guard let location else { throw eBirdServiceError.noLocation }
-            return .radius(CircleModel(location: location,
-                                       radius: distValue,
-                                       units: distUnits))
-        case .region:
-            if let regionCode {
-                guard let info = service.getInfo(for: regionCode) else {
-                    throw eBirdServiceError.noRegion(regionCode: regionCode)
-                }
-                return .region(info)
-            } else {
-                guard let location else {
-                    throw eBirdServiceError.noLocation
-                }
-                guard let region = service.getRegion(at: location) else {
-                    throw eBirdServiceError.noLocationRegion
-                }
-                return .region(region)
-            }
-        }
+        try lookupOption.range(for: location, with: service)
     }
 
     var notificationType: NotificationType {
@@ -67,15 +46,36 @@ extension PreferencesModel {
             .local
         }
     }
+}
 
-    private var rangeValue: LookupOption.RangeValue {
-        switch rangeOption {
-        case .radius: .radius(distValue, distUnits)
-        case .region: .region(regionCode)
+extension PreferencesModel {
+    var lookupOption: LookupOption {
+        get {
+            .init(range: rangeValue, daysBack: daysBack)
+        }
+        set {
+            rangeValue = newValue.range
+            daysBack = newValue.daysBack
         }
     }
 
-    var lookupOption: LookupOption {
-        .init(range: rangeValue, daysBack: daysBack)
+    private var rangeValue: LookupOption.RangeValue {
+        get {
+            switch rangeOption {
+            case .radius: .radius(distValue, distUnits)
+            case .region: .region(regionCode)
+            }
+        }
+        set {
+            switch newValue {
+            case let .radius(distance, units):
+                rangeOption = .radius
+                distValue = distance
+                distUnits = units
+            case let .region(code):
+                rangeOption = .region
+                regionCode = code
+            }
+        }
     }
 }

@@ -8,7 +8,6 @@ import Schema
 @Observable
 class RecentObservationsProvider {
     var observations: [eBirdRecentObservation] { provider.observations }
-    var loadedRange: RangeType? { provider.loadedRange }
     private var provider: ObservationsProvider<eBirdRecentObservation>
 
     init(client: RecentObservationsClient,
@@ -25,8 +24,8 @@ class RecentObservationsProvider {
         }
     }
 
-    func load() async throws {
-        try await provider.load()
+    func load(option: LookupOption) async throws {
+        try await provider.load(option: option)
     }
 
     func refresh() async throws {

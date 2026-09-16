@@ -4,8 +4,8 @@
 import SwiftUI
 
 struct LocationButton: View {
-    @State var location: LocationProtocol
-    @State var showHotspot: Bool = false
+    let location: LocationProtocol
+    @State private var showHotspot: Bool = false
 
     var body: some View {
         if let hotspotId = location.hotspotId {
