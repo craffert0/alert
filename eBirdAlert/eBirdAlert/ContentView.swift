@@ -7,28 +7,37 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var preferences = PreferencesModel.global
-    @Environment(LocationService.self) var locationService
-    @Environment(SwiftDataService.self) var swiftDataService
-    @Environment(\.eBirdNotable)
-    var notableProvider: NotableObservationsProvider?
-    @Environment(\.eBirdAll)
-    var recentObservationsProvider: RecentObservationsProvider?
+    private let notableProvider: NotableObservationsProvider
+    private let recentProvider: RecentObservationsProvider
+    private let notablesModel: NotablesModel
+    private let localsModel: LocalsModel
     @State private var selectedTab: TabKind = .rarities
     private let center = NotificationCenter.default
 
+    init(locationService: LocationService,
+         swiftDataService: SwiftDataService,
+         notableProvider: NotableObservationsProvider,
+         recentProvider: RecentObservationsProvider)
+    {
+        self.notableProvider = notableProvider
+        self.recentProvider = recentProvider
+        notablesModel = .init(provider: notableProvider,
+                              locationService: locationService,
+                              swiftDataService: swiftDataService)
+        localsModel = .init(provider: recentProvider,
+                            locationService: locationService,
+                            swiftDataService: swiftDataService)
+    }
+
     var body: some View {
         TabView(selection: $selectedTab) {
-            NotablesView(model: .init(provider: notableProvider!,
-                                      locationService: locationService,
-                                      swiftDataService: swiftDataService))
+            NotablesView(model: notablesModel)
                 .tabItem {
                     Label("Rarities", systemImage: "environments.circle")
                 }
                 .tag(TabKind.rarities)
 
-            LocalsView(model: .init(provider: recentObservationsProvider!,
-                                    locationService: locationService,
-                                    swiftDataService: swiftDataService))
+            LocalsView(model: localsModel)
                 .tabItem { Label("Locals", systemImage: "bird.circle") }
                 .tag(TabKind.locals)
 
@@ -49,26 +58,12 @@ struct ContentView: View {
                 selectedTab = tab
                 Task { @MainActor in
                     switch tab {
-                    case .rarities: try? await notableProvider?.refresh()
-                    case .locals: try? await recentObservationsProvider?.refresh()
+                    case .rarities: try? await notableProvider.refresh()
+                    case .locals: try? await recentProvider.refresh()
                     default: break
                     }
                 }
             }
         }
     }
-}
-
-#Preview {
-    let locationService: LocationService =
-        FixedLocationService(latitude: 41, longitude: -74)
-    let client = FakeObservationsClient(observations: .fake)
-    let provider =
-        NotableObservationsProvider(client: client,
-                                    checklistDataService: FakeChecklistDataService(),
-                                    locationService: locationService)
-    ContentView()
-        .modelContainer(for: Checklist.self, inMemory: true)
-        .environment(locationService)
-        .environment(\.eBirdNotable, provider)
 }

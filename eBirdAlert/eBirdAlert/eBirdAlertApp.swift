@@ -55,13 +55,14 @@ struct eBirdAlertApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(locationService: locationService,
+                        swiftDataService: swiftDataService,
+                        notableProvider: notableProvider,
+                        recentProvider: recentProvider)
                 .modelContainer(modelContainer)
                 .environment(swiftDataService)
                 .environment(locationService)
                 .environment(notificationService)
-                .environment(\.eBirdNotable, notableProvider)
-                .environment(\.eBirdAll, recentProvider)
         }
         .backgroundTask(.appRefresh(id: .refreshCounter)) {
             try? await refreshService.refresh()
