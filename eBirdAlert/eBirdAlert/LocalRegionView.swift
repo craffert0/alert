@@ -24,12 +24,13 @@ private extension eBirdRegionInfo.Bounds {
 
 struct LocalRegionView: View {
     var regionService: any eBirdRegionService
+    @State var slice: RangePreferenceSlice
+
     @Environment(LocationService.self) var locationService
     @State var position: MapCameraPosition = .automatic
     @State var regions: [eBirdRegionInfo] = []
     @State var showError: Bool = false
     @State var error: eBirdServiceError? = nil
-    @ObservedObject var preferences = PreferencesModel.global
 
     var body: some View {
         VStack {
@@ -41,15 +42,15 @@ struct LocalRegionView: View {
     }
 
     private var mapView: some View {
-        Map(position: $position, selection: preferences.$regionCode) {
+        Map(position: $position, selection: $slice.regionCode) {
             UserAnnotation()
             if regions.count < kMaxRegions {
                 ForEach(regions) { info in
                     info.marker
-                    info.bounds?.box(fancy: info.code == preferences.regionCode)
+                    info.bounds?.box(fancy: info.code == slice.regionCode)
                 }
             } else if let info = regions.first(
-                where: { $0.code == preferences.regionCode }
+                where: { $0.code == slice.regionCode }
             ) {
                 info.marker
                 info.bounds?.box()
@@ -64,7 +65,7 @@ struct LocalRegionView: View {
     }
 
     private var title: String {
-        if let regionCode = preferences.regionCode,
+        if let regionCode = slice.regionCode,
            let info = regions.first(where: { $0.code == regionCode })
         {
             info.result
@@ -109,7 +110,7 @@ struct LocalRegionView: View {
         let regions =
             regionService.getRegions(at: location,
                                      around: span)
-        if let code = preferences.regionCode,
+        if let code = slice.regionCode,
            !regions.contains(where: { $0.code == code }),
            let region = regionService.getInfo(for: code)
         {

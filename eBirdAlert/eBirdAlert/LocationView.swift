@@ -9,6 +9,7 @@ struct LocationView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @State var showRange: Bool = false
     @State var range: RangeType? = nil
+    @State var slice = RangePreferenceSlice(from: PreferencesModel.global)
     private let service: eBirdRegionService = FixedRegionService.global
 
     var body: some View {
@@ -28,7 +29,9 @@ struct LocationView: View {
             reloadRange()
         }
         .sheet(isPresented: $showRange) {
-            RangePreferenceView()
+            slice.replace(into: PreferencesModel.global)
+        } content: {
+            RangePreferenceView(slice: slice)
         }
     }
 

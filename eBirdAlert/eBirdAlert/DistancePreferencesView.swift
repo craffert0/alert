@@ -5,19 +5,20 @@ import Schema
 import SwiftUI
 
 struct DistancePreferencesView: View {
-    let isInForm: Bool
+    private let isInForm: Bool
+    @State private var slice: RangePreferenceSlice
+    private var distValueReduced: Binding<Double>
 
-    @ObservedObject var preferences = PreferencesModel.global
-    private var distValueReduced = Binding {
-        PreferencesModel.global.distValue.reduced
-    } set: { newValue in
-        Task { @MainActor in
-            PreferencesModel.global.distValue = newValue.expanded
-        }
-    }
-
-    init(isInForm: Bool) {
+    init(isInForm: Bool,
+         slice: RangePreferenceSlice)
+    {
         self.isInForm = isInForm
+        self.slice = slice
+        distValueReduced = Binding {
+            slice.distValue.reduced
+        } set: { newValue in
+            slice.distValue = newValue.expanded
+        }
     }
 
     var body: some View {
@@ -27,7 +28,7 @@ struct DistancePreferencesView: View {
             if !isInForm {
                 slider
             }
-            Picker(selection: preferences.$distUnits) {
+            Picker(selection: $slice.distUnits) {
                 Text("miles").tag(DistanceUnits.miles)
                 Text("km").tag(DistanceUnits.kilometers)
             } label: {
@@ -44,14 +45,17 @@ struct DistancePreferencesView: View {
         HStack {
             Slider(value: distValueReduced,
                    in: 1.reduced ... .maxNotableDistance.reduced)
-            Text(preferences.distValue.formatted(.eBirdFormat))
+            Text(slice.distValue.formatted(.eBirdFormat))
         }
     }
 }
 
 #Preview {
     Form {
-        DistancePreferencesView(isInForm: true)
+        DistancePreferencesView(
+            isInForm: true,
+            slice: RangePreferenceSlice(from: PreferencesModel.global)
+        )
         TextField("distance",
                   value: PreferencesModel.global.$distValue,
                   formatter: {

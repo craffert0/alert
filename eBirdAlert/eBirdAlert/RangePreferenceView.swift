@@ -8,19 +8,24 @@ import SwiftUI
 struct RangePreferenceView: View {
     @Environment(LocationService.self) var locationService
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var preferences = PreferencesModel.global
+    @State var slice: RangePreferenceSlice
+
+    init(slice: RangePreferenceSlice) {
+        slice.update(from: PreferencesModel.global)
+        self.slice = slice
+    }
 
     var body: some View {
         VStack {
             HStack {
                 Button("Done") { dismiss() }
                 Spacer()
-                Picker("Location", selection: preferences.$rangeOption) {
+                Picker("Location", selection: $slice.rangeOption) {
                     Text("Search nearby").tag(RangeOption.radius)
                     Text("Search by county").tag(RangeOption.region)
                 }
             }.padding()
-            switch preferences.rangeOption {
+            switch slice.rangeOption {
             case .radius: radiusView
             case .region: regionView
             }
@@ -29,14 +34,14 @@ struct RangePreferenceView: View {
 
     private var radiusView: some View {
         VStack {
-            DistancePreferencesView(isInForm: false)
+            DistancePreferencesView(isInForm: false, slice: slice)
                 .padding()
             if let location = locationService.location {
                 Map {
                     UserAnnotation()
                     MapCircle(
                         center: location.location,
-                        radius: preferences.distUnits.asMeters(preferences.distValue)
+                        radius: slice.distUnits.asMeters(slice.distValue)
                     )
                     .foregroundStyle(.clear)
                     .stroke(.blue, lineWidth: 5)
@@ -46,7 +51,8 @@ struct RangePreferenceView: View {
     }
 
     private var regionView: some View {
-        LocalRegionView(regionService: FixedRegionService.global)
+        LocalRegionView(regionService: FixedRegionService.global,
+                        slice: slice)
     }
 }
 
@@ -57,13 +63,14 @@ struct RangePreferenceView: View {
         l.location = Coordinate(latitude: 40.65, longitude: -74)
         return l
     }()
+    let slice = RangePreferenceSlice(from: PreferencesModel.global)
     TabView {
         Tab("location", systemImage: "environments.circle") {
-            RangePreferenceView()
+            RangePreferenceView(slice: slice)
                 .environment(brooklyn)
         }
         Tab("none", systemImage: "bird.circle") {
-            RangePreferenceView()
+            RangePreferenceView(slice: slice)
                 .environment(noLocation)
         }
     }
