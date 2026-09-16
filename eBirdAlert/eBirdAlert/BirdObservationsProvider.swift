@@ -20,8 +20,8 @@ class BirdObservationsProvider {
         }
     }
 
-    func load() async throws {
-        try await provider.load()
+    func load(option: LookupOption) async throws {
+        try await provider.load(option: option)
     }
 
     func refresh() async throws {

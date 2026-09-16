@@ -41,8 +41,7 @@ class MergedModel {
     func load() async {
         isLoading = true
         do {
-            try await tryLoading()
-            try await recentProvider.load()
+            try await recentProvider.load(option: tryLoading())
             allProviders = [:]
         } catch {
             self.error = .from(error)
@@ -63,25 +62,31 @@ class MergedModel {
         isLoading = false
     }
 
-    private func tryLoading() async throws {
+    private func tryLoading() async throws -> LookupOption {
         var retried = false
-        try await notableProvider.load()
+        var option = preferences.lookupOption
+        try await notableProvider.load(option: option)
         while notableProvider.isEmpty,
-              preferences.rangeOption == .radius,
-              preferences.distValue < .maxNotableDistance
+              let expanded = option.expanded
         {
             retried = true
-            preferences.distValue =
-                min(2 * preferences.distValue, .maxNotableDistance)
-            try await notableProvider.load()
+            option = expanded
+            try await notableProvider.load(option: option)
         }
 
-        if !notableProvider.isEmpty, retried {
-            throw eBirdServiceError.expandedArea(
-                distance: preferences.distValue,
-                units: preferences.distUnits
-            )
+        if retried {
+            Task { @MainActor in
+                preferences.lookupOption = option
+            }
+            if !notableProvider.isEmpty,
+               case let .radius(distance, units) = option.range
+            {
+                throw eBirdServiceError.expandedArea(distance: distance,
+                                                     units: units)
+            }
         }
+
+        return option
     }
 }
 
@@ -99,7 +104,7 @@ extension MergedModel {
             allProviders[speciesCode] = provider
             Task {
                 do {
-                    try await provider.load()
+                    try await provider.load(option: preferences.lookupOption)
                 } catch {
                     Task { @MainActor in
                         self.error = .from(error)
