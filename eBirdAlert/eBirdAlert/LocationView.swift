@@ -46,7 +46,7 @@ private extension RangeType {
     var view: some View {
         switch self {
         case let .region(regionInfo):
-            Text(regionInfo.result)
+            regionInfo.nameView
         case let .radius(circle):
             HStack {
                 Text("Within")

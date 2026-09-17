@@ -10,7 +10,7 @@ private let kMaxRegions = 384
 
 private extension eBirdRegionInfo {
     var marker: some MapContent {
-        Marker(result, coordinate: coordinate.location).tag(code)
+        Marker(regionalName, coordinate: coordinate.location).tag(code)
     }
 }
 
@@ -34,7 +34,7 @@ struct LocalRegionView: View {
 
     var body: some View {
         VStack {
-            Text(title)
+            titleView
             mapView
         }
         .task { load() }
@@ -64,15 +64,16 @@ struct LocalRegionView: View {
         }
     }
 
-    private var title: String {
+    @ViewBuilder
+    private var titleView: some View {
         if let regionCode = slice.regionCode,
            let info = regions.first(where: { $0.code == regionCode })
         {
-            info.result
+            info.nameView
         } else if regions.isEmpty {
-            "loading regions..."
+            Text("loading regions...")
         } else {
-            "Search current county"
+            Text("Search current county")
         }
     }
 

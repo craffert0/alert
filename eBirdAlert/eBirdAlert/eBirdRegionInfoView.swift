@@ -10,7 +10,7 @@ struct eBirdRegionInfoView: View {
 
     var body: some View {
         VStack {
-            Text(info.result).font(.headline)
+            info.nameView.font(.headline)
             Text(info.code).font(.subheadline)
             Text(info.type.rawValue).font(.subheadline)
             if let bounds = info.bounds {

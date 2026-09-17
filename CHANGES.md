@@ -1,5 +1,9 @@
 # Next
 
+## Don't always show full region names
+
+## preferences properly handle multiple windows
+
 ## Checklist shows range
 
 ## Use swiftutil's LicenseView
@@ -9,7 +13,5 @@
 ## make changing and reloading Range all happen on @Main
 
 ## replace CensusService with eBirdRegionService implementation
-
-## preferences properly handle multiple windows
 
 # 3.0

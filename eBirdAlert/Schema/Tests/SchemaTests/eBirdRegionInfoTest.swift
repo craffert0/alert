@@ -15,4 +15,21 @@ struct eBirdRegionInfoTest {
         // but not up there
         #expect(!eBirdRegionInfo.bronx.contains(location: .silvercup))
     }
+
+    @Test func names() {
+        let kings = eBirdRegionInfo.kings
+        #expect(kings.fullName == "Kings, New York, United States")
+        #expect(kings.regionalName == "Kings, New York")
+        #expect(kings.shortName == "Kings")
+
+        let ny = eBirdRegionInfo.ny
+        #expect(ny.fullName == "New York, United States")
+        #expect(ny.regionalName == "New York")
+        #expect(ny.shortName == "New York")
+
+        let us = eBirdRegionInfo.us
+        #expect(us.fullName == "United States")
+        #expect(us.regionalName == "United States")
+        #expect(us.shortName == "United States")
+    }
 }

@@ -96,3 +96,23 @@ public extension eBirdRegionInfo {
             bounds.maxY <= lat + dLat
     }
 }
+
+private extension eBirdRegionInfo {
+    func subName(of child: eBirdRegionInfo) -> String {
+        String(child.result.prefix(child.result.count - (2 + result.count)))
+    }
+}
+
+public extension eBirdRegionInfo {
+    var grandParent: eBirdRegionInfo? { parent?.parent }
+
+    var fullName: String { result }
+
+    var regionalName: String {
+        grandParent?.subName(of: self) ?? parent?.subName(of: self) ?? result
+    }
+
+    var shortName: String {
+        parent?.subName(of: self) ?? result
+    }
+}
