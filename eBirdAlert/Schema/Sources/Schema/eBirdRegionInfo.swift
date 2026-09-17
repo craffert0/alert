@@ -11,6 +11,7 @@ public final class eBirdRegionInfo: Codable, Sendable {
     public let longitude: Double
     public let latitude: Double
     public let subregionCodes: [String]?
+    public weak let parent: eBirdRegionInfo?
 
     public struct Bounds: Codable, Sendable {
         public let minX: Double
@@ -26,7 +27,8 @@ public final class eBirdRegionInfo: Codable, Sendable {
         type: eBirdRegionType,
         longitude: Double = 0.0,
         latitude: Double = 0.0,
-        subregionCodes: [String]? = nil
+        subregionCodes: [String]? = nil,
+        parent: eBirdRegionInfo? = nil
     ) {
         self.bounds = bounds
         self.result = result
@@ -35,6 +37,7 @@ public final class eBirdRegionInfo: Codable, Sendable {
         self.longitude = longitude
         self.latitude = latitude
         self.subregionCodes = subregionCodes
+        self.parent = parent
     }
 }
 

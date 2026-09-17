@@ -5,6 +5,14 @@ import Foundation
 import Schema
 import Testing
 
+private extension FixedRegionLoader {
+    func getChildren(of parent: eBirdRegionInfo) throws -> [eBirdRegionInfo] {
+        try getSubRegions(of: parent).map {
+            try #require(getInfo(for: $0.code))
+        }
+    }
+}
+
 struct FixedRegionLoaderTest {
     let loader = FixedRegionLoader(infos: {
         try! .fromCSV(Bundle.module.url(forResource: "regions",
@@ -37,5 +45,38 @@ struct FixedRegionLoaderTest {
 
     @Test func puerto_rico() {
         #expect(loader.getInfo(for: "US-PR") == nil)
+    }
+
+    @Test func parents() throws {
+        let us = try #require(loader.getInfo(for: "US"))
+        let ny = try #require(loader.getInfo(for: "US-NY"))
+        let bk = try #require(loader.getInfo(for: "US-NY-047"))
+        #expect(bk.parent == ny)
+        #expect(ny.parent == us)
+        #expect(us.parent == nil)
+    }
+
+    @Test func validateChildren() throws {
+        for parent in loader.infos {
+            if parent.code != "world" {
+                for child in try loader.getChildren(of: parent) {
+                    #expect(child.parent == parent)
+                }
+            }
+        }
+    }
+
+    @Test func validateRegionType() {
+        for region in loader.infos {
+            switch region.type {
+            case .custom, .country:
+                #expect(region.parent == nil)
+            case .subnational1:
+                #expect(region.parent != nil)
+                #expect(region.grandParent == nil)
+            case .subnational2:
+                #expect(region.grandParent != nil)
+            }
+        }
     }
 }

@@ -2,19 +2,35 @@
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
 import Foundation
+import SwiftUtil
 
-private extension eBirdRegionInfo.Bounds {
-    static func from(minX: Double, maxX: Double,
-                     minY: Double, maxY: Double) -> eBirdRegionInfo.Bounds?
-    {
-        guard minX != 0.0 || maxX != 0.0 || minY != 0.0 || maxY != 0.0
-        else { return nil }
-        return eBirdRegionInfo.Bounds(minX: minX, maxX: maxX,
-                                      minY: minY, maxY: maxY)
+public extension [eBirdRegionInfo] {
+    /// Assuming we're sorted by code, look it up.
+    func getInfo(for regionCode: any StringProtocol) -> eBirdRegionInfo? {
+        let it = lowerBound(of: regionCode, comp: { $0.code < $1 })
+        guard it != endIndex, self[it].code == regionCode else {
+            return nil
+        }
+        return self[it]
+    }
+}
+
+public extension [eBirdRegionInfo] {
+    /// Load up a new array froma CSV file.
+    static func fromCSV(_ url: URL) throws -> [eBirdRegionInfo] {
+        var lines = try String(data: Data(contentsOf: url), encoding: .utf8)!
+            .split(separator: "\n")
+        var parser = try Parser(String(lines.removeFirst()))
+        for line in lines {
+            try parser.parse(line)
+        }
+        return parser.regions
     }
 }
 
 private struct Parser {
+    var regions: [eBirdRegionInfo] = []
+
     init(_ line: String) throws {
         guard line == "code,result,latitude,longitude,type,bounds_minX,bounds_maxX,bounds_minY,bounds_maxY,subregions"
         else {
@@ -24,8 +40,8 @@ private struct Parser {
         }
     }
 
-    func parse(_ input: String) throws -> eBirdRegionInfo {
-        var I = input
+    mutating func parse(_ input: any StringProtocol) throws {
+        var I = String(input)
         let code = try I.parseString()
         let result = try I.parseString()
         let latitude = try I.parseDouble()
@@ -38,7 +54,7 @@ private struct Parser {
         let subregionCodes =
             try I.parseString().split(separator: ",").map { String($0) }
 
-        return .init(
+        regions.append(.init(
             bounds: .from(minX: bounds_minX,
                           maxX: bounds_maxX,
                           minY: bounds_minY,
@@ -48,16 +64,29 @@ private struct Parser {
             type: type,
             longitude: longitude,
             latitude: latitude,
-            subregionCodes: subregionCodes.isEmpty ? nil : subregionCodes
-        )
+            subregionCodes: subregionCodes.isEmpty ? nil : subregionCodes,
+            parent: regions.getParent(for: code)
+        ))
     }
 }
 
-public extension [eBirdRegionInfo] {
-    static func fromCSV(_ url: URL) throws -> [eBirdRegionInfo] {
-        var lines = try String(data: Data(contentsOf: url), encoding: .utf8)!.split(separator: "\n")
-        let parser = try Parser(String(lines.removeFirst()))
+private extension eBirdRegionInfo.Bounds {
+    /// nil if it's all zeros
+    static func from(minX: Double, maxX: Double,
+                     minY: Double, maxY: Double) -> eBirdRegionInfo.Bounds?
+    {
+        guard minX != 0.0 || maxX != 0.0 || minY != 0.0 || maxY != 0.0
+        else { return nil }
+        return eBirdRegionInfo.Bounds(minX: minX, maxX: maxX,
+                                      minY: minY, maxY: maxY)
+    }
+}
 
-        return try lines.map { try parser.parse(String($0)) }
+private extension [eBirdRegionInfo] {
+    func getParent(for regionCode: String) -> eBirdRegionInfo? {
+        guard let i = regionCode.lastIndex(of: "-") else { return nil }
+        let parentCode =
+            regionCode.prefix(through: regionCode.index(before: i))
+        return getInfo(for: parentCode)
     }
 }

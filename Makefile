@@ -33,7 +33,7 @@ test_pusher:
 test: test_schema test_pusher test_server test_api
 
 test_schema:
-	cd eBirdAlert/Schema ; swift test -q
+	cd eBirdAlert/Schema ; swift test
 
 lint:
 	swiftformat -q --swiftversion 6 --disable wrapPropertyBodies,docComments .

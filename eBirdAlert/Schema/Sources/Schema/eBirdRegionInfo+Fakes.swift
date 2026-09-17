@@ -67,7 +67,8 @@ public extension eBirdRegionInfo {
         code: "US-NY",
         type: .subnational1,
         longitude: -75.809842,
-        latitude: 42.75358
+        latitude: 42.75358,
+        parent: .us
     )
 
     static let kings = eBirdRegionInfo(
@@ -76,7 +77,8 @@ public extension eBirdRegionInfo {
         code: "US-NY-047",
         type: .subnational2,
         longitude: -73.947918,
-        latitude: 40.6551515
+        latitude: 40.6551515,
+        parent: .ny
     )
 
     static let queens = eBirdRegionInfo(
@@ -85,7 +87,8 @@ public extension eBirdRegionInfo {
         code: "US-NY-081",
         type: .subnational2,
         longitude: -73.836956,
-        latitude: 40.671608
+        latitude: 40.671608,
+        parent: .ny
     )
 
     static let nyc = eBirdRegionInfo(
@@ -94,7 +97,8 @@ public extension eBirdRegionInfo {
         code: "US-NY-061",
         type: .subnational2,
         longitude: -73.967369,
-        latitude: 40.789502
+        latitude: 40.789502,
+        parent: .ny
     )
 
     static let bronx = eBirdRegionInfo(
@@ -103,6 +107,7 @@ public extension eBirdRegionInfo {
         code: "US-NY-005",
         type: .subnational2,
         longitude: -73.850139,
-        latitude: 40.850883
+        latitude: 40.850883,
+        parent: .ny
     )
 }
