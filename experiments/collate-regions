@@ -15,22 +15,6 @@ def parse_args():
     return parser.parse_args(sys.argv[1:])
 
 
-def load(region):
-    with region.open() as ri:
-        r = json.load(ri)
-        subpath = region.parent / f"{region.name[:-8]}.subr.js"
-        if subpath.exists():
-            with subpath.open() as si:
-                subregionCodes = [
-                    x
-                    for x in json.load(si)
-                    if (region.parent / f"{x}.info.js").exists()
-                ]
-                if len(subregionCodes) != 0:
-                    r["subregionCodes"] = subregionCodes
-        return r
-
-
 def s(d):
     if d == 0.0:
         return "0"
@@ -38,30 +22,92 @@ def s(d):
         return f"{d:0.6f}"
 
 
-def dump(r):
-    b = r.get("bounds", {"maxX": 0, "maxY": 0, "minX": 0, "minY": 0})
-    code = r["code"]
-    result = r["result"]
-    latitude = s(r["latitude"])
-    longitude = s(r["longitude"])
-    ttype = r["type"]
-    bounds_minX = s(b["minX"])
-    bounds_maxX = s(b["maxX"])
-    bounds_minY = s(b["minY"])
-    bounds_maxY = s(b["maxY"])
-    subregions = ",".join(r.get("subregionCodes", []))
-    print(
-        f'"{code}","{result}",{latitude},{longitude},"{ttype}",{bounds_minX},{bounds_maxX},{bounds_minY},{bounds_maxY},"{subregions}"'
-    )
+class Region:
+    def __init__(self, path):
+        with path.open() as ri:
+            self.rep = json.load(ri)
+            subpath = path.parent / f"{path.name[:-8]}.subr.js"
+            if subpath.exists():
+                with subpath.open() as si:
+                    self.subregionCodes = [
+                        x
+                        for x in json.load(si)
+                        if (path.parent / f"{x}.info.js").exists()
+                    ]
+            else:
+                self.subregionCodes = []
+        self.code = self.rep["code"]
+        self.name = self.rep["result"]
+
+    def dump(self):
+        b = self.rep.get(
+            "bounds", {"maxX": 0, "maxY": 0, "minX": 0, "minY": 0}
+        )
+        code = self.rep["code"]
+        result = self.rep["result"]
+        latitude = s(self.rep["latitude"])
+        longitude = s(self.rep["longitude"])
+        ttype = self.rep["type"]
+        bounds_minX = s(b["minX"])
+        bounds_maxX = s(b["maxX"])
+        bounds_minY = s(b["minY"])
+        bounds_maxY = s(b["maxY"])
+        subregions = ",".join(self.subregionCodes)
+        print(
+            f'"{code}","{result}",{latitude},{longitude},"{ttype}",{bounds_minX},{bounds_maxX},{bounds_minY},{bounds_maxY},"{subregions}"'
+        )
+
+
+class Regions:
+    def __init__(self, path):
+        self.regions = {
+            region.rep["code"]: region
+            for region in [Region(file) for file in path.glob("*.info.js")]
+        }
+
+    def validate(self):
+        self.validate_parents()
+        self.validate_children()
+
+    def validate_parents(self):
+        for region in self.regions.values():
+            parent = self.parent(region)
+            if parent is not None:
+                trailing_name = region.name[-(2 + len(parent.name)) :]
+                assert trailing_name == ", " + parent.name, region.code
+
+    def validate_children(self):
+        for parent in self.regions.values():
+            if parent.code != "world":
+                for child in self.children(parent):
+                    assert (
+                        self.parent(child) == parent
+                    ), f"{parent.code}/{child.code}"
+
+    def parent(self, region):
+        try:
+            return self.regions[region.code.rsplit("-", 1)[-2]]
+        except IndexError:
+            # expected on country
+            return None
+        # except KeyError:
+        #     # this is a real error that we're validating on
+
+    def children(self, region):
+        return [self.regions[code] for code in region.subregionCodes]
+
+    def dump(self):
+        print(
+            "code,result,latitude,longitude,type,bounds_minX,bounds_maxX,bounds_minY,bounds_maxY,subregions"
+        )
+        for region in [self.regions[k] for k in sorted(self.regions.keys())]:
+            region.dump()
 
 
 def main(args):
-    print(
-        "code,result,latitude,longitude,type,bounds_minX,bounds_maxX,bounds_minY,bounds_maxY,subregions"
-    )
-    regions = sorted(args.path.glob("*.info.js"), key=lambda f: f.name[:-8])
-    for r in [load(x) for x in regions]:
-        dump(r)
+    regions = Regions(args.path)
+    regions.validate()
+    regions.dump()
 
 
 if __name__ == "__main__":

@@ -2,6 +2,13 @@
 # Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 .PHONY: all lint test test_schema regen server pusher run_server test_server test_api
+.PHONY: regen regen_taxon regen_regions
+
+.DELETE_ON_ERROR:
+
+REGIONS_CSV := eBirdAlert/eBirdAlert/Assets/regions.csv
+REGIONS_SRCDIR := ~/Documents/eBirdAlert/static_regions
+REGIONS_SRCFILES := $(wildcard $(REGIONS_SRCDIR)/*)
 
 all: test pusher server
 
@@ -31,6 +38,12 @@ test_schema:
 lint:
 	swiftformat -q --swiftversion 6 --disable wrapPropertyBodies,docComments .
 
-regen:
-	cd experiments ; ./generate_taxonomy ../eBirdAlert/Schema/Sources/Schema/eBirdFamily.swift > ../eBirdAlert/eBirdAlert/Assets/taxonomy.csv
-	experiments/collate-regions ~/Scratch/static_regions > eBirdAlert/eBirdAlert/Assets/regions.csv
+regen: regen_taxon regen_regions
+
+regen_taxon:
+	experiments/generate_taxonomy eBirdAlert/Schema/Sources/Schema/eBirdFamily.swift > eBirdAlert/eBirdAlert/Assets/taxonomy.csv
+
+regen_regions: $(REGIONS_CSV)
+
+$(REGIONS_CSV): $(REGIONS_SRCFILES)
+	experiments/collate-regions $(REGIONS_SRCDIR) > $(REGIONS_CSV)
