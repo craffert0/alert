@@ -72,14 +72,28 @@ extension LocalsView {
     private var mainView: some View {
         VStack {
             ObservationPreferencesView(sort: preferences.$localsSort)
-            mainListView
+            emptyOrListView
                 .searchable(text: $searchText)
-                .refreshable {
-                    await model.refresh()
-                }
         }
         .navigationTitle("Locals")
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    @ViewBuilder
+    private var emptyOrListView: some View {
+        if observations.isEmpty {
+            emptyView
+        } else {
+            mainListView
+        }
+    }
+
+    private var emptyView: some View {
+        EmptyView(
+            name: "local",
+            range: try? preferences.range(for: locationService.location,
+                                          with: FixedRegionService.global)
+        )
     }
 
     private var mainListView: some View {
@@ -92,6 +106,9 @@ extension LocalsView {
                 Text(o.obsDt, relativeTo: now)
                 Text(o.comName)
             }
+        }
+        .refreshable {
+            await model.refresh()
         }
     }
 }

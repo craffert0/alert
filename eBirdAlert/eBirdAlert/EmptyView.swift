@@ -4,7 +4,6 @@
 import Schema
 import SwiftUI
 
-// periphery:ignore - TODO use this
 struct EmptyView: View {
     @ObservedObject var preferences = PreferencesModel.global
     let name: String
@@ -23,7 +22,6 @@ struct EmptyView: View {
                 noRegionView
             }
         }
-        .navigationTitle("No \(name.capitalized) Birds")
     }
 
     private func infoView(_ info: eBirdRegionInfo) -> some View {

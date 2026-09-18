@@ -70,14 +70,28 @@ extension NotablesView {
     private var mainView: some View {
         VStack {
             ObservationPreferencesView(sort: preferences.$notableSort)
-            mainListView
+            emptyOrListView
                 .searchable(text: $searchText)
-                .refreshable {
-                    await model.refresh()
-                }
         }
         .navigationTitle("Rarities")
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    @ViewBuilder
+    private var emptyOrListView: some View {
+        if observations.isEmpty {
+            emptyView
+        } else {
+            mainListView
+        }
+    }
+
+    private var emptyView: some View {
+        EmptyView(
+            name: "rare",
+            range: try? preferences.range(for: locationService.location,
+                                          with: FixedRegionService.global)
+        )
     }
 
     private var mainListView: some View {
@@ -91,6 +105,9 @@ extension NotablesView {
                 Text(o.comName)
                 Text("(\(o.locations.total_count))")
             }
+        }
+        .refreshable {
+            await model.refresh()
         }
     }
 }
