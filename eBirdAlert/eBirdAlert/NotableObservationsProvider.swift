@@ -43,6 +43,6 @@ class NotableObservationsProvider {
     }
 }
 
-extension NotableObservationsProvider: ObservationsProviderProtocol {
+extension NotableObservationsProvider {
     var isEmpty: Bool { observations.isEmpty }
 }

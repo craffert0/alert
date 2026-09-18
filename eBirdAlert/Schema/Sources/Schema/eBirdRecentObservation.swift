@@ -37,5 +37,6 @@ public extension eBirdRecentObservation {
 }
 
 public extension [eBirdRecentObservation] {
+    // periphery:ignore - used in #Preview
     static let fake = [eBirdRecentObservation.fake]
 }

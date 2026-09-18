@@ -32,7 +32,3 @@ class RecentObservationsProvider {
         try await provider.refresh()
     }
 }
-
-extension RecentObservationsProvider: ObservationsProviderProtocol {
-    var isEmpty: Bool { observations.isEmpty }
-}

@@ -77,14 +77,6 @@ struct LocalRegionView: View {
         }
     }
 
-    private func box(for bounds: eBirdRegionInfo.Bounds,
-                     with selected: Bool) -> some MapContent
-    {
-        MapPolyline(coordinates: bounds.diamond.locations)
-            .stroke(selected ? .primary : .secondary,
-                    lineWidth: selected ? 5 : 2)
-    }
-
     private func load() {
         guard let location = locationService.location else {
             error = eBirdServiceError.noLocation

@@ -4,6 +4,7 @@
 import Foundation
 import Schema
 
+// periphery:ignore - completeness
 public extension Components.Schemas.Range {
     var model: RangeType {
         switch self {
@@ -15,6 +16,7 @@ public extension Components.Schemas.Range {
     }
 }
 
+// periphery:ignore - completeness
 public extension Components.Schemas.RegionInfo {
     var model: eBirdRegionInfo {
         .init(result: result,
@@ -23,6 +25,7 @@ public extension Components.Schemas.RegionInfo {
     }
 }
 
+// periphery:ignore - completeness
 public extension Components.Schemas.Circle {
     var model: CircleModel {
         .init(location: location.model,
@@ -31,6 +34,7 @@ public extension Components.Schemas.Circle {
     }
 }
 
+// periphery:ignore - completeness
 public extension Components.Schemas.Location {
     var model: Coordinate {
         .init(latitude: lat, longitude: lng)

@@ -30,11 +30,6 @@ private struct Parser {
 }
 
 public extension [Taxon] {
-    static func from(_ url: URL) throws -> [Element] {
-        try JSONDecoder().decode([Element].self,
-                                 from: Data(contentsOf: url))
-    }
-
     static func fromCSV(_ url: URL) throws -> [Taxon] {
         var lines = try String(data: Data(contentsOf: url), encoding: .utf8)!.split(separator: "\n")
         let parser = try Parser(String(lines.removeFirst()))

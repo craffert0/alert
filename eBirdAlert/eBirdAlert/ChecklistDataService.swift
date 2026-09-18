@@ -13,7 +13,4 @@ protocol ChecklistDataServiceObservation {
 protocol ChecklistDataService: Observable {
     @MainActor
     func prepare(obs: ChecklistDataServiceObservation)
-
-    @MainActor
-    func load(obs: ChecklistDataServiceObservation) -> Checklist
 }

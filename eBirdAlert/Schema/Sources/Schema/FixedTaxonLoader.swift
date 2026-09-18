@@ -10,10 +10,6 @@ public struct FixedTaxonLoader {
         self.taxa = taxa
     }
 
-    public func search(string: String) -> [Taxon] {
-        taxa.filter { $0.contains(string: string) }
-    }
-
     public func find(for speciesCode: String) -> Taxon? {
         let it = taxa.lowerBound(of: speciesCode,
                                  comp: { $0.speciesCode < $1 })

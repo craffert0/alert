@@ -45,6 +45,7 @@ public extension eBirdRegionInfo.Bounds {
     )
 }
 
+// periphery:ignore - used in #Preview
 public extension eBirdRegionInfo {
     static let xx = eBirdRegionInfo(
         result: "High Seas",

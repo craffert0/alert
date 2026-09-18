@@ -28,7 +28,3 @@ class BirdObservationsProvider {
         try await provider.refresh()
     }
 }
-
-extension BirdObservationsProvider: ObservationsProviderProtocol {
-    var isEmpty: Bool { observations.isEmpty }
-}

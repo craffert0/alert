@@ -5,7 +5,6 @@ import Schema
 import SwiftUI
 
 struct NotablesView: View {
-    @Environment(NotificationService.self) private var notificationService
     @Environment(LocationService.self) var locationService
     @Environment(SwiftDataService.self) var swiftDataService
     @ObservedObject var preferences = PreferencesModel.global

@@ -4,6 +4,7 @@
 import Schema
 import SwiftUI
 
+// periphery:ignore - TODO use this
 struct EmptyView: View {
     @ObservedObject var preferences = PreferencesModel.global
     let name: String

@@ -23,14 +23,14 @@ public struct eBirdObservation: Codable, Sendable {
     // public let subnational1Name: String
     // public let countryCode: String
     // public let countryName: String
-    public let userDisplayName: String
+    // public let userDisplayName: String
     public let obsId: String
-    public let checklistId: String
+    // public let checklistId: String
     // public let presenceNoted: Bool
-    public let hasComments: Bool
-    public let firstName: String
-    public let lastName: String
-    public let hasRichMedia: Bool
+    // public let hasComments: Bool
+    // public let firstName: String
+    // public let lastName: String
+    // public let hasRichMedia: Bool
 }
 
 extension eBirdObservation: Identifiable {
@@ -49,7 +49,7 @@ public extension eBirdObservation {
             speciesCode: speciesCode,
             comName: "f-\(speciesCode)",
             sciName: "Specious Reasoning",
-            locId: "backyard",
+            locId: "L285884",
             locName: "My Backyard",
             obsDt: Date.now,
             howMany: 4,
@@ -59,14 +59,14 @@ public extension eBirdObservation {
             locationPrivate: false,
             subId: "subid",
 
-            userDisplayName: "Barack Obama",
-            obsId: "obsid",
-            checklistId: "checklistis",
+            // userDisplayName: "Barack Obama",
+            obsId: "obsid"
+            // checklistId: "checklistis",
 
-            hasComments: true,
-            firstName: "Barack",
-            lastName: "Obama",
-            hasRichMedia: false
+            // hasComments: true,
+            // firstName: "Barack",
+            // lastName: "Obama",
+            // hasRichMedia: false
         )
     }
 
@@ -74,5 +74,6 @@ public extension eBirdObservation {
 }
 
 public extension [eBirdObservation] {
+    // periphery:ignore - used in #Preview
     static let fake = [eBirdObservation.fake]
 }

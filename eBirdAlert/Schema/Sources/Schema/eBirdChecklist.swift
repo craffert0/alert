@@ -5,15 +5,15 @@ import Foundation
 
 public struct eBirdChecklist: Codable, Sendable {
     // public let protocolId: String
-    public let locId: String
+    // public let locId: String
     public let durationHrs: Float?
     // public let allObsReported: Bool
     public let comments: String?
-    public let creationDt: Date
-    public let lastEditedDt: Date?
+    // public let creationDt: Date
+    // public let lastEditedDt: Date?
     public let obsDt: Date
     // public let obsTimeValid: Bool
-    public let checklistId: String
+    // public let checklistId: String
     // public let numObservers: Int
     // public let effortDistanceKm: Float
     // public let effortDistanceEnteredUnit: String
@@ -21,7 +21,7 @@ public struct eBirdChecklist: Codable, Sendable {
     // public let submissionMethodVersion: String
     // public let deleteTrack: Bool
     public let userDisplayName: String
-    public let numSpecies: Int
+    // public let numSpecies: Int
     // public let submissionMethodVersionDisp: String
     // public let subAux: [SubAux]
     // public let subAuxAi: [SubAuxAi]
@@ -43,7 +43,7 @@ public struct eBirdChecklist: Codable, Sendable {
 
     public struct Obs: Codable, Sendable {
         public let speciesCode: String
-        public let exoticCategory: String?
+        // public let exoticCategory: String?
         public let comments: String?
         public let obsId: String
         public let howManyStr: String?

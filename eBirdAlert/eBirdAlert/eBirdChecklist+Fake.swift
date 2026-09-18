@@ -5,6 +5,7 @@ import Foundation
 import Schema
 
 extension eBirdChecklist {
+    // periphery:ignore - used in #Preview
     static let fake = {
         let d = JSONDecoder()
         d.dateDecodingStrategy = .eBirdStyle

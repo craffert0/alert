@@ -6,8 +6,4 @@ public struct Taxon: Decodable {
     public let speciesCode: String
     public let taxonOrder: Double
     public let familyCode: eBirdFamily
-
-    public func contains(string: String) -> Bool {
-        comName.range(of: string) != nil
-    }
 }

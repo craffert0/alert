@@ -9,7 +9,6 @@ import URLNetwork
 class MergedModel {
     private let preferences = PreferencesModel.global
     private let locationService: LocationService
-    private let swiftDataService: SwiftDataService
 
     private let notableProvider: NotableObservationsProvider
     private let recentProvider: RecentObservationsProvider
@@ -28,12 +27,10 @@ class MergedModel {
     }
 
     init(locationService: LocationService,
-         swiftDataService: SwiftDataService,
          notableProvider: NotableObservationsProvider,
          recentProvider: RecentObservationsProvider)
     {
         self.locationService = locationService
-        self.swiftDataService = swiftDataService
         self.notableProvider = notableProvider
         self.recentProvider = recentProvider
     }
@@ -127,4 +124,4 @@ extension MergedModel {
     }
 }
 
-extension MergedModel: LoadableModel {}
+extension MergedModel: RefreshableModel {}

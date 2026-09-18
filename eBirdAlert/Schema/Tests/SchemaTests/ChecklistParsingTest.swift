@@ -15,7 +15,7 @@ struct ChecklistParsingTest {
             let d = JSONDecoder()
             d.dateDecodingStrategy = .eBirdStyle
             let checklist = try d.decode(eBirdChecklist.self, from: json)
-            #expect(checklist.numSpecies > 0)
+            #expect(checklist.obs.count > 0)
         }
     }
 }

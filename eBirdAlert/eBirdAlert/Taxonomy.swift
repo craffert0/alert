@@ -14,10 +14,6 @@ class Taxonomy {
         return try! FixedTaxonLoader(taxa: .fromCSV(url))
     }()
 
-    func search(string: String) -> [Taxon] {
-        loader.search(string: string)
-    }
-
     func find(for speciesCode: String) -> Taxon? {
         loader.find(for: speciesCode)
     }

@@ -9,7 +9,6 @@ struct PreferencesView: View {
     @ObservedObject var preferences = PreferencesModel.global
     @State var daysBack: Double = .init(PreferencesModel.global.daysBack)
     @State var showLicense: Bool = false
-    private let service: eBirdRegionService = FixedRegionService.global
 
     private var githubMarkdown =
         "[git@github.com:craffert0/alert]" +

@@ -6,7 +6,7 @@ import SwiftUI
 struct GroupedListView<Observation: ObservationSortable & Identifiable, Content: View>: View {
     let observations: [Observation]
     let sort: ObservationSortOption
-    let model: LoadableModel
+    let model: RefreshableModel
     let selection: Binding<String?>
     let content: (Observation) -> Content
 

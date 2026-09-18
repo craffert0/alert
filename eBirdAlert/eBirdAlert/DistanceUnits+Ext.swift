@@ -8,6 +8,7 @@ public extension DistanceUnits {
         1000 * asKilometers(value)
     }
 
+    // periphery:ignore - just for fun
     func asFeet(_ value: Double) -> Double {
         5280 * asMiles(value)
     }

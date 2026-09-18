@@ -3,6 +3,7 @@
 
 import Schema
 
+// periphery:ignore - used in #Preview
 class FixedLocationService: LocationService {
     init(latitude: Double, longitude: Double) {
         super.init()

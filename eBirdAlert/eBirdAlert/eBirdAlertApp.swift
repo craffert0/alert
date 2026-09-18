@@ -40,7 +40,6 @@ struct eBirdAlertApp: App {
             )
 
         let mergedModel = MergedModel(locationService: locationService,
-                                      swiftDataService: swiftDataService,
                                       notableProvider: notableProvider,
                                       recentProvider: recentProvider)
 

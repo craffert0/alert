@@ -1,0 +1,6 @@
+project: eBirdAlert/eBirdAlert.xcodeproj
+schemes:
+- AlertAPI
+- Schema
+- URLNetwork
+- eBirdAlert

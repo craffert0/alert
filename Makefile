@@ -2,7 +2,7 @@
 # Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
 .PHONY: all lint test test_schema regen server pusher run_server test_server test_api
-.PHONY: regen regen_taxon regen_regions
+.PHONY: regen regen_taxon regen_regions find_unused
 
 .DELETE_ON_ERROR:
 
@@ -47,3 +47,6 @@ regen_regions: $(REGIONS_CSV)
 
 $(REGIONS_CSV): $(REGIONS_SRCFILES)
 	experiments/collate-regions $(REGIONS_SRCDIR) > $(REGIONS_CSV)
+
+find_unused:
+	periphery scan --report-exclude '**/alertapi.output/AlertAPI/OpenAPIGenerator/GeneratedSources/***'

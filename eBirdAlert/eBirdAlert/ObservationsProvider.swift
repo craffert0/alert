@@ -6,7 +6,7 @@ import Observation
 import Schema
 
 @Observable
-class ObservationsProvider<T>: ObservationsProviderProtocol {
+class ObservationsProvider<T> {
     var observations: [T] = []
     private let locationService: LocationService
     private let loader: (RangeType, Int) async throws -> [T]
@@ -20,8 +20,6 @@ class ObservationsProvider<T>: ObservationsProviderProtocol {
         self.locationService = locationService
         self.loader = loader
     }
-
-    var isEmpty: Bool { observations.isEmpty }
 
     func load(option: LookupOption) async throws {
         if lastLoadTime == nil ||
