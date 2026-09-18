@@ -21,11 +21,11 @@ let package = Package(
         .package(path: "../Schema"),
         .package(
             url: "https://github.com/apple/swift-openapi-generator",
-            .upToNextMinor(from: "1.10.3")
+            .upToNextMajor(from: "1.12.2")
         ),
         .package(
             url: "https://github.com/apple/swift-openapi-runtime",
-            .upToNextMinor(from: "1.9.0")
+            .upToNextMajor(from: "1.12.1")
         ),
     ],
 
