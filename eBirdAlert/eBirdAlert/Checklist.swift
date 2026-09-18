@@ -4,7 +4,6 @@
 import Foundation
 import Schema
 import SwiftData
-import URLNetwork
 
 @Model
 final class Checklist {
@@ -49,7 +48,7 @@ final class Checklist {
 
     func refresh() async {
         guard case .value = status else { return }
-        if let e = try? await URLSession.shared.getChecklist(subId: id) {
+        if let e = try? await eBirdServiceGlobal.getChecklist(subId: id) {
             date = e.obsDt
             status = .value(checklist: e)
         }
@@ -60,7 +59,7 @@ final class Checklist {
         status = .loading(startTime: Date.now)
         Task {
             do {
-                let e = try await URLSession.shared.getChecklist(subId: id)
+                let e = try await eBirdServiceGlobal.getChecklist(subId: id)
                 Task { @MainActor in
                     self.date = e.obsDt
                     self.status = .value(checklist: e)

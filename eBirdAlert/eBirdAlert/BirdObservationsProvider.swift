@@ -14,9 +14,9 @@ class BirdObservationsProvider {
          locationService: LocationService)
     {
         provider = ObservationsProvider(locationService: locationService) { range, daysBack in
-            try await URLSession.shared.getBird(in: range,
-                                                back: daysBack,
-                                                for: speciesCode)
+            try await eBirdServiceGlobal.getBird(in: range,
+                                                 back: daysBack,
+                                                 for: speciesCode)
         }
     }
 
