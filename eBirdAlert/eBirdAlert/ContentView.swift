@@ -8,9 +8,11 @@ struct ContentView: View {
     @ObservedObject var preferences = PreferencesModel.global
     let swiftDataService: SwiftDataService
     let mergedModel: MergedModel
+    @State private var selectedTab: TabKind = .rarities
+    private let center = NotificationCenter.default
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             NotablesView(model: mergedModel)
                 .tabItem {
                     Label("Rarities", systemImage: "environments.circle")
@@ -33,6 +35,11 @@ struct ContentView: View {
             PreferencesView()
                 .tabItem { Label("Settings", systemImage: "gearshape") }
                 .tag(TabKind.settings)
+        }
+        .onReceive(center.publisher(for: .navigateToTab)) { notification in
+            if let tab = notification.object as? TabKind {
+                selectedTab = tab
+            }
         }
     }
 }

@@ -17,7 +17,6 @@ class NotificationService {
         try await center.add(request)
     }
 
-    // periphery:ignore - TODO: Use me again
     func clearBadgeCount() async throws {
         try await center.setBadgeCount(0)
     }

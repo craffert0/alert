@@ -5,6 +5,7 @@ import Schema
 import SwiftUI
 
 struct NotablesView: View {
+    @Environment(NotificationService.self) var notificationService
     @Environment(LocationService.self) var locationService
     @Environment(SwiftDataService.self) var swiftDataService
     @ObservedObject var preferences = PreferencesModel.global
@@ -43,6 +44,9 @@ struct NotablesView: View {
                 if model.isLoading {
                     ProgressView()
                 }
+            }
+            .task {
+                try? await notificationService.clearBadgeCount()
             }
             .alert(isPresented: $model.showError, error: model.error) { _ in
             } message: { e in
