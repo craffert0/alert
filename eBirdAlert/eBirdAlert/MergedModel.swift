@@ -36,6 +36,9 @@ class MergedModel {
     }
 
     func load() async {
+        defer {
+            isLoading = false
+        }
         isLoading = true
         do {
             try await recentProvider.load(option: tryLoading())
@@ -44,10 +47,12 @@ class MergedModel {
             self.error = .from(error)
             showError = true
         }
-        isLoading = false
     }
 
     func refresh() async {
+        defer {
+            isLoading = false
+        }
         isLoading = true
         do {
             try await notableProvider.refresh()
@@ -56,7 +61,6 @@ class MergedModel {
             self.error = .from(error)
             showError = true
         }
-        isLoading = false
     }
 
     private func tryLoading() async throws -> LookupOption {

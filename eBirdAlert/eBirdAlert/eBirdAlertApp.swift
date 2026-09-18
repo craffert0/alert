@@ -73,8 +73,10 @@ struct eBirdAlertApp: App {
             try? await refreshService.refresh()
         }
         .onChange(of: preferences.lookupOption) {
-            Task { @MainActor in
-                await mergedModel.load()
+            if locationService.location != nil {
+                Task { @MainActor in
+                    await mergedModel.load()
+                }
             }
         }
         .onChange(of: locationService.location) { old, _ in
