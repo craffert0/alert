@@ -26,7 +26,7 @@ struct EmptyView: View {
 
     private func infoView(_ info: eBirdRegionInfo) -> some View {
         Form {
-            daysBack("in " + info.fullName)
+            daysBack("in " + info.shortName)
             bigText("Consider looking back further.")
         }
     }

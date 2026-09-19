@@ -1,5 +1,7 @@
 # Next
 
+## Make sort options dynamic
+
 ## New tab icons
 
 ## Don't always show full region names

@@ -14,11 +14,13 @@ extension ObservationSortOption: CaseIterable, Identifiable {
 }
 
 extension ObservationSortOption {
-    var viewString: String {
+    var viewString: String { rawValue }
+
+    var shortString: String {
         switch self {
-        case .byTime: "By Time"
-        case .byName: "By Name"
-        case .byTaxon: "By Family"
+        case .byTime: "Time"
+        case .byName: "Name"
+        case .byTaxon: "Family"
         }
     }
 }
