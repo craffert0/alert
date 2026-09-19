@@ -4,10 +4,15 @@
 import Schema
 import SwiftUI
 
-struct EmptyView: View {
+struct EmptyResultsView: View {
+    @Environment(LocationService.self) var locationService
     @ObservedObject var preferences = PreferencesModel.global
     let name: String
-    let range: RangeType?
+
+    var range: RangeType? {
+        try? preferences.range(for: locationService.location,
+                               with: FixedRegionService.global)
+    }
 
     var body: some View {
         VStack {
@@ -62,35 +67,5 @@ struct EmptyView: View {
 
         return bigText("In the past \(days), there \(have) been no" +
             " \(name) bird \(sighting) \(text).")
-    }
-}
-
-#Preview {
-    TabView {
-        Tab("region", systemImage: "environments.circle") {
-            NavigationStack {
-                EmptyView(name: "empty",
-                          range: .region(.kings))
-            }
-        }
-        Tab("radius", systemImage: "environments.circle") {
-            NavigationStack {
-                EmptyView(name: "empty",
-                          range: .radius(
-                              CircleModel(
-                                  location: Coordinate(latitude: 40.65,
-                                                       longitude: -74),
-                                  radius: 2.3,
-                                  units: .miles
-                              )
-                          ))
-            }
-        }
-        Tab("none", systemImage: "environments.circle") {
-            NavigationStack {
-                EmptyView(name: "empty",
-                          range: nil)
-            }
-        }
     }
 }

@@ -82,18 +82,10 @@ extension LocalsView {
     @ViewBuilder
     private var emptyOrListView: some View {
         if observations.isEmpty {
-            emptyView
+            EmptyResultsView(name: "local")
         } else {
             mainListView
         }
-    }
-
-    private var emptyView: some View {
-        EmptyView(
-            name: "local",
-            range: try? preferences.range(for: locationService.location,
-                                          with: FixedRegionService.global)
-        )
     }
 
     private var mainListView: some View {

@@ -84,18 +84,10 @@ extension NotablesView {
     @ViewBuilder
     private var emptyOrListView: some View {
         if observations.isEmpty {
-            emptyView
+            EmptyResultsView(name: "rare")
         } else {
             mainListView
         }
-    }
-
-    private var emptyView: some View {
-        EmptyView(
-            name: "rare",
-            range: try? preferences.range(for: locationService.location,
-                                          with: FixedRegionService.global)
-        )
     }
 
     private var mainListView: some View {
