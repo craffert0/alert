@@ -6,14 +6,12 @@ import SwiftUI
 
 struct LocalsView: View {
     @Environment(LocationService.self) var locationService
+    @Environment(SwiftDataService.self) var swiftDataService
+    @Environment(MergedModel.self) var model
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
-    @State var model: MergedModel
     @State var mainSelection: String?
     @State var locationSelection: String?
-    @State var searchText: String = ""
-
-    let swiftDataService: SwiftDataService
 
     var observations: [eBirdRecentObservation] { model.localObservations }
 
@@ -46,10 +44,6 @@ struct LocalsView: View {
                     ProgressView()
                 }
             }
-            .alert(isPresented: $model.showError, error: model.error) { _ in
-            } message: { e in
-                e.view
-            }
         }
     }
 
@@ -65,43 +59,18 @@ struct LocalsView: View {
 }
 
 extension LocalsView {
-    private var restrictedObservations: [eBirdRecentObservation] {
-        observations.restrict(by: searchText)
-    }
-
     private var mainView: some View {
-        VStack {
-            ObservationPreferencesView(sort: preferences.$localsSort)
-            emptyOrListView
-                .searchable(text: $searchText)
-        }
-        .navigationTitle("Locals")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-
-    @ViewBuilder
-    private var emptyOrListView: some View {
-        if observations.isEmpty {
-            EmptyResultsView(name: "local")
-        } else {
-            mainListView
-        }
-    }
-
-    private var mainListView: some View {
-        GroupedListView(observations: restrictedObservations,
-                        sort: preferences.localsSort,
-                        model: model,
-                        selection: $mainSelection)
+        MergedMainView(observations: observations,
+                       sort: preferences.$localsSort,
+                       name: "local",
+                       selection: $mainSelection)
         { o in
             HStack {
                 Text(o.obsDt, relativeTo: now)
                 Text(o.comName)
             }
         }
-        .refreshable {
-            await model.refresh()
-        }
+        .navigationTitle("Locals")
     }
 }
 

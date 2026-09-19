@@ -127,5 +127,3 @@ extension MergedModel {
         }
     }
 }
-
-extension MergedModel: RefreshableModel {}

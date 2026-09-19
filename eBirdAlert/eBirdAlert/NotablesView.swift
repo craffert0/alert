@@ -8,12 +8,11 @@ struct NotablesView: View {
     @Environment(NotificationService.self) var notificationService
     @Environment(LocationService.self) var locationService
     @Environment(SwiftDataService.self) var swiftDataService
+    @Environment(MergedModel.self) var model
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
-    @State var model: MergedModel
     @State var mainSelection: String?
     @State var locationSelection: String?
-    @State var searchText: String = ""
 
     private var observations: [BirdObservations] { model.notableObservations }
 
@@ -48,10 +47,6 @@ struct NotablesView: View {
             .task {
                 try? await notificationService.clearBadgeCount()
             }
-            .alert(isPresented: $model.showError, error: model.error) { _ in
-            } message: { e in
-                e.view
-            }
         }
     }
 
@@ -67,34 +62,11 @@ struct NotablesView: View {
 }
 
 extension NotablesView {
-    private var restrictedObservations: [BirdObservations] {
-        observations.restrict(by: searchText)
-    }
-
     private var mainView: some View {
-        VStack {
-            ObservationPreferencesView(sort: preferences.$notableSort)
-            emptyOrListView
-                .searchable(text: $searchText)
-        }
-        .navigationTitle("Rarities")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-
-    @ViewBuilder
-    private var emptyOrListView: some View {
-        if observations.isEmpty {
-            EmptyResultsView(name: "rare")
-        } else {
-            mainListView
-        }
-    }
-
-    private var mainListView: some View {
-        GroupedListView(observations: restrictedObservations,
-                        sort: preferences.notableSort,
-                        model: model,
-                        selection: $mainSelection)
+        MergedMainView(observations: observations,
+                       sort: preferences.$notableSort,
+                       name: "rare",
+                       selection: $mainSelection)
         { o in
             HStack {
                 Text(o.latestSighting, relativeTo: now)
@@ -102,9 +74,7 @@ extension NotablesView {
                 Text("(\(o.locations.total_count))")
             }
         }
-        .refreshable {
-            await model.refresh()
-        }
+        .navigationTitle("Rarities")
     }
 }
 

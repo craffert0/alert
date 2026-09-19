@@ -13,8 +13,6 @@ struct eBirdAlertApp: App {
     @ObservedObject var preferences = PreferencesModel.global
     @State var swiftDataService: SwiftDataService
     @State var locationService: LocationService
-    @State var notableProvider: NotableObservationsProvider
-    @State var recentProvider: RecentObservationsProvider
     @State var mergedModel: MergedModel
     let notificationService = NotificationService()
     let refreshService: RefreshService
@@ -50,8 +48,6 @@ struct eBirdAlertApp: App {
         self.modelContainer = modelContainer
         self.swiftDataService = swiftDataService
         self.locationService = locationService
-        self.notableProvider = notableProvider
-        self.recentProvider = recentProvider
         self.refreshService = refreshService
         self.mergedModel = mergedModel
 
@@ -62,12 +58,12 @@ struct eBirdAlertApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(swiftDataService: swiftDataService,
-                        mergedModel: mergedModel)
+            ContentView(mergedModel: mergedModel)
                 .modelContainer(modelContainer)
                 .environment(swiftDataService)
                 .environment(locationService)
                 .environment(notificationService)
+                .environment(mergedModel)
         }
         .backgroundTask(.appRefresh(id: .refreshCounter)) {
             try? await refreshService.refresh()
