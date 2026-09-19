@@ -1,5 +1,7 @@
 # Next
 
+## New tab icons
+
 ## Don't always show full region names
 
 ## preferences properly handle multiple windows

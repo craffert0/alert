@@ -15,19 +15,19 @@ struct ContentView: View {
         TabView(selection: $selectedTab) {
             NotablesView(model: mergedModel)
                 .tabItem {
-                    Label("Rarities", systemImage: "environments.circle")
+                    Label("Rarities", systemImage: "bird")
                 }
                 .tag(TabKind.rarities)
 
             LocalsView(model: mergedModel,
                        swiftDataService: swiftDataService)
-                .tabItem { Label("Locals", systemImage: "bird.circle") }
+                .tabItem { Label("Locals", systemImage: "globe") }
                 .tag(TabKind.locals)
 
             if preferences.debugMode {
                 DebugView()
                     .tabItem {
-                        Label("Debug", systemImage: "ladybug.circle.fill")
+                        Label("Debug", systemImage: "ladybug")
                     }
                     .tag(TabKind.debug)
             }
