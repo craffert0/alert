@@ -4,17 +4,45 @@
 import SwiftUI
 
 struct DebugView: View {
+    enum Selection: String {
+        case debug, checklists, secrets, size
+    }
+
+    @State private var selection: Selection?
+
     var body: some View {
-        TabView {
-            Tab("Debug", systemImage: "text.page") {
+        NavigationSplitView {
+            mainView
+        } detail: {
+            detailView
+        }
+    }
+
+    var mainView: some View {
+        List(Selection.allCases,
+             selection: $selection)
+        {
+            Text($0.rawValue)
+        }
+    }
+
+    @ViewBuilder
+    var detailView: some View {
+        if let selection {
+            switch selection {
+            case .debug:
                 DebugLinesView()
-            }
-            Tab("Checklists", systemImage: "list.bullet.circle") {
+            case .checklists:
                 ChecklistsView()
-            }
-            Tab("Secrets", systemImage: "flame.circle") {
+            case .secrets:
                 SecretPreferencesView()
+            case .size:
+                SizeDebugView()
             }
         }
     }
+}
+
+extension DebugView.Selection: CaseIterable, Identifiable {
+    var id: Self { self }
 }
