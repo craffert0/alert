@@ -13,7 +13,14 @@ struct LocalsView: View {
     @State var mainSelection: String?
     @State var locationSelection: String?
 
-    var observations: [eBirdRecentObservation] { model.localObservations }
+    private var observations: [eBirdRecentObservation] {
+        model.localObservations
+    }
+
+    private var speciesObservations: [eBirdRecentObservation] {
+        guard let mainSpecies else { return [] }
+        return model.observationProvider(for: mainSpecies.speciesCode).observations
+    }
 
     var mainSpecies: eBirdRecentObservation? {
         if let mainSelection {
@@ -70,6 +77,9 @@ extension LocalsView {
                 Text(o.comName)
             }
         }
+        .refreshable {
+            await model.refreshLocals()
+        }
         .navigationTitle("Locals")
     }
 }
@@ -79,7 +89,7 @@ extension LocalsView {
     private var contentView: some View {
         if let mainSpecies {
             MergedContentView(mainSpecies) {
-                List(speciesObservations(for: mainSpecies),
+                List(speciesObservations,
                      selection: $locationSelection)
                 { obs in
                     HStack {
@@ -106,16 +116,5 @@ extension LocalsView {
                 in: swiftDataService.load(obs: selectedLocation)
             )
         }
-    }
-}
-
-extension LocalsView {
-    var speciesObservations: [eBirdRecentObservation] {
-        guard let mainSpecies else { return [] }
-        return speciesObservations(for: mainSpecies)
-    }
-
-    func speciesObservations(for species: eBirdRecentObservation) -> [eBirdRecentObservation] {
-        model.speciesObservations(for: species.speciesCode)
     }
 }

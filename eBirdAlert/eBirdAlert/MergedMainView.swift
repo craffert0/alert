@@ -28,9 +28,6 @@ struct MergedMainView<
             } else {
                 listView
                     .searchable(text: $searchText)
-                    .refreshable {
-                        await model.refresh()
-                    }
             }
         }
         .navigationBarTitleDisplayMode(.inline)

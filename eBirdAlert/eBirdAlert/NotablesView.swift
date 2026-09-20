@@ -74,6 +74,9 @@ extension NotablesView {
                 Text("(\(o.locations.total_count))")
             }
         }
+        .refreshable {
+            await model.refreshNotables()
+        }
         .navigationTitle("Rarities")
     }
 }

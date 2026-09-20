@@ -49,13 +49,17 @@ class MergedModel {
         }
     }
 
-    func refresh() async {
-        defer {
-            isLoading = false
-        }
-        isLoading = true
+    func refreshNotables() async {
         do {
             try await notableProvider.refresh()
+        } catch {
+            self.error = .from(error)
+            showError = true
+        }
+    }
+
+    func refreshLocals() async {
+        do {
             try await recentProvider.refresh()
         } catch {
             self.error = .from(error)
@@ -92,28 +96,26 @@ class MergedModel {
 }
 
 extension MergedModel {
-    func speciesObservations(for speciesCode: String)
-        -> [eBirdRecentObservation]
+    func observationProvider(for speciesCode: String)
+        -> BirdObservationsProvider
     {
         if let provider = allProviders[speciesCode] {
-            return provider.observations
+            return provider
         } else {
             let provider = BirdObservationsProvider(
                 for: speciesCode,
                 locationService: locationService
             )
             allProviders[speciesCode] = provider
-            Task {
+            Task { @MainActor in
                 do {
                     try await provider.load(option: preferences.lookupOption)
                 } catch {
-                    Task { @MainActor in
-                        self.error = .from(error)
-                        showError = true
-                    }
+                    self.error = .from(error)
+                    showError = true
                 }
             }
-            return provider.observations
+            return provider
         }
     }
 
