@@ -79,7 +79,7 @@ extension LocalsView {
     private var contentView: some View {
         if let mainSpecies {
             MergedContentView(mainSpecies) {
-                List(speciesObservations,
+                List(speciesObservations(for: mainSpecies),
                      selection: $locationSelection)
                 { obs in
                     HStack {
@@ -112,6 +112,10 @@ extension LocalsView {
 extension LocalsView {
     var speciesObservations: [eBirdRecentObservation] {
         guard let mainSpecies else { return [] }
-        return model.speciesObservations(for: mainSpecies.speciesCode)
+        return speciesObservations(for: mainSpecies)
+    }
+
+    func speciesObservations(for species: eBirdRecentObservation) -> [eBirdRecentObservation] {
+        model.speciesObservations(for: species.speciesCode)
     }
 }
