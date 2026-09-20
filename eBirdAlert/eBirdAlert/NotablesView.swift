@@ -82,12 +82,7 @@ extension NotablesView {
     @ViewBuilder
     private var contentView: some View {
         if let mainObservations {
-            VStack {
-                Text(mainObservations.sciName)
-                Spacer()
-
-                BirdButtonsView(speciesCode: mainObservations.speciesCode)
-
+            MergedContentView(mainObservations) {
                 List(mainObservations.locations,
                      selection: $locationSelection)
                 { l in
@@ -98,8 +93,6 @@ extension NotablesView {
                     }
                 }
             }
-            .navigationTitle(mainObservations.comName)
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

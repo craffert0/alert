@@ -25,3 +25,5 @@ extension BirdObservations: ObservationSortable {
 extension BirdObservations: Matchable {
     var matchText: String { comName }
 }
+
+extension BirdObservations: MergedContentProtocol {}

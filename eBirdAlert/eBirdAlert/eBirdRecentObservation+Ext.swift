@@ -30,3 +30,5 @@ extension eBirdRecentObservation: eBirdObservationProtocol {
         locationPrivate ? nil : locId
     }
 }
+
+extension eBirdRecentObservation: MergedContentProtocol {}

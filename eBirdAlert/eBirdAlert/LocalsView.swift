@@ -78,12 +78,7 @@ extension LocalsView {
     @ViewBuilder
     private var contentView: some View {
         if let mainSpecies {
-            VStack {
-                Text(mainSpecies.sciName)
-                Spacer()
-
-                BirdButtonsView(speciesCode: mainSpecies.speciesCode)
-
+            MergedContentView(mainSpecies) {
                 List(speciesObservations,
                      selection: $locationSelection)
                 { obs in
@@ -93,11 +88,11 @@ extension LocalsView {
                     }
                 }
                 .refreshable {
-                    await refreshSpecies()
+                    await model.refreshSpecies(
+                        speciesCode: mainSpecies.speciesCode
+                    )
                 }
             }
-            .navigationTitle(mainSpecies.comName)
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
@@ -118,11 +113,5 @@ extension LocalsView {
     var speciesObservations: [eBirdRecentObservation] {
         guard let mainSpecies else { return [] }
         return model.speciesObservations(for: mainSpecies.speciesCode)
-    }
-
-    func refreshSpecies() async {
-        if let mainSpecies {
-            await model.refreshSpecies(speciesCode: mainSpecies.speciesCode)
-        }
     }
 }
