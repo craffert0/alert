@@ -11,6 +11,7 @@ struct NotablesView: View {
     @Environment(MergedModel.self) var model
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
+    @State var columnVisibility = NavigationSplitViewVisibility.all
     @State var mainSelection: String?
     @State var locationSelection: String?
 
@@ -37,10 +38,7 @@ struct NotablesView: View {
         } else {
             ZStack(alignment: .center) {
                 splitView
-                    .onChange(of: mainSelection) {
-                        locationSelection = nil
-                    }
-                if model.isLoading {
+                if model.isLoadingNotables {
                     ProgressView()
                 }
             }
@@ -51,12 +49,26 @@ struct NotablesView: View {
     }
 
     private var splitView: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
             mainView
         } content: {
             contentView
         } detail: {
             detailView
+        }
+        .task {
+            await model.loadNotables()
+        }
+        .onChange(of: preferences.lookupOption) {
+            Task { @MainActor in
+                await model.loadNotables()
+            }
+        }
+        .onChange(of: mainSelection) {
+            locationSelection = nil
+        }
+        .onChange(of: observations) {
+            columnVisibility = .all
         }
     }
 }

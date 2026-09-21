@@ -8,6 +8,12 @@ extension LocationObservations: @retroactive Identifiable {
     public var id: String { locId }
 }
 
+extension LocationObservations: @retroactive Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 extension LocationObservations: LocationProtocol {
     var hotspotId: String? {
         observations.first!.hotspotId

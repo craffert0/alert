@@ -6,6 +6,7 @@ import Schema
 import URLNetwork
 
 @Observable
+@MainActor
 class MergedModel {
     private let preferences = PreferencesModel.global
     private let locationService: LocationService
@@ -16,7 +17,11 @@ class MergedModel {
     var allProviders: [String: BirdObservationsProvider] = [:]
     var error: eBirdServiceError?
     var showError = false
-    var isLoading = false
+
+    var isLoadingNotables = false
+    var isLoadingLocals = false
+
+    var isLoading: Bool { isLoadingNotables || isLoadingLocals }
 
     var notableObservations: [BirdObservations] {
         notableProvider.observations
@@ -35,13 +40,28 @@ class MergedModel {
         self.recentProvider = recentProvider
     }
 
-    func load() async {
+    func loadNotables() async {
+        guard !isLoadingNotables else { return }
+        isLoadingNotables = true
         defer {
-            isLoading = false
+            isLoadingNotables = false
         }
-        isLoading = true
         do {
-            try await recentProvider.load(option: tryLoading())
+            try await tryLoadingNotables()
+        } catch {
+            self.error = .from(error)
+            showError = true
+        }
+    }
+
+    func loadLocals() async {
+        guard !isLoadingLocals else { return }
+        isLoadingLocals = true
+        defer {
+            isLoadingLocals = false
+        }
+        do {
+            try await recentProvider.load(option: preferences.lookupOption)
             allProviders = [:]
         } catch {
             self.error = .from(error)
@@ -67,7 +87,7 @@ class MergedModel {
         }
     }
 
-    private func tryLoading() async throws -> LookupOption {
+    private func tryLoadingNotables() async throws {
         var retried = false
         var option = preferences.lookupOption
         try await notableProvider.load(option: option)
@@ -90,8 +110,6 @@ class MergedModel {
                                                      units: units)
             }
         }
-
-        return option
     }
 }
 

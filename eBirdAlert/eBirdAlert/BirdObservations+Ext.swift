@@ -26,4 +26,10 @@ extension BirdObservations: Matchable {
     var matchText: String { comName }
 }
 
+extension BirdObservations: @retroactive Equatable {
+    public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.speciesCode == rhs.speciesCode && lhs.locations == rhs.locations
+    }
+}
+
 extension BirdObservations: MergedContentProtocol {}

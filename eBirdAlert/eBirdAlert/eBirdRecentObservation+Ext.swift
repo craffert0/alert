@@ -7,6 +7,12 @@ extension eBirdRecentObservation: @retroactive Identifiable {
     public var id: String { "\(speciesCode).\(locId)" }
 }
 
+extension eBirdRecentObservation: @retroactive Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 extension eBirdRecentObservation: ObservationSortable {
     var taxon: Taxon? { Taxonomy.global.find(for: speciesCode) }
 

@@ -10,6 +10,7 @@ struct LocalsView: View {
     @Environment(MergedModel.self) var model
     @ObservedObject var preferences = PreferencesModel.global
     @State var now = TimeDataSource<Date>.currentDate
+    @State var columnVisibility = NavigationSplitViewVisibility.all
     @State var mainSelection: String?
     @State var locationSelection: String?
 
@@ -44,10 +45,7 @@ struct LocalsView: View {
         } else {
             ZStack(alignment: .center) {
                 splitView
-                    .onChange(of: mainSelection) {
-                        locationSelection = nil
-                    }
-                if model.isLoading {
+                if model.isLoadingLocals {
                     ProgressView()
                 }
             }
@@ -55,12 +53,26 @@ struct LocalsView: View {
     }
 
     private var splitView: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
             mainView
         } content: {
             contentView
         } detail: {
             detailView
+        }
+        .task {
+            await model.loadLocals()
+        }
+        .onChange(of: preferences.lookupOption) {
+            Task { @MainActor in
+                await model.loadLocals()
+            }
+        }
+        .onChange(of: mainSelection) {
+            locationSelection = nil
+        }
+        .onChange(of: observations) {
+            columnVisibility = .all
         }
     }
 }

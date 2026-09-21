@@ -10,7 +10,6 @@ struct eBirdAlertApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
     let modelContainer: ModelContainer
-    @ObservedObject var preferences = PreferencesModel.global
     @State var swiftDataService: SwiftDataService
     @State var locationService: LocationService
     @State var mergedModel: MergedModel
@@ -67,20 +66,6 @@ struct eBirdAlertApp: App {
         }
         .backgroundTask(.appRefresh(id: .refreshCounter)) {
             try? await refreshService.refresh()
-        }
-        .onChange(of: preferences.lookupOption) {
-            if locationService.location != nil {
-                Task { @MainActor in
-                    await mergedModel.load()
-                }
-            }
-        }
-        .onChange(of: locationService.location) { old, _ in
-            if old == nil {
-                Task { @MainActor in
-                    await mergedModel.load()
-                }
-            }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .background,
