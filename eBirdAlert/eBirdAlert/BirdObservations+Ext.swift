@@ -8,14 +8,14 @@ extension BirdObservations: @retroactive Identifiable {
     public var id: String { speciesCode }
 }
 
-extension BirdObservations: ObservationSortable {
+extension BirdObservations: @retroactive ObservationSortable {
     var taxon: Taxon? { Taxonomy.global.find(for: speciesCode) }
 
-    var taxonOrder: Double {
+    public var taxonOrder: Double {
         taxon?.taxonOrder ?? 9_999_999
     }
 
-    var family: eBirdFamily {
+    public var family: eBirdFamily {
         taxon?.familyCode ?? .unknown
     }
 

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
+import Schema
 import SwiftUI
 
 struct MergedMainView<
@@ -35,7 +36,8 @@ struct MergedMainView<
 
     @ViewBuilder
     var listView: some View {
-        if let grouped = sort.wrappedValue.group(restrictedObservations) {
+        switch sort.wrappedValue.sort(restrictedObservations) {
+        case let .grouped(grouped):
             List(selection: selection) {
                 ForEach(grouped, id: \.0) { pair in
                     Section(pair.0.comName) {
@@ -45,10 +47,8 @@ struct MergedMainView<
                     }
                 }
             }
-        } else {
-            List(sort.wrappedValue.sort(restrictedObservations),
-                 selection: selection)
-            {
+        case let .sorted(array):
+            List(array, selection: selection) {
                 content($0)
             }
         }

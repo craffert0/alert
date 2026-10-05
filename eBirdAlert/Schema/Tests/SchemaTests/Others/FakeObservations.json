@@ -1,0 +1,44 @@
+[
+  {
+    "comName": "A struth1",
+    "family": "struth1",
+    "obsDt": "2025-04-03",
+    "taxonOffset": 1
+  },
+  {
+    "comName": "B struth1",
+    "family": "struth1",
+    "obsDt": "2025-04-02",
+    "taxonOffset": 3
+  },
+  {
+    "comName": "C struth1",
+    "family": "struth1",
+    "obsDt": "2025-04-01",
+    "taxonOffset": 2
+  },
+  {
+    "comName": "A phalac1",
+    "family": "phalac1",
+    "obsDt": "2024-04-01",
+    "taxonOffset": 2
+  },
+  {
+    "comName": "A nyctib1",
+    "family": "nyctib1",
+    "obsDt": "2026-04-03",
+    "taxonOffset": 1
+  },
+  {
+    "comName": "B nyctib1",
+    "family": "nyctib1",
+    "obsDt": "2026-04-02",
+    "taxonOffset": 3
+  },
+  {
+    "comName": "C nyctib1",
+    "family": "nyctib1",
+    "obsDt": "2026-04-01",
+    "taxonOffset": 2
+  }
+]
