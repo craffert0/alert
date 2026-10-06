@@ -43,7 +43,7 @@ struct eBirdObservationView: View {
         if let comments = obs?.comments {
             Text(comments)
                 .textSelection(.enabled)
-                .padding()
+                .padding(.horizontal)
         }
     }
 
@@ -84,7 +84,7 @@ struct eBirdObservationView: View {
             if let comments = actual.comments {
                 Text(comments)
                     .textSelection(.enabled)
-                    .padding()
+                    .padding(.horizontal)
             }
             ForEach(
                 actual.obs.compactMap {

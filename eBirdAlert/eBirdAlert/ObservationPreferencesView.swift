@@ -15,6 +15,6 @@ struct ObservationPreferencesView: View {
             SortPickerView(
                 observationSort: $sort
             )
-        }.padding()
+        }.padding(.horizontal)
     }
 }
