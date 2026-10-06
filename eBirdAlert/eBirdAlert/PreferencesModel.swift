@@ -78,4 +78,30 @@ extension PreferencesModel {
             }
         }
     }
+
+    func mapURL(lat: any StringProtocol,
+                lng: any StringProtocol,
+                locName: String? = nil)
+        -> String
+    {
+        let latlng = "\(lat),\(lng)"
+
+        return switch mapType {
+        case .apple:
+            if let key = directionsType.appleDirectionsKey {
+                "https://maps.apple.com/directions?destination=\(latlng)&mode=\(key)"
+            } else if let name = locName?.encoded, !name.isEmpty {
+                "https://maps.apple.com/place?coordinate=\(latlng)&name=\(name)"
+            } else {
+                "https://maps.apple.com/place?coordinate=\(latlng)"
+            }
+        case .google:
+            // https://developers.google.com/maps/documentation/urls/ios-urlscheme
+            if let key = directionsType.googleDirectionsKey {
+                "comgooglemaps://?daddr=\(latlng)&directionsmode=\(key)"
+            } else {
+                "https://www.google.com/maps/place/\(latlng)/@\(latlng),17z"
+            }
+        }
+    }
 }

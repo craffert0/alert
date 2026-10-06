@@ -17,6 +17,8 @@ struct eBirdAlertApp: App {
     let refreshService: RefreshService
 
     init() {
+        String.markdownProtocol = PreferencesStringMarkdown()
+
         let modelContainer =
             try! ModelContainer(for: Checklist.self, DebugLine.self)
         let client = NotableObservationsClient(service: URLSession.shared)

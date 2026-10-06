@@ -1,6 +1,6 @@
 # Next
 
-## More properly formatted comments
+## Clickable links and lat/long in comments
 
 ## Open/Close sections in taxonomic order
 
