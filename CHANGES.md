@@ -1,5 +1,7 @@
 # Next
 
+## More properly formatted comments
+
 ## Open/Close sections in taxonomic order
 
 ## Make sort options dynamic

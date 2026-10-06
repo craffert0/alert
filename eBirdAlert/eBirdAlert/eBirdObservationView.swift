@@ -41,7 +41,7 @@ struct eBirdObservationView: View {
     @ViewBuilder
     private var topCommentsView: some View {
         if let comments = obs?.comments {
-            Text(comments)
+            Text(eBird: comments)
                 .textSelection(.enabled)
                 .padding(.horizontal)
         }
@@ -82,7 +82,7 @@ struct eBirdObservationView: View {
             }.frame(maxWidth: .infinity, alignment: .center)
 
             if let comments = actual.comments {
-                Text(comments)
+                Text(eBird: comments)
                     .textSelection(.enabled)
                     .padding(.horizontal)
             }
@@ -113,7 +113,7 @@ struct eBirdObservationView: View {
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity, alignment: .center)
                 if let c = obs.comments {
-                    Text(c)
+                    Text(eBird: c)
                         .textSelection(.enabled)
                         .padding([.horizontal])
                 }
@@ -125,7 +125,7 @@ struct eBirdObservationView: View {
 #Preview {
     NavigationStack {
         eBirdObservationView(
-            eBirdObservation.fake,
+            eBirdObservation(fake: "maghum1"),
             in: Checklist(for: "fake",
                           date: Date.now,
                           status: .value(checklist: .fake))
