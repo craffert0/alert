@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
-import MapKit
+import Foundation
+import UIKit
 
 protocol LocationProtocol {
     var locName: String { get }
@@ -12,30 +13,28 @@ protocol LocationProtocol {
 
 extension LocationProtocol {
     func openMap() {
+        UIApplication.shared.open(URL(string: mapString())!)
+    }
+
+    private func mapString() -> String {
         let prefs = PreferencesModel.global
-        switch prefs.mapType {
+        let latlng = "\(lat),\(lng)"
+
+        return switch prefs.mapType {
         case .apple:
-            let coordinate = CLLocationCoordinate2DMake(lat, lng)
-            let placemark = MKPlacemark(coordinate: coordinate)
-            let mapItem = MKMapItem(placemark: placemark)
-            mapItem.name = locName
-            var launchOptions: [String: Any] = [:]
             if let key = prefs.directionsType.appleDirectionsKey {
-                launchOptions[MKLaunchOptionsDirectionsModeKey] = key
+                "https://maps.apple.com/directions?destination=\(latlng)&mode=\(key)"
+            } else if let name = locName.encoded, !name.isEmpty {
+                "https://maps.apple.com/place?coordinate=\(latlng)&name=\(name)"
+            } else {
+                "https://maps.apple.com/place?coordinate=\(latlng)"
             }
-            mapItem.openInMaps(launchOptions: launchOptions)
         case .google:
             // https://developers.google.com/maps/documentation/urls/ios-urlscheme
             if let key = prefs.directionsType.googleDirectionsKey {
-                UIApplication.shared.open(
-                    URL(string:
-                        "comgooglemaps://?daddr=\(lat),\(lng)&directionsmode=\(key)")!
-                )
+                "comgooglemaps://?daddr=\(latlng)&directionsmode=\(key)"
             } else {
-                UIApplication.shared.open(
-                    URL(string:
-                        "https://www.google.com/maps/place/\(lat),\(lng)/@\(lat),\(lng),17z")!
-                )
+                "https://www.google.com/maps/place/\(latlng)/@\(latlng),17z"
             }
         }
     }

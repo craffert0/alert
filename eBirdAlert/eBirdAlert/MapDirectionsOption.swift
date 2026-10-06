@@ -16,12 +16,7 @@ extension MapDirectionsOption: CaseIterable, Identifiable {
 
 extension MapDirectionsOption {
     var appleDirectionsKey: String? {
-        switch self {
-        case .none: nil
-        case .walking: MKLaunchOptionsDirectionsModeWalking
-        case .driving: MKLaunchOptionsDirectionsModeDriving
-        case .transit: MKLaunchOptionsDirectionsModeTransit
-        }
+        self == .none ? nil : rawValue
     }
 
     var googleDirectionsKey: String? {
