@@ -1,5 +1,7 @@
 # Next
 
+## Open/Close sections in taxonomic order
+
 ## Make sort options dynamic
 
 ## New tab icons
