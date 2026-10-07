@@ -8,6 +8,7 @@ public extension String {
         var result = self
         result.href()
         result.latlng()
+        result.unicodes()
         if result == self {
             return nil
         } else {
@@ -28,6 +29,16 @@ public extension String {
                 m.range,
                 with: "[\(m.0)](\(mdp.link(lat: m.1, lng: m.2)))"
             )
+        }
+    }
+
+    private mutating func unicodes() {
+        for m in matches(of: /&#x([0-9a-f]+);/).reversed() {
+            if let ui32 = UInt32(m.1, radix: 16),
+               let us = UnicodeScalar(ui32)
+            {
+                replaceSubrange(m.range, with: "\(us)")
+            }
         }
     }
 }

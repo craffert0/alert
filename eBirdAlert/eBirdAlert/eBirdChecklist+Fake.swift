@@ -88,6 +88,7 @@ extension eBirdChecklist {
             "speciesCode": "bkchum",
             "howManyAtleast": 8,
             "howManyAtmost": 8,
+            "comments": "Getting late &#x1f622;",
             "present": false,
             "obsId": "OBS4920688788",
             "howManyStr": "8"

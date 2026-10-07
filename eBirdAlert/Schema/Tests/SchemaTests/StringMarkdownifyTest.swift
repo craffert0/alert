@@ -88,6 +88,10 @@ struct StringMarkdownifyTest {
                 """
         )
     }
+
+    @Test func unicode() {
+        #expect("Getting late &#x1f622;.".markdownify == "Getting late 😢.")
+    }
 }
 
 struct TestMarkdownProtocol: StringMarkdownProtocol {
