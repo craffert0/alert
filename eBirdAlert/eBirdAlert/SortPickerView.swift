@@ -6,16 +6,19 @@ import SwiftUI
 
 struct SortPickerView: View {
     @Binding var observationSort: ObservationSortOption
+    let size: ViewSize
 
     var body: some View {
-        ViewThatFits {
-            pickerView { "Sort \($0.viewString)" }
-            pickerView { $0.viewString }
-            pickerView { $0.shortString }
+        switch size {
+        case .large: pickerView { "Sort \($0.viewString)" }
+        case .medium: pickerView { $0.viewString }
+        case .small: pickerView { $0.shortString }
         }
     }
 
-    private func pickerView(_ property: @escaping (ObservationSortOption) -> String) -> some View {
+    private func pickerView(
+        _ property: @escaping (ObservationSortOption) -> String
+    ) -> some View {
         Picker("Sort", selection: $observationSort) {
             ForEach(ObservationSortOption.allCases) { option in
                 Text(property(option))
@@ -32,11 +35,23 @@ struct SortPickerView: View {
         option = newValue
     }
     VStack {
-        SortPickerView(observationSort: binding)
-            .frame(maxWidth: 200)
-        SortPickerView(observationSort: binding)
-            .frame(maxWidth: 110)
-        SortPickerView(observationSort: binding)
-            .frame(maxWidth: 100)
+        ViewThatFits {
+            SortPickerView(observationSort: binding, size: .large)
+            SortPickerView(observationSort: binding, size: .medium)
+            SortPickerView(observationSort: binding, size: .small)
+        }
+        .frame(maxWidth: 200)
+        ViewThatFits {
+            SortPickerView(observationSort: binding, size: .large)
+            SortPickerView(observationSort: binding, size: .medium)
+            SortPickerView(observationSort: binding, size: .small)
+        }
+        .frame(maxWidth: 110)
+        ViewThatFits {
+            SortPickerView(observationSort: binding, size: .large)
+            SortPickerView(observationSort: binding, size: .medium)
+            SortPickerView(observationSort: binding, size: .small)
+        }
+        .frame(maxWidth: 100)
     }
 }

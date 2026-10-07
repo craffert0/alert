@@ -2,11 +2,19 @@
 // Copyright (C) 2026 Colin Rafferty <colin@rafferty.net>
 
 extension Int {
-    var daysBackString: String {
+    func daysBackString(size: ViewSize) -> String {
         if self == 1 {
-            "Past day"
+            if case .large = size {
+                "Past day"
+            } else {
+                "Today"
+            }
         } else {
-            "Past \(self) days"
+            if case .large = size {
+                "Past \(self) days"
+            } else {
+                "\(self) days"
+            }
         }
     }
 }

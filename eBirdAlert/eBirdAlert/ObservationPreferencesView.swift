@@ -9,11 +9,20 @@ struct ObservationPreferencesView: View {
 
     var body: some View {
         LocationView()
+        ViewThatFits {
+            lineTwoView(size: .large)
+            lineTwoView(size: .medium)
+            lineTwoView(size: .small)
+        }
+    }
+
+    func lineTwoView(size: ViewSize) -> some View {
         HStack {
-            DaysBackPickerView()
+            DaysBackPickerView(size: size)
             Spacer()
             SortPickerView(
-                observationSort: $sort
+                observationSort: $sort,
+                size: size
             )
         }.padding(.horizontal)
     }

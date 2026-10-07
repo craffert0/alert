@@ -5,11 +5,12 @@ import SwiftUI
 
 struct DaysBackPickerView: View {
     @ObservedObject var preferences = PreferencesModel.global
+    let size: ViewSize
 
     var body: some View {
         Picker("Days", selection: preferences.$daysBack) {
             ForEach(1 ..< 9) { days in
-                Text(days.daysBackString).tag(days)
+                Text(days.daysBackString(size: size)).tag(days)
             }
         }
     }
@@ -17,6 +18,8 @@ struct DaysBackPickerView: View {
 
 #Preview {
     VStack {
-        DaysBackPickerView()
+        DaysBackPickerView(size: .large)
+        DaysBackPickerView(size: .medium)
+        DaysBackPickerView(size: .small)
     }
 }
