@@ -28,8 +28,11 @@ struct LocationObservationsView: View {
                     } label: {
                         Text(e.obsDt, relativeTo: now)
                         Text(comments)
-                        if observation.hasMedia {
+                        if observation.hasPhotos {
                             Text("📸")
+                        }
+                        if observation.hasVideos {
+                            Text("📹")
                         }
                     }
                 }

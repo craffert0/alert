@@ -8,6 +8,7 @@ extension SafariView {
         case ebird(String)
         case macaulay(String)
         case checklist(String)
+        case videos(String, species: String)
         case photos(String, species: String)
     }
 
@@ -26,6 +27,9 @@ extension SafariView.Site {
                 "?taxonCode=" + species + "&sort=rating_rank_desc")!
         case let .checklist(name):
             URL(string: "https://ebird.org/checklist/" + name)!
+        case let .videos(checklist, species):
+            URL(string: "https://ebird.org/checklist/" + checklist +
+                "?view=video#" + species)!
         case let .photos(checklist, species):
             URL(string: "https://ebird.org/checklist/" + checklist +
                 "?view=photos#" + species)!

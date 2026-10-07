@@ -9,6 +9,7 @@ struct eBirdObservationView: View {
     let checklist: Checklist
     @State private var showChecklist: Bool = false
     @State private var showSpecies: Bool = false
+    @State private var showVideos: Bool = false
     @State private var showPhotos: Bool = false
 
     init(_ e: eBirdObservationProtocol,
@@ -25,7 +26,10 @@ struct eBirdObservationView: View {
             userView
             LocationButton(location: e)
             speciesView
-            if let hasMedia = obs?.hasMedia, hasMedia {
+            if obs?.hasVideos ?? false {
+                videosView
+            }
+            if obs?.hasPhotos ?? false {
                 photosView
             }
             if case let .value(actual) = checklist.status {
@@ -68,6 +72,15 @@ struct eBirdObservationView: View {
             showPhotos = true
         }.sheet(isPresented: $showPhotos) {
             SafariView(site: .photos(checklist.id,
+                                     species: e.speciesCode))
+        }
+    }
+
+    private var videosView: some View {
+        Button("📹 videos 📹") {
+            showVideos = true
+        }.sheet(isPresented: $showVideos) {
+            SafariView(site: .videos(checklist.id,
                                      species: e.speciesCode))
         }
     }

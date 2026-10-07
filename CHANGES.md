@@ -1,5 +1,7 @@
 # Next
 
+## Show videos from checklist
+
 ## Clickable links and lat/long in comments
 
 ## Open/Close sections in taxonomic order

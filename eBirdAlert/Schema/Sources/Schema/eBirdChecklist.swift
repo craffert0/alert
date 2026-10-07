@@ -51,6 +51,7 @@ public struct eBirdChecklist: Codable, Sendable {
     }
 
     public struct MediaCounts: Codable, Sendable {
+        public let V: Int?
         public let P: Int?
     }
 }
