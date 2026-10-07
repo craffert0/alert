@@ -3,14 +3,25 @@
 
 import MapKit
 import Schema
+import SwiftUI
 
 extension eBirdRegionInfo {
+    var marker: some MapContent {
+        Marker(regionalName, coordinate: coordinate.location).tag(code)
+    }
+
     var coordinate: Coordinate {
         Coordinate(latitude: latitude, longitude: longitude)
     }
 }
 
 extension eBirdRegionInfo.Bounds {
+    func box(fancy: Bool = true) -> some MapContent {
+        MapPolyline(coordinates: diamond.locations)
+            .stroke(fancy ? .primary : .secondary,
+                    lineWidth: fancy ? 5 : 2)
+    }
+
     var diamond: [Coordinate] {
         let dX = maxX - minX
         let lX = minX + dX / 4

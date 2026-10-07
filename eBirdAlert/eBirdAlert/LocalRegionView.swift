@@ -8,20 +8,6 @@ import URLNetwork
 
 private let kMaxRegions = 384
 
-private extension eBirdRegionInfo {
-    var marker: some MapContent {
-        Marker(regionalName, coordinate: coordinate.location).tag(code)
-    }
-}
-
-private extension eBirdRegionInfo.Bounds {
-    func box(fancy: Bool = true) -> some MapContent {
-        MapPolyline(coordinates: diamond.locations)
-            .stroke(fancy ? .primary : .secondary,
-                    lineWidth: fancy ? 5 : 2)
-    }
-}
-
 struct LocalRegionView: View {
     var regionService: any eBirdRegionService
     @State var slice: RangePreferenceSlice
