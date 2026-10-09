@@ -66,6 +66,9 @@ struct LocalsView: View {
         .onChange(of: preferences.lookupOption) {
             Task { @MainActor in
                 await model.loadLocals()
+                if mainSpecies == nil {
+                    mainSelection = nil
+                }
             }
         }
         .onChange(of: mainSelection) {

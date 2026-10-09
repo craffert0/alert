@@ -62,6 +62,9 @@ struct NotablesView: View {
         .onChange(of: preferences.lookupOption) {
             Task { @MainActor in
                 await model.loadNotables()
+                if mainObservations == nil {
+                    mainSelection = nil
+                }
             }
         }
         .onChange(of: mainSelection) {
