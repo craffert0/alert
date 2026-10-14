@@ -9,7 +9,9 @@ extension URLSession: @retroactive eBirdService {
                            back daysBack: Int) async throws
         -> [Schema.eBirdObservation]
     {
-        try await object(for: range.notableRequest(back: daysBack))
+        try await .init(
+            dtos: object(for: range.notableRequest(back: daysBack))
+        )
     }
 
     public func getAll(in range: RangeType,

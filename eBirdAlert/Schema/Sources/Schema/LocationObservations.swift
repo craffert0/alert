@@ -3,7 +3,7 @@
 
 import Foundation
 
-public struct LocationObservations: Encodable {
+public struct LocationObservations {
     public var locId: String { observations.first!.locId }
     public var locName: String { observations.first!.locName }
     public var lat: Double { observations.first!.lat }

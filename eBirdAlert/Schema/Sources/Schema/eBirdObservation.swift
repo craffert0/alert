@@ -3,7 +3,7 @@
 
 import Foundation
 
-public struct eBirdObservation: Codable, Sendable {
+public struct eBirdObservation: Sendable {
     public let speciesCode: String
     public let comName: String
     public let sciName: String
@@ -31,6 +31,29 @@ public struct eBirdObservation: Codable, Sendable {
     // public let firstName: String
     // public let lastName: String
     // public let hasRichMedia: Bool
+}
+
+public extension eBirdObservation {
+    init(dto: eBirdObservationDTO) {
+        speciesCode = dto.speciesCode
+        comName = dto.comName
+        sciName = dto.sciName
+        locId = dto.locId
+        locName = dto.locName
+        obsDt = dto.obsDt.asDate(in: .current) ?? .now // TODO:
+        howMany = dto.howMany
+        lat = dto.lat
+        lng = dto.lng
+        locationPrivate = dto.locationPrivate
+        subId = dto.subId
+        obsId = dto.obsId
+    }
+}
+
+public extension [eBirdObservation] {
+    init(dtos: [eBirdObservationDTO]) async {
+        self = dtos.map { .init(dto: $0) }
+    }
 }
 
 extension eBirdObservation: Identifiable {
@@ -72,6 +95,8 @@ public extension eBirdObservation {
 
     static let fake = eBirdObservation(fake: "species")
 }
+
+extension eBirdObservation: Encodable {}
 
 public extension [eBirdObservation] {
     // periphery:ignore - used in #Preview
