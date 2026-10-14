@@ -3,7 +3,7 @@
 
 import Foundation
 
-public struct eBirdRecentObservation: Codable, Sendable {
+public struct eBirdRecentObservation: Sendable {
     public let speciesCode: String
     public let comName: String
     public let sciName: String
@@ -17,6 +17,28 @@ public struct eBirdRecentObservation: Codable, Sendable {
     // public let obsReviewed: Bool
     public let locationPrivate: Bool
     public let subId: String
+}
+
+public extension eBirdRecentObservation {
+    init(dto: eBirdRecentObservationDTO) {
+        speciesCode = dto.speciesCode
+        comName = dto.comName
+        sciName = dto.sciName
+        locId = dto.locId
+        locName = dto.locName
+        obsDt = dto.obsDt.asDate(in: .current) ?? .now // TODO:
+        howMany = dto.howMany
+        lat = dto.lat
+        lng = dto.lng
+        locationPrivate = dto.locationPrivate
+        subId = dto.subId
+    }
+}
+
+public extension [eBirdRecentObservation] {
+    init(dtos: [eBirdRecentObservationDTO]) async {
+        self = dtos.map { .init(dto: $0) }
+    }
 }
 
 public extension eBirdRecentObservation {

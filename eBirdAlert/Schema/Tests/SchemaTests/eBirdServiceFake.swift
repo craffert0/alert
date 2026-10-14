@@ -40,7 +40,7 @@ extension eBirdServiceFake: eBirdService {
                 back _: Int) async throws -> [eBirdRecentObservation]
     {
         guard let allName else { throw eBirdServiceFakeError.noName }
-        return try get(name: allName)
+        return try await .init(dtos: get(name: allName))
     }
 
     func getBird(in _: RangeType,

@@ -18,7 +18,9 @@ extension URLSession: @retroactive eBirdService {
                        back daysBack: Int) async throws
         -> [Schema.eBirdRecentObservation]
     {
-        try await object(for: range.allRequest(back: daysBack))
+        try await .init(
+            dtos: object(for: range.allRequest(back: daysBack))
+        )
     }
 
     public func getBird(in range: RangeType,
@@ -26,8 +28,10 @@ extension URLSession: @retroactive eBirdService {
                         for speciesCode: String) async throws
         -> [eBirdRecentObservation]
     {
-        try await object(for: range.birdRequest(back: daysBack,
+        try await .init(
+            dtos: object(for: range.birdRequest(back: daysBack,
                                                 for: speciesCode))
+        )
     }
 
     public func getChecklist(subId: String) async throws -> eBirdChecklist {
