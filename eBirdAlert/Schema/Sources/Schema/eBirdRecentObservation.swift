@@ -20,13 +20,16 @@ public struct eBirdRecentObservation: Sendable {
 }
 
 public extension eBirdRecentObservation {
-    init(dto: eBirdRecentObservationDTO) {
+    init(dto: eBirdRecentObservationDTO) async {
+        let timeZone =
+            await TimeZone.from(latitude: dto.lat, longitude: dto.lng)
+
         speciesCode = dto.speciesCode
         comName = dto.comName
         sciName = dto.sciName
         locId = dto.locId
         locName = dto.locName
-        obsDt = dto.obsDt.asDate(in: .current) ?? .now // TODO:
+        obsDt = dto.obsDt.asDate(in: timeZone) ?? .now
         howMany = dto.howMany
         lat = dto.lat
         lng = dto.lng
@@ -36,8 +39,11 @@ public extension eBirdRecentObservation {
 }
 
 public extension [eBirdRecentObservation] {
-    init(dtos: [eBirdRecentObservationDTO]) async {
-        self = dtos.map { .init(dto: $0) }
+    init(dtos: [eBirdRecentObservationDTO]) async throws {
+        self.init()
+        for dto in dtos {
+            await append(.init(dto: dto))
+        }
     }
 }
 
