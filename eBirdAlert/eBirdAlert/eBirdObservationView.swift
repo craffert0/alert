@@ -108,7 +108,7 @@ struct eBirdObservationView: View {
             }
         }
         .refreshable {
-            await checklist.refresh()
+            await checklist.refresh(timeZone: e.timeZone)
         }
     }
 

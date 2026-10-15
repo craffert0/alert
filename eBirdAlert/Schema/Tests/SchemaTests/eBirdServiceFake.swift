@@ -50,7 +50,9 @@ extension eBirdServiceFake: eBirdService {
         throw eBirdServiceFakeError.noName
     }
 
-    func getChecklist(subId: String) async throws -> eBirdChecklist {
-        try get(name: subId)
+    func getChecklist(subId: String,
+                      timeZone: TimeZone) async throws -> eBirdChecklist
+    {
+        try .init(dto: get(name: subId), timeZone: timeZone)
     }
 }

@@ -7,4 +7,5 @@ protocol eBirdObservationProtocol: LocationProtocol {
     var speciesCode: String { get }
     var comName: String { get }
     var howMany: Int? { get }
+    var timeZone: TimeZone { get }
 }

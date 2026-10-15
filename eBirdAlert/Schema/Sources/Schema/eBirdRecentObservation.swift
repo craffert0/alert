@@ -17,6 +17,7 @@ public struct eBirdRecentObservation: Sendable {
     // public let obsReviewed: Bool
     public let locationPrivate: Bool
     public let subId: String
+    public let timeZone: TimeZone
 }
 
 public extension eBirdRecentObservation {
@@ -35,6 +36,7 @@ public extension eBirdRecentObservation {
         lng = dto.lng
         locationPrivate = dto.locationPrivate
         subId = dto.subId
+        self.timeZone = timeZone
     }
 }
 
@@ -60,7 +62,8 @@ public extension eBirdRecentObservation {
         lng: -74.0,
 
         locationPrivate: false,
-        subId: "subid"
+        subId: "subid",
+        timeZone: .current
     )
 }
 

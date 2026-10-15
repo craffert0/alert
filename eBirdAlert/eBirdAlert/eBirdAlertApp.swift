@@ -20,7 +20,7 @@ struct eBirdAlertApp: App {
         String.markdownProtocol = PreferencesStringMarkdown()
 
         let modelContainer =
-            try! ModelContainer(for: Checklist.self, DebugLine.self)
+            try! ModelContainer(for: Schema(SchemaV1.models))
         let client = NotableObservationsClient(service: URLSession.shared)
         let swiftDataService =
             SwiftDataService(modelContext: modelContainer.mainContext)

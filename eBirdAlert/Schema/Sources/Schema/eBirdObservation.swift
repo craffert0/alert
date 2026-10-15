@@ -31,6 +31,7 @@ public struct eBirdObservation: Sendable {
     // public let firstName: String
     // public let lastName: String
     // public let hasRichMedia: Bool
+    public let timeZone: TimeZone
 }
 
 public extension eBirdObservation {
@@ -50,6 +51,7 @@ public extension eBirdObservation {
         locationPrivate = dto.locationPrivate
         subId = dto.subId
         obsId = dto.obsId
+        self.timeZone = timeZone
     }
 }
 
@@ -89,13 +91,14 @@ public extension eBirdObservation {
             subId: "subid",
 
             // userDisplayName: "Barack Obama",
-            obsId: "obsid"
+            obsId: "obsid",
             // checklistId: "checklistis",
 
             // hasComments: true,
             // firstName: "Barack",
             // lastName: "Obama",
             // hasRichMedia: false
+            timeZone: .current
         )
     }
 

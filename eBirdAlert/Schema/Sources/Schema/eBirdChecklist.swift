@@ -4,6 +4,9 @@
 import Foundation
 
 public struct eBirdChecklist: Codable, Sendable {
+    public typealias Obs = eBirdChecklistDTO.Obs
+    public typealias MediaCounts = eBirdChecklistDTO.MediaCounts
+
     // public let protocolId: String
     // public let locId: String
     public let durationHrs: Float?
@@ -40,18 +43,14 @@ public struct eBirdChecklist: Codable, Sendable {
     //     public let source: String
     //     public let eventId: Int
     // }
+}
 
-    public struct Obs: Codable, Sendable {
-        public let speciesCode: String
-        // public let exoticCategory: String?
-        public let comments: String?
-        public let obsId: String
-        public let howManyStr: String?
-        public let mediaCounts: MediaCounts?
-    }
-
-    public struct MediaCounts: Codable, Sendable {
-        public let V: Int?
-        public let P: Int?
+public extension eBirdChecklist {
+    init(dto: eBirdChecklistDTO, timeZone: TimeZone) {
+        durationHrs = dto.durationHrs
+        comments = dto.comments
+        obsDt = dto.obsDt.asDate(in: timeZone) ?? .now
+        userDisplayName = dto.userDisplayName
+        obs = dto.obs
     }
 }

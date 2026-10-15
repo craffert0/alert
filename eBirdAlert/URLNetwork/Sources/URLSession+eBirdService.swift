@@ -34,10 +34,12 @@ extension URLSession: @retroactive eBirdService {
         )
     }
 
-    public func getChecklist(subId: String) async throws -> eBirdChecklist {
+    public func getChecklist(subId: String,
+                             timeZone: TimeZone) async throws -> eBirdChecklist
+    {
         let request = URLRequest(
             eBirdPath: "product/checklist/view/" + subId
         )
-        return try await object(for: request)
+        return try await .init(dto: object(for: request), timeZone: timeZone)
     }
 }
