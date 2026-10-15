@@ -5,19 +5,7 @@ import Foundation
 import Schema
 import Testing
 
-struct Wrapper: Codable {
-    let date: Date
-}
-
-struct JSONDecoder_DateDecodingStrategyTest {
-    func parse(_ s: String) throws -> Date {
-        let d = JSONDecoder()
-        d.dateDecodingStrategy = .eBirdStyle
-        return try d.decode(Wrapper.self,
-                            from: Data("{\"date\": \"\(s)\"}".utf8))
-            .date
-    }
-
+struct String_asDateTest {
     @Test func full() throws {
         let dates = [
             "2025-03-05 16:04",
@@ -30,7 +18,7 @@ struct JSONDecoder_DateDecodingStrategyTest {
             f.locale = Locale(identifier: "en_US_POSIX")
             f.dateFormat = "yyyy-MM-dd HH:mm"
             let expected = try #require(f.date(from: d))
-            let actual = try parse(d)
+            let actual = try #require(d.asDate(in: .current))
             #expect(actual == expected)
         }
     }
@@ -46,7 +34,7 @@ struct JSONDecoder_DateDecodingStrategyTest {
             f.locale = Locale(identifier: "en_US_POSIX")
             f.dateFormat = "yyyy-MM-dd"
             let expected = try #require(f.date(from: d))
-            let actual = try parse(d)
+            let actual = try #require(d.asDate(in: .current))
             #expect(actual == expected)
         }
     }

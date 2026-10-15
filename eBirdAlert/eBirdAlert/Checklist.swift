@@ -3,23 +3,10 @@
 
 import Foundation
 import Schema
-import SwiftData
 
-@Model
-final class Checklist {
-    @Attribute(.unique) var id: String
-    var date: Date
-    var status: ChecklistStatus
+typealias Checklist = SchemaV1.Checklist
 
-    init(for id: String,
-         date: Date,
-         status: ChecklistStatus)
-    {
-        self.id = id
-        self.date = date
-        self.status = status
-    }
-
+extension Checklist {
     var userDisplayName: String? {
         guard case let .value(checklist) = status else {
             return nil
@@ -46,20 +33,20 @@ final class Checklist {
         return checklist.obs.first { $0.speciesCode == speciesCode }
     }
 
-    func refresh() async {
+    func refresh(timeZone: TimeZone) async {
         guard case .value = status else { return }
-        if let e = try? await eBirdServiceGlobal.getChecklist(subId: id) {
+        if let e = try? await eBirdServiceGlobal.getChecklist(subId: id, timeZone: timeZone) {
             date = e.obsDt
             status = .value(checklist: e)
         }
     }
 
-    func load() {
+    func load(timeZone: TimeZone) {
         guard case .unloaded = status else { return }
         status = .loading(startTime: Date.now)
         Task {
             do {
-                let e = try await eBirdServiceGlobal.getChecklist(subId: id)
+                let e = try await eBirdServiceGlobal.getChecklist(subId: id, timeZone: timeZone)
                 Task { @MainActor in
                     self.date = e.obsDt
                     self.status = .value(checklist: e)

@@ -3,7 +3,7 @@
 
 import Foundation
 
-public struct BirdObservations: Encodable {
+public struct BirdObservations {
     private var rep: eBirdObservation { locations.first!.observations.first! }
     public var speciesCode: String { rep.speciesCode }
     public var comName: String { rep.comName }

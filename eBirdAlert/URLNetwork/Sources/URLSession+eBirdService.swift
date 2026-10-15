@@ -9,14 +9,18 @@ extension URLSession: @retroactive eBirdService {
                            back daysBack: Int) async throws
         -> [Schema.eBirdObservation]
     {
-        try await object(for: range.notableRequest(back: daysBack))
+        try await .init(
+            dtos: object(for: range.notableRequest(back: daysBack))
+        )
     }
 
     public func getAll(in range: RangeType,
                        back daysBack: Int) async throws
         -> [Schema.eBirdRecentObservation]
     {
-        try await object(for: range.allRequest(back: daysBack))
+        try await .init(
+            dtos: object(for: range.allRequest(back: daysBack))
+        )
     }
 
     public func getBird(in range: RangeType,
@@ -24,14 +28,18 @@ extension URLSession: @retroactive eBirdService {
                         for speciesCode: String) async throws
         -> [eBirdRecentObservation]
     {
-        try await object(for: range.birdRequest(back: daysBack,
+        try await .init(
+            dtos: object(for: range.birdRequest(back: daysBack,
                                                 for: speciesCode))
+        )
     }
 
-    public func getChecklist(subId: String) async throws -> eBirdChecklist {
+    public func getChecklist(subId: String,
+                             timeZone: TimeZone) async throws -> eBirdChecklist
+    {
         let request = URLRequest(
             eBirdPath: "product/checklist/view/" + subId
         )
-        return try await object(for: request)
+        return try await .init(dto: object(for: request), timeZone: timeZone)
     }
 }

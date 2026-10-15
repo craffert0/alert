@@ -11,7 +11,7 @@ struct ChecklistLinkView: View {
         switch checklist.status {
         case .unloaded:
             Button {
-                checklist.load()
+                checklist.load(timeZone: .current)
             } label: {
                 HStack {
                     relativeDate

@@ -14,7 +14,9 @@ struct ChecklistParsingTest {
             let json = try Data(contentsOf: #require(path))
             let d = JSONDecoder()
             d.dateDecodingStrategy = .eBirdStyle
-            let checklist = try d.decode(eBirdChecklist.self, from: json)
+            let checklist = try eBirdChecklist(dto: d.decode(eBirdChecklistDTO.self,
+                                                             from: json),
+                                               timeZone: .current)
             #expect(checklist.obs.count > 0)
         }
     }

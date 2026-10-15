@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Copyright (C) 2025 Colin Rafferty <colin@rafferty.net>
 
+import Foundation
+
 public protocol eBirdService: Sendable {
     func getNotable(in range: RangeType,
                     back daysBack: Int) async throws -> [eBirdObservation]
@@ -10,5 +12,6 @@ public protocol eBirdService: Sendable {
                  back daysBack: Int,
                  for speciesCode: String) async throws -> [eBirdRecentObservation]
 
-    func getChecklist(subId: String) async throws -> eBirdChecklist
+    func getChecklist(subId: String,
+                      timeZone: TimeZone) async throws -> eBirdChecklist
 }

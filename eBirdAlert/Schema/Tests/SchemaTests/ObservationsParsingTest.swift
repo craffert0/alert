@@ -13,7 +13,7 @@ struct ObservationsParsingTest {
         let json = try Data(contentsOf: #require(path))
         let d = JSONDecoder()
         d.dateDecodingStrategy = .eBirdStyle
-        let observations = try d.decode([eBirdObservation].self, from: json)
+        let observations = try d.decode([eBirdObservationDTO].self, from: json)
         #expect(observations.count == 182)
     }
 }

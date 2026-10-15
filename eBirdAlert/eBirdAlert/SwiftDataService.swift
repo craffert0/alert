@@ -56,7 +56,7 @@ extension SwiftDataService: ChecklistDataService {
             modelContext.insert(c)
             return c
         }()
-        c.load()
+        c.load(timeZone: obs.timeZone)
         return c
     }
 }

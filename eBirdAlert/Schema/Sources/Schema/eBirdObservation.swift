@@ -3,7 +3,7 @@
 
 import Foundation
 
-public struct eBirdObservation: Codable, Sendable {
+public struct eBirdObservation: Sendable {
     public let speciesCode: String
     public let comName: String
     public let sciName: String
@@ -31,6 +31,37 @@ public struct eBirdObservation: Codable, Sendable {
     // public let firstName: String
     // public let lastName: String
     // public let hasRichMedia: Bool
+    public let timeZone: TimeZone
+}
+
+public extension eBirdObservation {
+    init(dto: eBirdObservationDTO) async {
+        let timeZone =
+            await TimeZone.from(latitude: dto.lat, longitude: dto.lng)
+
+        speciesCode = dto.speciesCode
+        comName = dto.comName
+        sciName = dto.sciName
+        locId = dto.locId
+        locName = dto.locName
+        obsDt = dto.obsDt.asDate(in: timeZone) ?? .now
+        howMany = dto.howMany
+        lat = dto.lat
+        lng = dto.lng
+        locationPrivate = dto.locationPrivate
+        subId = dto.subId
+        obsId = dto.obsId
+        self.timeZone = timeZone
+    }
+}
+
+public extension [eBirdObservation] {
+    init(dtos: [eBirdObservationDTO]) async {
+        self.init()
+        for dto in dtos {
+            await append(.init(dto: dto))
+        }
+    }
 }
 
 extension eBirdObservation: Identifiable {
@@ -60,18 +91,21 @@ public extension eBirdObservation {
             subId: "subid",
 
             // userDisplayName: "Barack Obama",
-            obsId: "obsid"
+            obsId: "obsid",
             // checklistId: "checklistis",
 
             // hasComments: true,
             // firstName: "Barack",
             // lastName: "Obama",
             // hasRichMedia: false
+            timeZone: .current
         )
     }
 
     static let fake = eBirdObservation(fake: "species")
 }
+
+extension eBirdObservation: Encodable {}
 
 public extension [eBirdObservation] {
     // periphery:ignore - used in #Preview

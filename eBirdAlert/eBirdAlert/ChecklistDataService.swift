@@ -8,6 +8,7 @@ import Schema
 protocol ChecklistDataServiceObservation {
     var subId: String { get }
     var obsDt: Date { get }
+    var timeZone: TimeZone { get }
 }
 
 protocol ChecklistDataService: Observable {

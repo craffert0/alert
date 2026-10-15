@@ -33,14 +33,14 @@ extension eBirdServiceFake: eBirdService {
                     back _: Int) async throws -> [eBirdObservation]
     {
         guard let notableName else { throw eBirdServiceFakeError.noName }
-        return try get(name: notableName)
+        return try await .init(dtos: get(name: notableName))
     }
 
     func getAll(in _: RangeType,
                 back _: Int) async throws -> [eBirdRecentObservation]
     {
         guard let allName else { throw eBirdServiceFakeError.noName }
-        return try get(name: allName)
+        return try await .init(dtos: get(name: allName))
     }
 
     func getBird(in _: RangeType,
@@ -50,7 +50,9 @@ extension eBirdServiceFake: eBirdService {
         throw eBirdServiceFakeError.noName
     }
 
-    func getChecklist(subId: String) async throws -> eBirdChecklist {
-        try get(name: subId)
+    func getChecklist(subId: String,
+                      timeZone: TimeZone) async throws -> eBirdChecklist
+    {
+        try .init(dto: get(name: subId), timeZone: timeZone)
     }
 }

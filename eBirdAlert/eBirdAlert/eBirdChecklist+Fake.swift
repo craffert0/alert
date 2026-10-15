@@ -9,7 +9,8 @@ extension eBirdChecklist {
     static let fake = {
         let d = JSONDecoder()
         d.dateDecodingStrategy = .eBirdStyle
-        return try! d.decode(eBirdChecklist.self, from: json)
+        return eBirdChecklist(dto: try! d.decode(eBirdChecklistDTO.self, from: json),
+                              timeZone: .current)
     }()
 
     private static let json = """

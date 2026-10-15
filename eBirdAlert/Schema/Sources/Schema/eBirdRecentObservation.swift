@@ -3,7 +3,7 @@
 
 import Foundation
 
-public struct eBirdRecentObservation: Codable, Sendable {
+public struct eBirdRecentObservation: Sendable {
     public let speciesCode: String
     public let comName: String
     public let sciName: String
@@ -17,6 +17,36 @@ public struct eBirdRecentObservation: Codable, Sendable {
     // public let obsReviewed: Bool
     public let locationPrivate: Bool
     public let subId: String
+    public let timeZone: TimeZone
+}
+
+public extension eBirdRecentObservation {
+    init(dto: eBirdRecentObservationDTO) async {
+        let timeZone =
+            await TimeZone.from(latitude: dto.lat, longitude: dto.lng)
+
+        speciesCode = dto.speciesCode
+        comName = dto.comName
+        sciName = dto.sciName
+        locId = dto.locId
+        locName = dto.locName
+        obsDt = dto.obsDt.asDate(in: timeZone) ?? .now
+        howMany = dto.howMany
+        lat = dto.lat
+        lng = dto.lng
+        locationPrivate = dto.locationPrivate
+        subId = dto.subId
+        self.timeZone = timeZone
+    }
+}
+
+public extension [eBirdRecentObservation] {
+    init(dtos: [eBirdRecentObservationDTO]) async throws {
+        self.init()
+        for dto in dtos {
+            await append(.init(dto: dto))
+        }
+    }
 }
 
 public extension eBirdRecentObservation {
@@ -32,7 +62,8 @@ public extension eBirdRecentObservation {
         lng: -74.0,
 
         locationPrivate: false,
-        subId: "subid"
+        subId: "subid",
+        timeZone: .current
     )
 }
 
