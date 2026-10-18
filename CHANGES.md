@@ -1,5 +1,7 @@
 # Latest
 
+## Even better handling of iPad
+
 ## Proper time zones for non-local observations.
 
 # 4.0.1

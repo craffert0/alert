@@ -44,7 +44,9 @@ struct LocalsView: View {
             Text("no location 😢")
         } else {
             ZStack(alignment: .center) {
-                splitView
+                GeometryReader { geometry in
+                    splitView(size: geometry.size)
+                }
                 if model.isLoadingLocals {
                     ProgressView()
                 }
@@ -52,7 +54,7 @@ struct LocalsView: View {
         }
     }
 
-    private var splitView: some View {
+    private func splitView(size: CGSize) -> some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
             mainView
         } content: {
@@ -62,6 +64,11 @@ struct LocalsView: View {
         }
         .task {
             await model.loadLocals()
+        }
+        .onAppear {
+            if mainSpecies == nil {
+                columnVisibility = .all
+            }
         }
         .onChange(of: preferences.lookupOption) {
             Task { @MainActor in
@@ -73,6 +80,11 @@ struct LocalsView: View {
         }
         .onChange(of: mainSelection) {
             locationSelection = nil
+            if mainSelection == nil {
+                columnVisibility = .all
+            } else if size.width < size.height {
+                columnVisibility = .doubleColumn
+            }
         }
         .onChange(of: observations) {
             columnVisibility = .all

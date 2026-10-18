@@ -9,21 +9,40 @@ struct SizeDebugView: View {
     @State var text: String = ""
 
     var body: some View {
-        NavigationStack {
-            VStack {
-                TextField("who cares", text: $text).padding()
-                Grid {
-                    GridRow {
-                        Text("Horizontal")
-                        Text(horizontalSizeClass?.name ?? "?")
-                    }
-                    GridRow {
-                        Text("Vertical")
-                        Text(verticalSizeClass?.name ?? "?")
+        GeometryReader { geometry in
+            NavigationStack {
+                VStack {
+                    TextField("who cares", text: $text).padding()
+                    Grid {
+                        GridRow {
+                            Text("Horizontal")
+                            Text(horizontalSizeClass?.name ?? "?")
+                        }
+                        GridRow {
+                            Text("Vertical")
+                            Text(verticalSizeClass?.name ?? "?")
+                        }
+
+                        GridRow {
+                            Text("Screen Width")
+                            Text("\(Int(UIScreen.main.bounds.width))")
+                        }
+                        GridRow {
+                            Text("Screen Height")
+                            Text("\(Int(UIScreen.main.bounds.height))")
+                        }
+                        GridRow {
+                            Text("Window Width")
+                            Text("\(Int(geometry.size.width))")
+                        }
+                        GridRow {
+                            Text("Window Height")
+                            Text("\(Int(geometry.size.height))")
+                        }
                     }
                 }
-            }
-        }.navigationBarTitle("Debug Size")
+            }.navigationBarTitle("Debug Size")
+        }
     }
 }
 

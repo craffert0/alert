@@ -37,7 +37,9 @@ struct NotablesView: View {
             Text("no location 😢")
         } else {
             ZStack(alignment: .center) {
-                splitView
+                GeometryReader { geometry in
+                    splitView(size: geometry.size)
+                }
                 if model.isLoadingNotables {
                     ProgressView()
                 }
@@ -48,7 +50,7 @@ struct NotablesView: View {
         }
     }
 
-    private var splitView: some View {
+    private func splitView(size: CGSize) -> some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
             mainView
         } content: {
@@ -58,6 +60,11 @@ struct NotablesView: View {
         }
         .task {
             await model.loadNotables()
+        }
+        .onAppear {
+            if mainSelection == nil {
+                columnVisibility = .all
+            }
         }
         .onChange(of: preferences.lookupOption) {
             Task { @MainActor in
@@ -69,6 +76,11 @@ struct NotablesView: View {
         }
         .onChange(of: mainSelection) {
             locationSelection = nil
+            if mainSelection == nil {
+                columnVisibility = .all
+            } else if size.width < size.height {
+                columnVisibility = .doubleColumn
+            }
         }
         .onChange(of: observations) {
             columnVisibility = .all
