@@ -21,10 +21,9 @@ public struct eBirdRecentObservation: Sendable {
 }
 
 public extension eBirdRecentObservation {
-    init(dto: eBirdRecentObservationDTO) async {
-        let timeZone =
-            await TimeZone.from(latitude: dto.lat, longitude: dto.lng)
-
+    init(dto: eBirdRecentObservationDTO,
+         timeZone: TimeZone)
+    {
         speciesCode = dto.speciesCode
         comName = dto.comName
         sciName = dto.sciName
@@ -41,11 +40,13 @@ public extension eBirdRecentObservation {
 }
 
 public extension [eBirdRecentObservation] {
-    init(dtos: [eBirdRecentObservationDTO]) async throws {
-        self.init()
-        for dto in dtos {
-            await append(.init(dto: dto))
-        }
+    static func from(dtos: [eBirdRecentObservationDTO]) async
+        -> [eBirdRecentObservation]
+    {
+        guard let first = dtos.first else { return [] }
+        let timeZone =
+            await TimeZone.from(latitude: first.lat, longitude: first.lng)
+        return dtos.map { .init(dto: $0, timeZone: timeZone) }
     }
 }
 
