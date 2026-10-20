@@ -10,7 +10,8 @@ extension URLSession: @retroactive eBirdService {
         -> [Schema.eBirdObservation]
     {
         try await .from(
-            dtos: object(for: range.notableRequest(back: daysBack))
+            dtos: object(for: range.notableRequest(back: daysBack)),
+            in: range.timeZone
         )
     }
 
@@ -19,7 +20,8 @@ extension URLSession: @retroactive eBirdService {
         -> [Schema.eBirdRecentObservation]
     {
         try await .from(
-            dtos: object(for: range.allRequest(back: daysBack))
+            dtos: object(for: range.allRequest(back: daysBack)),
+            in: range.timeZone
         )
     }
 
@@ -30,7 +32,8 @@ extension URLSession: @retroactive eBirdService {
     {
         try await .from(
             dtos: object(for: range.birdRequest(back: daysBack,
-                                                for: speciesCode))
+                                                for: speciesCode)),
+            in: range.timeZone
         )
     }
 

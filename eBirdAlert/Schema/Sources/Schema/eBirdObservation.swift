@@ -55,13 +55,11 @@ public extension eBirdObservation {
 }
 
 public extension [eBirdObservation] {
-    static func from(dtos: [eBirdObservationDTO]) async
+    static func from(dtos: [eBirdObservationDTO],
+                     in timeZone: TimeZone)
         -> [eBirdObservation]
     {
-        guard let first = dtos.first else { return [] }
-        let timeZone =
-            await TimeZone.from(latitude: first.lat, longitude: first.lng)
-        return dtos.map { .init(dto: $0, timeZone: timeZone) }
+        dtos.map { .init(dto: $0, timeZone: timeZone) }
     }
 }
 
