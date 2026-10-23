@@ -24,11 +24,13 @@ public extension String {
 
     private mutating func latlng() {
         guard let mdp = Self.markdownProtocol else { return }
-        for m in matches(of: /(-?\d+\.\d+), *(-?\d+\.\d+)/).reversed() {
-            replaceSubrange(
-                m.range,
-                with: "[\(m.0)](\(mdp.link(lat: m.1, lng: m.2)))"
-            )
+        for g in GeoMatcher.allCases {
+            for m in g.matches(in: self).reversed() {
+                replaceSubrange(
+                    m.range,
+                    with: "[\(m.string)](\(mdp.link(lat: m.latitude, lng: m.longitude)))"
+                )
+            }
         }
     }
 

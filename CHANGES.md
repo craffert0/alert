@@ -1,4 +1,8 @@
-# 4,1.0
+# Next
+
+## Allow more kinds of lat/long
+
+# 4.1.0
 
 ## Even better handling of iPad
 

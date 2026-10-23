@@ -79,8 +79,8 @@ extension PreferencesModel {
         }
     }
 
-    func mapURL(lat: any StringProtocol,
-                lng: any StringProtocol,
+    func mapURL(lat: Double,
+                lng: Double,
                 locName: String? = nil)
         -> String
     {

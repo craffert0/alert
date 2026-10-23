@@ -46,8 +46,8 @@ struct StringMarkdownifyTest {
     @Test func latLng() {
         let mp = TestMarkdownProtocol()
         String.markdownProtocol = mp
-        let lat = "40.67"
-        let lng = "-73.97"
+        let lat = 40.67
+        let lng = -73.97
         let latlng = "\(lat), \(lng)"
         #expect(
             "Found it (\(latlng)).".markdownify
@@ -59,8 +59,8 @@ struct StringMarkdownifyTest {
     @Test func manyLatLng() {
         let mp = TestMarkdownProtocol()
         String.markdownProtocol = mp
-        let lat = "40.67"
-        let lng = "-73.97"
+        let lat = 40.67
+        let lng = -73.97
         let latlng = "\(lat), \(lng)"
         let lnglat = "\(lng),\(lat)"
         #expect(
@@ -70,11 +70,24 @@ struct StringMarkdownifyTest {
         )
     }
 
+    @Test func moreLatLng() {
+        let mp = TestMarkdownProtocol()
+        String.markdownProtocol = mp
+        let lat = 40.67
+        let lng = -73.97
+        let latlng = "\(lat), \(lng)"
+        #expect(
+            "Found on (\(latlng)) and (40.675N, 73.969W).".markdownify
+                ==
+                "Found on ([\(latlng)](\(mp.link(lat: lat, lng: lng)))) and ([40.675N, 73.969W](\(mp.link(lat: 40.675, lng: -73.969))))."
+        )
+    }
+
     @Test func both() {
         let mp = TestMarkdownProtocol()
         String.markdownProtocol = mp
-        let lat = "40.67"
-        let lng = "-73.97"
+        let lat = 40.67
+        let lng = -73.97
         let latlng = "\(lat), \(lng)"
         #expect(
             """
@@ -95,7 +108,7 @@ struct StringMarkdownifyTest {
 }
 
 struct TestMarkdownProtocol: StringMarkdownProtocol {
-    func link(lat: any StringProtocol, lng: any StringProtocol) -> String {
+    func link(lat: Double, lng: Double) -> String {
         "http://map/show?lat=\(lat)&lng=\(lng)"
     }
 }

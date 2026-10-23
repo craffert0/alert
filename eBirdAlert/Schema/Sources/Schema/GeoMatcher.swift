@@ -9,6 +9,7 @@ public enum GeoMatcher: CaseIterable {
 
 public extension GeoMatcher {
     struct Match {
+        public let string: any StringProtocol
         public let range: Range<String.Index>
         public let latitude: Double
         public let longitude: Double
@@ -24,7 +25,8 @@ public extension GeoMatcher {
                 comma()
                 regexDegrees(.longitude)
             }).map { m in
-                Match(range: m.range,
+                Match(string: m.0,
+                      range: m.range,
                       latitude: (m.1 + m.2 + m.3) * m.4,
                       longitude: (m.5 + m.6 + m.7) * m.8)
             }
@@ -36,7 +38,8 @@ public extension GeoMatcher {
                 comma()
                 regexCompass(.longitude)
             }).map { m in
-                Match(range: m.range,
+                Match(string: m.0,
+                      range: m.range,
                       latitude: m.1 * m.2,
                       longitude: m.3 * m.4)
             }
@@ -48,7 +51,8 @@ public extension GeoMatcher {
                 comma()
                 negativeDouble(180)
             }).map { m in
-                Match(range: m.range,
+                Match(string: m.0,
+                      range: m.range,
                       latitude: m.1,
                       longitude: m.2)
             }

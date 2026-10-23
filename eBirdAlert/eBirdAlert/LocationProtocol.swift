@@ -17,8 +17,8 @@ extension LocationProtocol {
     }
 
     private func mapString() -> String {
-        PreferencesModel.global.mapURL(lat: String(lat),
-                                       lng: String(lng),
+        PreferencesModel.global.mapURL(lat: lat,
+                                       lng: lng,
                                        locName: locName)
     }
 }
