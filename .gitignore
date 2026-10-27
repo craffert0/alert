@@ -1,9 +1,6 @@
 # KeyService.swift is the secret key
 eBirdAlert/URLNetwork/Sources/KeyService.swift
 
-# eBirdOrder.swift is generated
-eBirdAlert/Schema/Sources/Schema/eBirdFamily.swift
-
 RCS/
 __pycache__/
 
