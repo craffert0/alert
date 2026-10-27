@@ -1,4 +1,4 @@
-// Generated 2026-09-17 09:58:40.196730
+// Generated 2026-10-27 11:59:35.273301
 
 public enum eBirdFamily: String {
     case struth1
@@ -246,7 +246,6 @@ public enum eBirdFamily: String {
     case phaeni1
     case zeledo1
     case tereti1
-    case icteri2
     case icteri1
     case paruli1
     case mitros1
@@ -503,13 +502,12 @@ extension eBirdFamily {
         case .phaeni1: 242
         case .zeledo1: 243
         case .tereti1: 244
-        case .icteri2: 245
-        case .icteri1: 246
-        case .paruli1: 247
-        case .mitros1: 248
-        case .cardin1: 249
-        case .thraup2: 250
-        case .unknown: 251
+        case .icteri1: 245
+        case .paruli1: 246
+        case .mitros1: 247
+        case .cardin1: 248
+        case .thraup2: 249
+        case .unknown: 250
         }
     }
 }
@@ -652,8 +650,8 @@ public extension eBirdFamily {
         case .dasyor1: "Bristlebirds"
         case .pardal2: "Pardalotes"
         case .acanth2: "Thornbills and Allies"
-        case .pomato2: "Pseudo-Babblers"
-        case .orthon1: "Logrunners"
+        case .pomato2: "Australasian Babblers"
+        case .orthon1: "Logrunners and Chowchilla"
         case .cinclo2: "Quail-thrushes and Jewel-babblers"
         case .campep2: "Cuckooshrikes"
         case .mohoui1: "Whiteheads"
@@ -677,7 +675,7 @@ public extension eBirdFamily {
         case .rhipid1: "Fantails"
         case .dicrur1: "Drongos"
         case .paradi7: "Birds-of-Paradise"
-        case .ifriti1: "Ifrita"
+        case .ifriti1: "Ifrit"
         case .monarc2: "Monarch Flycatchers"
         case .corcor1: "White-winged Chough and Apostlebird"
         case .melamp1: "Melampittas"
@@ -685,7 +683,7 @@ public extension eBirdFamily {
         case .laniid1: "Shrikes"
         case .corvid1: "Crows, Jays, and Magpies"
         case .cnemop1: "Satinbirds"
-        case .melano1: "Berrypeckers and Longbills"
+        case .melano1: "New Guinea Longbills and Berrypeckers"
         case .callae1: "Wattlebirds"
         case .notiom1: "Stitchbird"
         case .petroi2: "Australasian Robins"
@@ -699,7 +697,7 @@ public extension eBirdFamily {
         case .alaudi1: "Larks"
         case .panuri1: "Bearded Reedling"
         case .nicato1: "Nicators"
-        case .macros1: "African Warblers"
+        case .macros1: "African Longbills, Crombecs, and Allies"
         case .cistic2: "Cisticolas and Allies"
         case .acroce2: "Reed Warblers and Allies"
         case .locust5: "Grassbirds and Allies"
@@ -762,7 +760,6 @@ public extension eBirdFamily {
         case .phaeni1: "Greater Antillean Tanagers"
         case .zeledo1: "Wrenthrush"
         case .tereti1: "Cuban Warblers"
-        case .icteri2: "Yellow-breasted Chat"
         case .icteri1: "Troupials and Allies"
         case .paruli1: "New World Warblers"
         case .mitros1: "Mitrospingid Tanagers"

@@ -43,8 +43,8 @@ def generate_families(fp, families):
     print("    }", file=fp)
     print("}", file=fp)
     print("", file=fp)
-    print("extension eBirdFamily {", file=fp)
-    print("    public var comName: String {", file=fp)
+    print("public extension eBirdFamily {", file=fp)
+    print("    var comName: String {", file=fp)
     print("        switch self {", file=fp)
     for kv in families:
         print(f'        case .{kv[0]}: "{kv[1]}"', file=fp)
