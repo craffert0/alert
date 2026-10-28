@@ -1,4 +1,6 @@
-# Next
+# 4.2.0
+
+## October 2026 taxonomy
 
 ## Allow more kinds of lat/long
 
