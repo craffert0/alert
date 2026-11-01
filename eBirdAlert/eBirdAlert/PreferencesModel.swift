@@ -29,9 +29,9 @@ class PreferencesModel: ObservableObject {
 
 extension PreferencesModel {
     func range(for location: Coordinate?,
-               with service: eBirdRegionService) throws -> RangeType
+               with service: eBirdRegionService) async throws -> RangeType
     {
-        try lookupOption.range(for: location, with: service)
+        try await lookupOption.range(for: location, with: service)
     }
 
     var notificationType: NotificationType {

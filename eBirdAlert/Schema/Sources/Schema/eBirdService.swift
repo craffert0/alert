@@ -3,7 +3,7 @@
 
 import Foundation
 
-public protocol eBirdService: Sendable {
+public nonisolated protocol eBirdService: Sendable {
     func getNotable(in range: RangeType,
                     back daysBack: Int) async throws -> [eBirdObservation]
     func getAll(in range: RangeType,

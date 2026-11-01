@@ -21,7 +21,7 @@ struct eBirdAlertApp: App {
 
         let modelContainer =
             try! ModelContainer(for: Schema(SchemaV1.models))
-        let client = NotableObservationsClient(service: URLSession.shared)
+        let client = NotableObservationsClient(service: eBirdServiceGlobal)
         let swiftDataService =
             SwiftDataService(modelContext: modelContainer.mainContext)
         let locationService = CoreLocationService()
@@ -33,7 +33,7 @@ struct eBirdAlertApp: App {
 
         let recentProvider =
             RecentObservationsProvider(
-                client: RecentObservationsClient(service: URLSession.shared),
+                client: RecentObservationsClient(service: eBirdServiceGlobal),
                 checklistDataService: swiftDataService,
                 locationService: locationService
             )

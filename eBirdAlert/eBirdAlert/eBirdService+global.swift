@@ -3,5 +3,7 @@
 
 import Foundation
 import Schema
+import URLNetwork
 
-let eBirdServiceGlobal: eBirdService = URLSession.shared
+let eBirdServiceGlobal: eBirdService =
+    RemoteService(session: URLSession.shared)

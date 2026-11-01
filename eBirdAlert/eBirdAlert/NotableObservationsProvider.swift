@@ -21,7 +21,7 @@ class NotableObservationsProvider {
             for o in observations {
                 for l in o.locations {
                     for e in l.observations {
-                        await checklistDataService.prepare(obs: e)
+                        checklistDataService.prepare(obs: e)
                     }
                 }
             }

@@ -18,7 +18,7 @@ class RecentObservationsProvider {
             let observations =
                 try await client.get(in: range, back: daysBack)
             for o in observations {
-                await checklistDataService.prepare(obs: o)
+                checklistDataService.prepare(obs: o)
             }
             return observations
         }

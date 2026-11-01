@@ -4,7 +4,7 @@
 import Foundation
 import Schema
 
-final class eBirdServiceFake {
+nonisolated struct eBirdServiceFake {
     let notableName: String?
     let allName: String?
 

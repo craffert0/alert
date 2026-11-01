@@ -19,7 +19,7 @@ extension LookupOption: Equatable {}
 
 extension LookupOption {
     func range(for location: Coordinate?,
-               with service: eBirdRegionService) throws -> RangeType
+               with service: eBirdRegionService) async throws -> RangeType
     {
         switch range {
         case let .radius(distance, units):
@@ -29,7 +29,7 @@ extension LookupOption {
                                        units: units))
         case let .region(regionCode):
             if let regionCode {
-                guard let info = service.getInfo(for: regionCode) else {
+                guard let info = await service.getInfo(for: regionCode) else {
                     throw eBirdServiceError.noRegion(regionCode: regionCode)
                 }
                 return .region(info)
@@ -37,7 +37,7 @@ extension LookupOption {
                 guard let location else {
                     throw eBirdServiceError.noLocation
                 }
-                guard let region = service.getRegion(at: location) else {
+                guard let region = await service.getRegion(at: location) else {
                     throw eBirdServiceError.noLocationRegion
                 }
                 return .region(region)
