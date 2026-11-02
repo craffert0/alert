@@ -12,11 +12,9 @@ public struct BirdObservations {
     public let locations: [LocationObservations]
 
     public init(observations: [eBirdObservation]) {
-        var map: [String: [eBirdObservation]] = [:]
-        for o in observations {
+        locations = observations.reduce(into: [:]) { map, o in
             map[o.locId] = (map[o.locId] ?? []) + [o]
-        }
-        locations = map.values.map { v in
+        }.values.map { v in
             LocationObservations(observations: v.sorted { $0.obsDt > $1.obsDt })
         }.sorted { $0.latestSighting > $1.latestSighting }
     }
