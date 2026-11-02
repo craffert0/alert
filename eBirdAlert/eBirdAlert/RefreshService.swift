@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RefreshService {
     let notificationService: NotificationService
-    let mergedModel: MergedModel
+    let notablesViewModel: NotablesViewModel
 
     // The user saw these birds' speciesCodes.
     @AppStorage("system.lastViewedNotables")
@@ -21,19 +21,19 @@ struct RefreshService {
     var lastLoadedNotables: Set<String> = []
 
     func schedule() throws {
-        lastViewedNotables = mergedModel.speciesCodes
+        lastViewedNotables = notablesViewModel.speciesCodes
         lastLoadedNotables = lastViewedNotables
         try reschedule()
     }
 
     func refresh() async throws {
-        await mergedModel.refreshNotables()
-        let notables = mergedModel.speciesCodes
+        await notablesViewModel.refresh()
+        let notables = notablesViewModel.speciesCodes
         let newBirds = notables.subtracting(lastLoadedNotables)
         if !newBirds.isEmpty {
             lastLoadedNotables = notables
             let names = newBirds.map { speciesCode in
-                mergedModel.notableObservations.first(
+                notablesViewModel.observations.first(
                     where: { $0.speciesCode == speciesCode }
                 )?.comName ?? speciesCode
             }
@@ -52,8 +52,8 @@ struct RefreshService {
     }
 }
 
-extension MergedModel {
+extension NotablesViewModel {
     var speciesCodes: Set<String> {
-        Set(notableObservations.map(\.speciesCode))
+        Set(observations.map(\.speciesCode))
     }
 }

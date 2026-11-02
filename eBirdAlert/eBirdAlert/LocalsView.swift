@@ -7,16 +7,13 @@ import SwiftUI
 struct LocalsView: View {
     @Environment(LocationService.self) var locationService
     @Environment(SwiftDataService.self) var swiftDataService
-    @Environment(MergedModel.self) var model
     @ObservedObject var preferences = PreferencesModel.global
+
+    @State var model: LocalsViewModel
     @State var now = TimeDataSource<Date>.currentDate
     @State var columnVisibility = NavigationSplitViewVisibility.all
     @State var mainSelection: String?
     @State var locationSelection: String?
-
-    private var observations: [eBirdRecentObservation] {
-        model.localObservations
-    }
 
     private var speciesObservations: [eBirdRecentObservation] {
         guard let mainSpecies else { return [] }
@@ -25,7 +22,7 @@ struct LocalsView: View {
 
     var mainSpecies: eBirdRecentObservation? {
         if let mainSelection {
-            observations.first { $0.id == mainSelection }
+            model.observations.first { $0.id == mainSelection }
         } else {
             nil
         }
@@ -47,7 +44,7 @@ struct LocalsView: View {
                 GeometryReader { geometry in
                     splitView(size: geometry.size)
                 }
-                if model.isLoadingLocals {
+                if model.isLoading {
                     ProgressView()
                 }
             }
@@ -63,7 +60,7 @@ struct LocalsView: View {
             detailView
         }
         .task {
-            await model.loadLocals()
+            await model.load()
         }
         .onAppear {
             if mainSpecies == nil {
@@ -72,7 +69,7 @@ struct LocalsView: View {
         }
         .onChange(of: preferences.lookupOption) {
             Task { @MainActor in
-                await model.loadLocals()
+                await model.load()
                 if mainSpecies == nil {
                     mainSelection = nil
                 }
@@ -86,15 +83,20 @@ struct LocalsView: View {
                 columnVisibility = .doubleColumn
             }
         }
-        .onChange(of: observations) {
+        .onChange(of: model.observations) {
             columnVisibility = .all
+        }
+        .alert(isPresented: $model.showError, error: model.error) { _ in
+        } message: { e in
+            e.view
         }
     }
 }
 
 extension LocalsView {
     private var mainView: some View {
-        MergedMainView(observations: observations,
+        MergedMainView(observations: model.observations,
+                       isLoading: model.isLoading,
                        sort: preferences.$localsSort,
                        name: "local",
                        selection: $mainSelection)
@@ -105,7 +107,7 @@ extension LocalsView {
             }
         }
         .refreshable {
-            await model.refreshLocals()
+            await model.refresh()
         }
         .navigationTitle("Locals")
     }
