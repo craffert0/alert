@@ -7,7 +7,6 @@ import Schema
 
 @Observable
 class RecentObservationsProvider {
-    var observations: [eBirdRecentObservation] { provider.observations }
     private var provider: ObservationsProvider<eBirdRecentObservation>
 
     init(client: RecentObservationsClient,
@@ -24,11 +23,13 @@ class RecentObservationsProvider {
         }
     }
 
-    func load(option: LookupOption) async throws {
+    func load(option: LookupOption) async throws -> [eBirdRecentObservation] {
         try await provider.load(option: option)
+        return provider.observations
     }
 
-    func refresh() async throws {
+    func refresh() async throws -> [eBirdRecentObservation] {
         try await provider.refresh()
+        return provider.observations
     }
 }

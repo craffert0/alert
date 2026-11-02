@@ -27,7 +27,7 @@ struct RefreshService {
     }
 
     func refresh() async throws {
-        try await notableProvider.refresh()
+        _ = try await notableProvider.refresh()
         let notables = notableProvider.speciesCodes
         let newBirds = notables.subtracting(lastLoadedNotables)
         if !newBirds.isEmpty {

@@ -23,13 +23,8 @@ class MergedModel {
 
     var isLoading: Bool { isLoadingNotables || isLoadingLocals }
 
-    var notableObservations: [BirdObservations] {
-        notableProvider.observations
-    }
-
-    var localObservations: [eBirdRecentObservation] {
-        recentProvider.observations
-    }
+    var notableObservations: [BirdObservations] = []
+    var localObservations: [eBirdRecentObservation] = []
 
     init(locationService: LocationService,
          notableProvider: NotableObservationsProvider,
@@ -61,7 +56,8 @@ class MergedModel {
             isLoadingLocals = false
         }
         do {
-            try await recentProvider.load(option: preferences.lookupOption)
+            localObservations =
+                try await recentProvider.load(option: preferences.lookupOption)
             allProviders = [:]
         } catch {
             self.error = .from(error)
@@ -71,7 +67,7 @@ class MergedModel {
 
     func refreshNotables() async {
         do {
-            try await notableProvider.refresh()
+            notableObservations = try await notableProvider.refresh()
         } catch {
             self.error = .from(error)
             showError = true
@@ -80,7 +76,7 @@ class MergedModel {
 
     func refreshLocals() async {
         do {
-            try await recentProvider.refresh()
+            localObservations = try await recentProvider.refresh()
         } catch {
             self.error = .from(error)
             showError = true
@@ -90,20 +86,20 @@ class MergedModel {
     private func tryLoadingNotables() async throws {
         var retried = false
         var option = preferences.lookupOption
-        try await notableProvider.load(option: option)
-        while notableProvider.isEmpty,
+        notableObservations = try await notableProvider.load(option: option)
+        while notableObservations.isEmpty,
               let expanded = option.expanded
         {
             retried = true
             option = expanded
-            try await notableProvider.load(option: option)
+            notableObservations = try await notableProvider.load(option: option)
         }
 
         if retried {
             Task { @MainActor in
                 preferences.lookupOption = option
             }
-            if !notableProvider.isEmpty,
+            if !notableObservations.isEmpty,
                case let .radius(distance, units) = option.range
             {
                 throw eBirdServiceError.expandedArea(distance: distance,

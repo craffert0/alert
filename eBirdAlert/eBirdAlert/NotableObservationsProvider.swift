@@ -34,15 +34,13 @@ class NotableObservationsProvider {
         }
     }
 
-    func load(option: LookupOption) async throws {
+    func load(option: LookupOption) async throws -> [BirdObservations] {
         try await provider.load(option: option)
+        return provider.observations
     }
 
-    func refresh() async throws {
+    func refresh() async throws -> [BirdObservations] {
         try await provider.refresh()
+        return provider.observations
     }
-}
-
-extension NotableObservationsProvider {
-    var isEmpty: Bool { observations.isEmpty }
 }
