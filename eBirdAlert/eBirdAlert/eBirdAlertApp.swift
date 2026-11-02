@@ -44,7 +44,7 @@ struct eBirdAlertApp: App {
 
         let refreshService =
             RefreshService(notificationService: notificationService,
-                           notableProvider: notableProvider)
+                           mergedModel: mergedModel)
 
         self.modelContainer = modelContainer
         self.swiftDataService = swiftDataService
