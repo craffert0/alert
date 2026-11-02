@@ -56,22 +56,21 @@ struct RangePreferenceView: View {
     }
 }
 
-#Preview {
-    let noLocation = LocationService()
-    let brooklyn: LocationService = {
-        let l = LocationService()
-        l.location = Coordinate(latitude: 40.65, longitude: -74)
-        return l
-    }()
-    let slice = RangePreferenceSlice(from: PreferencesModel.global)
-    TabView {
-        Tab("location", systemImage: "environments.circle") {
-            RangePreferenceView(slice: slice)
-                .environment(brooklyn)
-        }
-        Tab("none", systemImage: "bird.circle") {
-            RangePreferenceView(slice: slice)
-                .environment(noLocation)
-        }
-    }
+#Preview("brooklyn") {
+    @Previewable @State var slice = RangePreferenceSlice(
+        from: PreferencesModel.global
+    )
+    @Previewable @State var brooklyn: LocationService =
+        FixedLocationService(latitude: 40.65, longitude: -74)
+    RangePreferenceView(slice: slice)
+        .environment(brooklyn)
+}
+
+#Preview("no location") {
+    @Previewable @State var slice = RangePreferenceSlice(
+        from: PreferencesModel.global
+    )
+    @Previewable @State var noLocation = LocationService()
+    RangePreferenceView(slice: slice)
+        .environment(noLocation)
 }

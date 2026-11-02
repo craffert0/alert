@@ -28,29 +28,24 @@ struct SortPickerView: View {
 }
 
 #Preview {
-    var option = ObservationSortOption.byName
-    let binding = Binding<ObservationSortOption> {
-        option
-    } set: { newValue in
-        option = newValue
-    }
+    @Previewable @State var option = ObservationSortOption.byName
     VStack {
         ViewThatFits {
-            SortPickerView(observationSort: binding, size: .large)
-            SortPickerView(observationSort: binding, size: .medium)
-            SortPickerView(observationSort: binding, size: .small)
+            SortPickerView(observationSort: $option, size: .large)
+            SortPickerView(observationSort: $option, size: .medium)
+            SortPickerView(observationSort: $option, size: .small)
         }
         .frame(maxWidth: 200)
         ViewThatFits {
-            SortPickerView(observationSort: binding, size: .large)
-            SortPickerView(observationSort: binding, size: .medium)
-            SortPickerView(observationSort: binding, size: .small)
+            SortPickerView(observationSort: $option, size: .large)
+            SortPickerView(observationSort: $option, size: .medium)
+            SortPickerView(observationSort: $option, size: .small)
         }
         .frame(maxWidth: 110)
         ViewThatFits {
-            SortPickerView(observationSort: binding, size: .large)
-            SortPickerView(observationSort: binding, size: .medium)
-            SortPickerView(observationSort: binding, size: .small)
+            SortPickerView(observationSort: $option, size: .large)
+            SortPickerView(observationSort: $option, size: .medium)
+            SortPickerView(observationSort: $option, size: .small)
         }
         .frame(maxWidth: 100)
     }
