@@ -56,9 +56,10 @@ class MergedModel {
             isLoadingLocals = false
         }
         do {
-            localObservations =
-                try await recentProvider.load(option: preferences.lookupOption)
-            allProviders = [:]
+            if let newObservations = try await recentProvider.load(option: preferences.lookupOption) {
+                localObservations = newObservations
+                allProviders = [:]
+            }
         } catch {
             self.error = .from(error)
             showError = true
@@ -86,19 +87,23 @@ class MergedModel {
     private func tryLoadingNotables() async throws {
         var retried = false
         var option = preferences.lookupOption
-        notableObservations = try await notableProvider.load(option: option)
+        guard let newObservations = try await notableProvider.load(option: option) else {
+            return
+        }
+        notableObservations = newObservations
         while notableObservations.isEmpty,
               let expanded = option.expanded
         {
             retried = true
             option = expanded
-            notableObservations = try await notableProvider.load(option: option)
+            guard let newObservations = try await notableProvider.load(option: option) else {
+                return
+            }
+            notableObservations = newObservations
         }
 
         if retried {
-            Task { @MainActor in
-                preferences.lookupOption = option
-            }
+            preferences.lookupOption = option
             if !notableObservations.isEmpty,
                case let .radius(distance, units) = option.range
             {
