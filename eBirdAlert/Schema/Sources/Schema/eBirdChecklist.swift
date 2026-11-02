@@ -5,7 +5,6 @@ import Foundation
 
 public struct eBirdChecklist: Codable, Sendable {
     public typealias Obs = eBirdChecklistDTO.Obs
-    public typealias MediaCounts = eBirdChecklistDTO.MediaCounts
 
     // public let protocolId: String
     // public let locId: String
