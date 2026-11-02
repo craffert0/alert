@@ -5,9 +5,8 @@ import Foundation
 import Observation
 import Schema
 
-@Observable
 class ObservationsProvider<T> {
-    var observations: [T] = []
+    private var observations: [T] = []
     private let locationService: LocationService
     private let loader: (RangeType, Int) async throws -> [T]
     private let service: eBirdRegionService = FixedRegionService.global
@@ -21,7 +20,7 @@ class ObservationsProvider<T> {
         self.loader = loader
     }
 
-    func load(option: LookupOption) async throws {
+    func load(option: LookupOption) async throws -> [T] {
         if lastLoadTime == nil ||
             option != loadedOption ||
             observations.isEmpty ||
@@ -30,11 +29,13 @@ class ObservationsProvider<T> {
             try await forceLoad(option: option)
             loadedOption = option
         }
+        return observations
     }
 
-    func refresh() async throws {
-        guard let loadedOption else { return }
+    func refresh() async throws -> [T] {
+        guard let loadedOption else { return observations }
         try await forceLoad(option: loadedOption)
+        return observations
     }
 
     private func forceLoad(option: LookupOption) async throws {

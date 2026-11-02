@@ -25,22 +25,17 @@ struct eBirdAlertApp: App {
         let swiftDataService =
             SwiftDataService(modelContext: modelContainer.mainContext)
         let locationService = CoreLocationService()
-        let notableProvider =
-            NotableObservationsProvider(client: client,
-                                        checklistDataService: swiftDataService,
-                                        locationService: locationService,
-                                        remoteNotificationService: RemoteNotificationService())
 
-        let recentProvider =
-            RecentObservationsProvider(
-                client: RecentObservationsClient(service: eBirdServiceGlobal),
-                checklistDataService: swiftDataService,
-                locationService: locationService
-            )
-
-        let mergedModel = MergedModel(locationService: locationService,
-                                      notableProvider: notableProvider,
-                                      recentProvider: recentProvider)
+        let mergedModel = MergedModel(
+            locationService: locationService,
+            notableProvider: .init(client: client,
+                                   checklistDataService: swiftDataService,
+                                   locationService: locationService,
+                                   remoteNotificationService: RemoteNotificationService()),
+            recentProvider: .init(client: RecentObservationsClient(service: eBirdServiceGlobal),
+                                  checklistDataService: swiftDataService,
+                                  locationService: locationService)
+        )
 
         let refreshService =
             RefreshService(notificationService: notificationService,

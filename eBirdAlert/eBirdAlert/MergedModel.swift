@@ -11,8 +11,8 @@ class MergedModel {
     private let preferences = PreferencesModel.global
     private let locationService: LocationService
 
-    private let notableProvider: NotableObservationsProvider
-    private let recentProvider: RecentObservationsProvider
+    private let notableProvider: ObservationsProvider<BirdObservations>
+    private let recentProvider: ObservationsProvider<eBirdRecentObservation>
 
     var allProviders: [String: BirdObservationsProvider] = [:]
     var error: eBirdServiceError?
@@ -27,8 +27,8 @@ class MergedModel {
     var localObservations: [eBirdRecentObservation] = []
 
     init(locationService: LocationService,
-         notableProvider: NotableObservationsProvider,
-         recentProvider: RecentObservationsProvider)
+         notableProvider: ObservationsProvider<BirdObservations>,
+         recentProvider: ObservationsProvider<eBirdRecentObservation>)
     {
         self.locationService = locationService
         self.notableProvider = notableProvider
