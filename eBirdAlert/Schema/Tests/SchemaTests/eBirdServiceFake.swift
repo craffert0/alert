@@ -29,8 +29,8 @@ nonisolated struct eBirdServiceFake {
 }
 
 extension eBirdServiceFake: eBirdService {
-    func getNotable(in _: RangeType,
-                    back _: Int) async throws -> [eBirdObservation]
+    func getRawNotable(in _: RangeType,
+                       back _: Int) async throws -> [eBirdObservation]
     {
         guard let notableName else { throw eBirdServiceFakeError.noName }
         return try .from(dtos: get(name: notableName), in: .current)

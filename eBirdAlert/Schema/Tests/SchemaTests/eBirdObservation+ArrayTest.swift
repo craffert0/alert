@@ -14,11 +14,8 @@ private func dump(json e: any Encodable) throws {
 
 struct eBirdObservation_ArrayTest {
     @Test func collate() async throws {
-        let client =
-            NotableObservationsClient(
-                service: eBirdServiceFake(notableName: "20250402T1030")
-            )
-        let raw = try await client.observations(in: .region(.kings), back: 3)
+        let service = eBirdServiceFake(notableName: "20250402T1030")
+        let raw = try await service.getNotable(in: .region(.kings), back: 3)
         #expect(raw.count == 87)
         let observations = raw.collate()
         #expect(observations.count == 9)

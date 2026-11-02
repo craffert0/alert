@@ -12,8 +12,8 @@ public nonisolated struct RemoteService: eBirdService {
     }
 
     @concurrent
-    public func getNotable(in range: RangeType,
-                           back daysBack: Int) async throws
+    public func getRawNotable(in range: RangeType,
+                              back daysBack: Int) async throws
         -> [Schema.eBirdObservation]
     {
         try await .from(

@@ -4,8 +4,8 @@
 import Foundation
 
 public nonisolated protocol eBirdService: Sendable {
-    func getNotable(in range: RangeType,
-                    back daysBack: Int) async throws -> [eBirdObservation]
+    func getRawNotable(in range: RangeType,
+                       back daysBack: Int) async throws -> [eBirdObservation]
     func getAll(in range: RangeType,
                 back daysBack: Int) async throws -> [eBirdRecentObservation]
     func getBird(in range: RangeType,
@@ -14,4 +14,13 @@ public nonisolated protocol eBirdService: Sendable {
 
     func getChecklist(subId: String,
                       timeZone: TimeZone) async throws -> eBirdChecklist
+}
+
+public extension eBirdService {
+    func getNotable(in range: RangeType,
+                    back daysBack: Int) async throws -> [eBirdObservation]
+    {
+        // remove duplicates
+        try await Array(Set(getRawNotable(in: range, back: daysBack)))
+    }
 }

@@ -4,13 +4,13 @@
 import Schema
 
 extension ObservationsProvider<eBirdRecentObservation> {
-    convenience init(client: RecentObservationsClient,
+    convenience init(service: any eBirdService,
                      checklistDataService: ChecklistDataService,
                      locationService: LocationService)
     {
         self.init(locationService: locationService) { range, daysBack in
             let observations =
-                try await client.get(in: range, back: daysBack)
+                try await service.getAll(in: range, back: daysBack)
             for o in observations {
                 checklistDataService.prepare(obs: o)
             }

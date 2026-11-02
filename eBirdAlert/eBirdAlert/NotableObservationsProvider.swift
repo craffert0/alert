@@ -4,14 +4,14 @@
 import Schema
 
 extension ObservationsProvider<BirdObservations> {
-    convenience init(client: ObservationsClient,
+    convenience init(service: any eBirdService,
                      checklistDataService: ChecklistDataService,
                      locationService: LocationService,
                      remoteNotificationService: RemoteNotificationService)
     {
         self.init(locationService: locationService) { range, daysBack in
             let observations =
-                try await client.observations(in: range, back: daysBack).collate()
+                try await service.getNotable(in: range, back: daysBack).collate()
             for o in observations {
                 for l in o.locations {
                     for e in l.observations {
