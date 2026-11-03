@@ -16,6 +16,7 @@ public extension eBirdRegionService {
 
 public extension eBirdRegionService {
     // Get a list of lowest regions containing the location.
+    @concurrent
     func getRegions(at location: Coordinate) async -> [eBirdRegionInfo] {
         await getRegions(location, .world, .world, .custom)
     }
