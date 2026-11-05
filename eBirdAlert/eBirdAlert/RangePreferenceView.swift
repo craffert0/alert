@@ -46,6 +46,7 @@ struct RangePreferenceView: View {
                     .foregroundStyle(.clear)
                     .stroke(.blue, lineWidth: 5)
                 }
+                .mapStyle(.standard(pointsOfInterest: []))
             }
         }
     }
