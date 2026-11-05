@@ -73,16 +73,28 @@ struct LocalRegionView: View {
     }
 
     private func load() async {
-        guard let location = locationService.location else {
-            error = eBirdServiceError.noLocation
+        if let regionCode = slice.regionCode,
+           let region = await regionService.getInfo(for: regionCode),
+           let bounds = region.bounds
+        {
+            // region is selected so go there.
+            await updateRegions(
+                at: region.coordinate,
+                around: .init(latitudeDelta: latitudeDelta(bounds.maxY - bounds.minY),
+                              longitudeDelta: longitudeDelta(bounds.maxX - bounds.minX))
+            )
+        } else if let location = locationService.location {
+            // no region so look around us
+            await updateRegions(
+                at: location,
+                around: .init(latitudeDelta: latitudeDelta(),
+                              longitudeDelta: longitudeDelta())
+            )
+        } else {
+            // ugh.
+            error = .noLocation
             showError = true
-            return
         }
-        await updateRegions(
-            at: location,
-            around: .init(latitudeDelta: 0.4,
-                          longitudeDelta: 0.3)
-        )
     }
 
     private func updateRegions(_ context: MapCameraUpdateContext) async {
@@ -107,4 +119,12 @@ struct LocalRegionView: View {
             self.regions = regions
         }
     }
+}
+
+private func latitudeDelta(_ min: Double = 0.0) -> Double {
+    max(0.4, min)
+}
+
+private func longitudeDelta(_ min: Double = 0.0) -> Double {
+    max(0.3, min)
 }

@@ -1,3 +1,11 @@
+# Latest
+
+## LocalRegionView shows around the selected region
+
+## MapUserLocationButton in LocalRegionView
+
+## Speedups from better threading
+
 # 4.2.0
 
 ## October 2026 taxonomy
