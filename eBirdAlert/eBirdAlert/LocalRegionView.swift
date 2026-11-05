@@ -17,6 +17,7 @@ struct LocalRegionView: View {
     @State var regions: [eBirdRegionInfo] = []
     @State var showError: Bool = false
     @State var error: eBirdServiceError? = nil
+    @State var everPositionedByUser = false
 
     var body: some View {
         VStack {
@@ -43,8 +44,14 @@ struct LocalRegionView: View {
             }
         }
         .mapStyle(.standard(pointsOfInterest: []))
+        .mapControls {
+            MapUserLocationButton()
+        }
         .onMapCameraChange(frequency: .onEnd) { updateContext in
             if position.positionedByUser {
+                everPositionedByUser = true
+            }
+            if everPositionedByUser {
                 Task { @MainActor in
                     await updateRegions(updateContext)
                 }
