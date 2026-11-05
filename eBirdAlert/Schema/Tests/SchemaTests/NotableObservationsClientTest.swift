@@ -21,7 +21,7 @@ struct NotableObservationsClientTest {
 
     var raw_observations: [eBirdObservation] {
         get async throws {
-            try await service.getNotable(in: .region(.kings), back: 2)
+            try await service.getRawNotable(in: .region(.kings), back: 2)
         }
     }
 
@@ -50,7 +50,6 @@ struct NotableObservationsClientTest {
     }
 
     @Test func removed_duplicates_parse() async throws {
-        let client = NotableObservationsClient(service: service)
-        #expect(try await client.observations(in: .region(.kings), back: 2).count < raw_observations.count)
+        #expect(try await service.getNotable(in: .region(.kings), back: 2).count < raw_observations.count)
     }
 }

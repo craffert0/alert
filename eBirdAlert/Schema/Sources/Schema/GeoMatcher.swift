@@ -3,16 +3,16 @@
 
 import RegexBuilder
 
-public enum GeoMatcher: CaseIterable {
+enum GeoMatcher: CaseIterable {
     case degrees, compass, numbers
 }
 
-public extension GeoMatcher {
+extension GeoMatcher {
     struct Match {
-        public let string: any StringProtocol
-        public let range: Range<String.Index>
-        public let latitude: Double
-        public let longitude: Double
+        let string: any StringProtocol
+        let range: Range<String.Index>
+        let latitude: Double
+        let longitude: Double
     }
 
     func matches(in s: String) -> [Match] {

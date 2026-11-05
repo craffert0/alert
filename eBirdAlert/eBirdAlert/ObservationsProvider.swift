@@ -4,13 +4,14 @@
 import Foundation
 import Observation
 import Schema
+import URLNetwork
 
-@Observable
+@MainActor
 class ObservationsProvider<T> {
-    var observations: [T] = []
     private let locationService: LocationService
     private let loader: (RangeType, Int) async throws -> [T]
     private let service: eBirdRegionService = FixedRegionService.global
+    private var noObservations = true
     private var loadedOption: LookupOption?
     private var lastLoadTime: Date?
 
@@ -21,27 +22,33 @@ class ObservationsProvider<T> {
         self.loader = loader
     }
 
-    func load(option: LookupOption) async throws {
-        if lastLoadTime == nil ||
+    func load(option: LookupOption) async throws -> [T]? {
+        guard lastLoadTime == nil ||
             option != loadedOption ||
-            observations.isEmpty ||
+            noObservations ||
             Date.now.timeIntervalSince(lastLoadTime!) > 3600
-        {
-            try await forceLoad(option: option)
-            loadedOption = option
-        }
+        else { return nil }
+
+        let observations = try await forceLoad(option: option)
+        loadedOption = option
+        lastLoadTime = Date.now
+        noObservations = observations.isEmpty
+        return observations
     }
 
-    func refresh() async throws {
-        guard let loadedOption else { return }
-        try await forceLoad(option: loadedOption)
+    func refresh() async throws -> [T] {
+        guard let loadedOption else { throw eBirdServiceError.noLocation }
+        let observations = try await forceLoad(option: loadedOption)
+        lastLoadTime = Date.now
+        noObservations = observations.isEmpty
+        return observations
     }
 
-    private func forceLoad(option: LookupOption) async throws {
-        observations = try await loader(
+    @concurrent
+    private func forceLoad(option: LookupOption) async throws -> [T] {
+        try await loader(
             option.range(for: locationService.location, with: service),
             option.daysBack
         )
-        lastLoadTime = Date.now
     }
 }

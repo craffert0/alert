@@ -7,7 +7,8 @@ import Schema
 
 @Observable
 class BirdObservationsProvider {
-    var observations: [eBirdRecentObservation] { provider.observations }
+    var observations: [eBirdRecentObservation] = []
+
     private var provider: ObservationsProvider<eBirdRecentObservation>
 
     init(for speciesCode: String,
@@ -21,10 +22,12 @@ class BirdObservationsProvider {
     }
 
     func load(option: LookupOption) async throws {
-        try await provider.load(option: option)
+        if let newObservations = try await provider.load(option: option) {
+            observations = newObservations
+        }
     }
 
     func refresh() async throws {
-        try await provider.refresh()
+        observations = try await provider.refresh()
     }
 }

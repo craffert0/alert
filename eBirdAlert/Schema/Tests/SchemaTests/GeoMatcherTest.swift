@@ -3,7 +3,7 @@
 
 import Foundation
 import RegexBuilder
-import Schema
+@testable import Schema
 import Testing
 
 struct GeoMatcherTest {

@@ -8,18 +8,17 @@ struct NotablesView: View {
     @Environment(NotificationService.self) var notificationService
     @Environment(LocationService.self) var locationService
     @Environment(SwiftDataService.self) var swiftDataService
-    @Environment(MergedModel.self) var model
     @ObservedObject var preferences = PreferencesModel.global
+
+    @State var model: NotablesViewModel
     @State var now = TimeDataSource<Date>.currentDate
     @State var columnVisibility = NavigationSplitViewVisibility.all
     @State var mainSelection: String?
     @State var locationSelection: String?
 
-    private var observations: [BirdObservations] { model.notableObservations }
-
     private var mainObservations: BirdObservations? {
         if let mainSelection {
-            observations.first { $0.id == mainSelection }
+            model.observations.first { $0.id == mainSelection }
         } else {
             nil
         }
@@ -40,7 +39,7 @@ struct NotablesView: View {
                 GeometryReader { geometry in
                     splitView(size: geometry.size)
                 }
-                if model.isLoadingNotables {
+                if model.isLoading {
                     ProgressView()
                 }
             }
@@ -59,7 +58,7 @@ struct NotablesView: View {
             detailView
         }
         .task {
-            await model.loadNotables()
+            await model.load()
         }
         .onAppear {
             if mainSelection == nil {
@@ -68,7 +67,7 @@ struct NotablesView: View {
         }
         .onChange(of: preferences.lookupOption) {
             Task { @MainActor in
-                await model.loadNotables()
+                await model.load()
                 if mainObservations == nil {
                     mainSelection = nil
                 }
@@ -82,15 +81,20 @@ struct NotablesView: View {
                 columnVisibility = .doubleColumn
             }
         }
-        .onChange(of: observations) {
+        .onChange(of: model.observations) {
             columnVisibility = .all
+        }
+        .alert(isPresented: $model.showError, error: model.error) { _ in
+        } message: { e in
+            e.view
         }
     }
 }
 
 extension NotablesView {
     private var mainView: some View {
-        MergedMainView(observations: observations,
+        MergedMainView(observations: model.observations,
+                       isLoading: model.isLoading,
                        sort: preferences.$notableSort,
                        name: "rare",
                        selection: $mainSelection)
@@ -102,7 +106,7 @@ extension NotablesView {
             }
         }
         .refreshable {
-            await model.refreshNotables()
+            await model.refresh()
         }
         .navigationTitle("Rarities")
     }

@@ -7,12 +7,9 @@ import SwiftUI
 struct EmptyResultsView: View {
     @Environment(LocationService.self) var locationService
     @ObservedObject var preferences = PreferencesModel.global
-    let name: String
+    @State var range: RangeType?
 
-    var range: RangeType? {
-        try? preferences.range(for: locationService.location,
-                               with: FixedRegionService.global)
-    }
+    let name: String
 
     var body: some View {
         VStack {
@@ -26,6 +23,9 @@ struct EmptyResultsView: View {
             } else {
                 noRegionView
             }
+        }.task {
+            range = try? await preferences.range(for: locationService.location,
+                                                 with: FixedRegionService.global)
         }
     }
 

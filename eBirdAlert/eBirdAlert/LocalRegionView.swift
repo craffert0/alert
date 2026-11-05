@@ -23,7 +23,7 @@ struct LocalRegionView: View {
             titleView
             mapView
         }
-        .task { load() }
+        .task { await load() }
         .alert(isPresented: $showError, error: error) {}
     }
 
@@ -45,7 +45,9 @@ struct LocalRegionView: View {
         .mapStyle(.standard(pointsOfInterest: []))
         .onMapCameraChange(frequency: .onEnd) { updateContext in
             if position.positionedByUser {
-                updateRegions(updateContext)
+                Task { @MainActor in
+                    await updateRegions(updateContext)
+                }
             }
         }
     }
@@ -63,35 +65,35 @@ struct LocalRegionView: View {
         }
     }
 
-    private func load() {
+    private func load() async {
         guard let location = locationService.location else {
             error = eBirdServiceError.noLocation
             showError = true
             return
         }
-        updateRegions(
+        await updateRegions(
             at: location,
             around: .init(latitudeDelta: 0.4,
                           longitudeDelta: 0.3)
         )
     }
 
-    private func updateRegions(_ context: MapCameraUpdateContext) {
-        updateRegions(
+    private func updateRegions(_ context: MapCameraUpdateContext) async {
+        await updateRegions(
             at: .init(from: context.region.center),
             around: .init(from: context.region.span)
         )
     }
 
     private func updateRegions(at location: Coordinate,
-                               around span: CoordinateSpan)
+                               around span: CoordinateSpan) async
     {
         let regions =
-            regionService.getRegions(at: location,
-                                     around: span)
+            await regionService.getRegions(at: location,
+                                           around: span)
         if let code = slice.regionCode,
            !regions.contains(where: { $0.code == code }),
-           let region = regionService.getInfo(for: code)
+           let region = await regionService.getInfo(for: code)
         {
             self.regions = regions + [region]
         } else {

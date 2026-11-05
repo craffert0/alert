@@ -23,10 +23,12 @@ struct LocationView: View {
             }
         }
         .task {
-            reloadRange()
+            await reloadRange()
         }
         .onChange(of: preferences.lookupOption) {
-            reloadRange()
+            Task { @MainActor in
+                await reloadRange()
+            }
         }
         .sheet(isPresented: $showRange) {
             slice.replace(into: PreferencesModel.global)
@@ -35,9 +37,9 @@ struct LocationView: View {
         }
     }
 
-    private func reloadRange() {
-        range = try? preferences.range(for: locationService.location,
-                                       with: service)
+    private func reloadRange() async {
+        range = try? await preferences.range(for: locationService.location,
+                                             with: service)
     }
 }
 

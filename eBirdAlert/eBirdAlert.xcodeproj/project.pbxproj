@@ -471,6 +471,7 @@
 				MARKETING_VERSION = 4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = net.rafferty.colin.eBirdAlert;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -507,6 +508,7 @@
 				MARKETING_VERSION = 4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = net.rafferty.colin.eBirdAlert;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -651,7 +653,7 @@
 			repositoryURL = "git@gitlab.com:craffert0/swiftutil.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 2.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

@@ -4,7 +4,7 @@
 import Foundation
 import Schema
 
-enum ChecklistStatus: Codable {
+nonisolated enum ChecklistStatus: Codable {
     case unloaded
     case loading(startTime: Date)
     case value(checklist: eBirdChecklist)

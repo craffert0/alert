@@ -12,7 +12,8 @@ struct eBirdAlertApp: App {
     let modelContainer: ModelContainer
     @State var swiftDataService: SwiftDataService
     @State var locationService: LocationService
-    @State var mergedModel: MergedModel
+    @State var notablesViewModel: NotablesViewModel
+    @State var localsViewModel: LocalsViewModel
     let notificationService = NotificationService()
     let refreshService: RefreshService
 
@@ -21,36 +22,34 @@ struct eBirdAlertApp: App {
 
         let modelContainer =
             try! ModelContainer(for: Schema(SchemaV1.models))
-        let client = NotableObservationsClient(service: URLSession.shared)
         let swiftDataService =
             SwiftDataService(modelContext: modelContainer.mainContext)
         let locationService = CoreLocationService()
-        let notableProvider =
-            NotableObservationsProvider(client: client,
-                                        checklistDataService: swiftDataService,
-                                        locationService: locationService,
-                                        remoteNotificationService: RemoteNotificationService())
 
-        let recentProvider =
-            RecentObservationsProvider(
-                client: RecentObservationsClient(service: URLSession.shared),
-                checklistDataService: swiftDataService,
-                locationService: locationService
-            )
+        let notablesViewModel = NotablesViewModel(
+            provider: .init(service: eBirdServiceGlobal,
+                            checklistDataService: swiftDataService,
+                            locationService: locationService,
+                            remoteNotificationService: RemoteNotificationService())
+        )
 
-        let mergedModel = MergedModel(locationService: locationService,
-                                      notableProvider: notableProvider,
-                                      recentProvider: recentProvider)
+        let localsViewModel = LocalsViewModel(
+            locationService: locationService,
+            provider: .init(service: eBirdServiceGlobal,
+                            checklistDataService: swiftDataService,
+                            locationService: locationService)
+        )
 
         let refreshService =
             RefreshService(notificationService: notificationService,
-                           notableProvider: notableProvider)
+                           notablesViewModel: notablesViewModel)
 
         self.modelContainer = modelContainer
         self.swiftDataService = swiftDataService
         self.locationService = locationService
         self.refreshService = refreshService
-        self.mergedModel = mergedModel
+        self.notablesViewModel = notablesViewModel
+        self.localsViewModel = localsViewModel
 
         Timer.scheduledTimer(withTimeInterval: 3600, repeats: true) { _ in
             swiftDataService.garbageCollect(daysBack: 8)
@@ -59,12 +58,12 @@ struct eBirdAlertApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(mergedModel: mergedModel)
+            ContentView(notablesViewModel: notablesViewModel,
+                        localsViewModel: localsViewModel)
                 .modelContainer(modelContainer)
                 .environment(swiftDataService)
                 .environment(locationService)
                 .environment(notificationService)
-                .environment(mergedModel)
         }
         .backgroundTask(.appRefresh(id: .refreshCounter)) {
             try? await refreshService.refresh()

@@ -8,11 +8,11 @@ struct MergedMainView<
     Observation: ObservationSortable & Identifiable & Matchable,
     Content: View
 >: View {
-    @Environment(MergedModel.self) var model
     @State var searchText: String = ""
     @State var isExpanded: [eBirdFamily: Bool] = [:]
 
     let observations: [Observation]
+    let isLoading: Bool
     let sort: Binding<ObservationSortOption>
     let name: String
     let selection: Binding<String?>
@@ -25,7 +25,7 @@ struct MergedMainView<
     var body: some View {
         VStack {
             ObservationPreferencesView(sort: sort)
-            if observations.isEmpty, !model.isLoading {
+            if observations.isEmpty, !isLoading {
                 EmptyResultsView(name: name)
             } else {
                 listView

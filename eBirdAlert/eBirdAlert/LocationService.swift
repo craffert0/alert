@@ -6,6 +6,7 @@ import Observation
 import Schema
 
 @Observable
+@MainActor
 class LocationService: NSObject {
     var location: Coordinate?
 }
