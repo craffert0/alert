@@ -9,7 +9,9 @@ enum MapDirectionsOption: String {
 }
 
 extension MapDirectionsOption: CaseIterable, Identifiable {
-    var id: Self { self }
+    var id: Self {
+        self
+    }
 }
 
 extension MapDirectionsOption {

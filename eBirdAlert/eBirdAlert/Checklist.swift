@@ -6,8 +6,8 @@ import Schema
 
 typealias Checklist = SchemaV1.Checklist
 
+@MainActor
 extension Checklist {
-    @MainActor
     var userDisplayName: String? {
         guard case let .value(checklist) = status else {
             return nil
@@ -15,7 +15,6 @@ extension Checklist {
         return checklist.userDisplayName
     }
 
-    @MainActor
     var formattedDates: String {
         if case let .value(checklist) = status,
            let durationHrs = checklist.durationHrs
@@ -28,7 +27,6 @@ extension Checklist {
         }
     }
 
-    @MainActor
     func observation(for speciesCode: String) -> eBirdChecklist.Obs? {
         guard case let .value(checklist) = status else {
             return nil
@@ -36,7 +34,6 @@ extension Checklist {
         return checklist.obs.first { $0.speciesCode == speciesCode }
     }
 
-    @MainActor
     func refresh(timeZone: TimeZone) async {
         guard case .value = status else { return }
         if let e = try? await eBirdServiceGlobal.getChecklist(subId: id, timeZone: timeZone) {
@@ -45,7 +42,6 @@ extension Checklist {
         }
     }
 
-    @MainActor
     func load(timeZone: TimeZone) {
         guard case .unloaded = status else { return }
         status = .loading(startTime: Date.now)

@@ -7,5 +7,7 @@ enum RangeOption: String {
 }
 
 extension RangeOption: CaseIterable, Identifiable {
-    var id: Self { self }
+    var id: Self {
+        self
+    }
 }

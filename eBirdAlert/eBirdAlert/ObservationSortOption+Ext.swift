@@ -4,7 +4,9 @@
 import Schema
 
 extension ObservationSortOption {
-    var viewString: String { rawValue }
+    var viewString: String {
+        rawValue
+    }
 
     var shortString: String {
         switch self {

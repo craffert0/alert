@@ -50,11 +50,13 @@ public extension eBirdRegionInfo {
 }
 
 extension eBirdRegionInfo: Identifiable {
-    public var id: String { code }
+    public var id: String {
+        code
+    }
 }
 
 public extension eBirdRegionInfo {
-    // Is the location inside this region?
+    /// Is the location inside this region?
     func contains(location: Coordinate) -> Bool {
         guard let bounds else { return false }
         return bounds.minX < location.longitude &&
@@ -63,7 +65,7 @@ public extension eBirdRegionInfo {
             bounds.maxY > location.latitude
     }
 
-    // Does this region overlap at allwith the box defined by span & location?
+    /// Does this region overlap at allwith the box defined by span & location?
     func touches(_ span: CoordinateSpan,
                  around location: Coordinate) -> Bool
     {
@@ -79,7 +81,7 @@ public extension eBirdRegionInfo {
             lat <= bounds.maxY + dLat
     }
 
-    // Is this region contained within the box defined by span & location?
+    /// Is this region contained within the box defined by span & location?
     func within(_ span: CoordinateSpan,
                 around location: Coordinate) -> Bool
     {
@@ -104,9 +106,13 @@ private extension eBirdRegionInfo {
 }
 
 public extension eBirdRegionInfo {
-    var grandParent: eBirdRegionInfo? { parent?.parent }
+    var grandParent: eBirdRegionInfo? {
+        parent?.parent
+    }
 
-    var fullName: String { result }
+    var fullName: String {
+        result
+    }
 
     var regionalName: String {
         grandParent?.subName(of: self) ?? parent?.subName(of: self) ?? result

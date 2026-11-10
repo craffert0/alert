@@ -5,7 +5,9 @@ import MapKit
 import Schema
 
 extension LocationObservations: @retroactive Identifiable {
-    public var id: String { locId }
+    public var id: String {
+        locId
+    }
 }
 
 extension LocationObservations: @retroactive Equatable {

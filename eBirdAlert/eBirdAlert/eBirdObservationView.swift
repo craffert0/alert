@@ -19,7 +19,9 @@ struct eBirdObservationView: View {
         self.checklist = checklist
     }
 
-    var obs: eBirdChecklist.Obs? { checklist.observation(for: e.speciesCode) }
+    var obs: eBirdChecklist.Obs? {
+        checklist.observation(for: e.speciesCode)
+    }
 
     var body: some View {
         VStack {

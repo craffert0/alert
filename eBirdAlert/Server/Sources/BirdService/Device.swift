@@ -22,7 +22,7 @@ final class Device: Model, @unchecked Sendable {
     @Field(key: "daysBack") var daysBack: Int
     @Field(key: "deviceSpecies") var deviceSpecies: [String]
 
-    // Every N minutes update
+    /// Every N minutes update
     @Field(key: "mostRecentPushSpecies") var mostRecentPushSpecies: [String]
     @Timestamp(
         key: "mostRecentUpdate",
@@ -40,7 +40,9 @@ final class Device: Model, @unchecked Sendable {
         }
     }
 
-    var name: String { id?.uuidString ?? "<>" }
+    var name: String {
+        id?.uuidString ?? "<>"
+    }
 
     init() {}
 }

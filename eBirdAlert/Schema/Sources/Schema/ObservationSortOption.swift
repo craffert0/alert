@@ -8,7 +8,9 @@ public enum ObservationSortOption: String {
 }
 
 extension ObservationSortOption: CaseIterable, Identifiable {
-    public var id: Self { self }
+    public var id: Self {
+        self
+    }
 }
 
 public extension ObservationSortOption {

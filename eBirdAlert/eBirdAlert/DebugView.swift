@@ -44,5 +44,7 @@ struct DebugView: View {
 }
 
 extension DebugView.Selection: CaseIterable, Identifiable {
-    var id: Self { self }
+    var id: Self {
+        self
+    }
 }

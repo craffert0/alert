@@ -36,7 +36,7 @@ test_schema:
 	cd eBirdAlert/Schema ; swift test
 
 lint:
-	swiftformat -q --swiftversion 6 --disable wrapPropertyBodies,docComments .
+	swiftformat -q --swiftversion 6 .
 
 regen: regen_taxon regen_regions
 

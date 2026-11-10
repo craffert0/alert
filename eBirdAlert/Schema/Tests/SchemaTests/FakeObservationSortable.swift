@@ -12,7 +12,9 @@ struct FakeObservationSortable: Decodable {
 }
 
 extension FakeObservationSortable: ObservationSortable {
-    var taxonOrder: Double { Double(1000 * family.sortKey + taxonOffset) }
+    var taxonOrder: Double {
+        Double(1000 * family.sortKey + taxonOffset)
+    }
 }
 
 extension [FakeObservationSortable] {

@@ -4,13 +4,19 @@
 import Schema
 
 extension eBirdChecklist.Obs: @retroactive Identifiable {
-    public var id: String { obsId }
+    public var id: String {
+        obsId
+    }
 }
 
 public extension eBirdChecklist.Obs {
-    var hasVideos: Bool { (mediaCounts?.V ?? 0) != 0 }
+    var hasVideos: Bool {
+        (mediaCounts?.V ?? 0) != 0
+    }
 
-    var hasPhotos: Bool { (mediaCounts?.P ?? 0) != 0 }
+    var hasPhotos: Bool {
+        (mediaCounts?.P ?? 0) != 0
+    }
 
     var printableName: String {
         guard let taxon = Taxonomy.global.find(for: speciesCode) else {

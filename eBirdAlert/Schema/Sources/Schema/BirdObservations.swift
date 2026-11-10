@@ -4,11 +4,26 @@
 import Foundation
 
 public struct BirdObservations {
-    private var rep: eBirdObservation { locations.first!.observations.first! }
-    public var speciesCode: String { rep.speciesCode }
-    public var comName: String { rep.comName }
-    public var sciName: String { rep.sciName }
-    public var latestSighting: Date { rep.obsDt }
+    private var rep: eBirdObservation {
+        locations.first!.observations.first!
+    }
+
+    public var speciesCode: String {
+        rep.speciesCode
+    }
+
+    public var comName: String {
+        rep.comName
+    }
+
+    public var sciName: String {
+        rep.sciName
+    }
+
+    public var latestSighting: Date {
+        rep.obsDt
+    }
+
     public let locations: [LocationObservations]
 
     public init(observations: [eBirdObservation]) {

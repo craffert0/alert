@@ -64,7 +64,9 @@ public extension [eBirdObservation] {
 }
 
 extension eBirdObservation: Identifiable {
-    public var id: String { "\(obsId).\(subId)" }
+    public var id: String {
+        "\(obsId).\(subId)"
+    }
 }
 
 extension eBirdObservation: Hashable {

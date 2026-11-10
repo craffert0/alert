@@ -4,7 +4,9 @@
 import Schema
 
 extension eBirdRecentObservation: @retroactive Identifiable {
-    public var id: String { "\(speciesCode).\(locId)" }
+    public var id: String {
+        "\(speciesCode).\(locId)"
+    }
 }
 
 extension eBirdRecentObservation: @retroactive Equatable {
@@ -14,7 +16,9 @@ extension eBirdRecentObservation: @retroactive Equatable {
 }
 
 extension eBirdRecentObservation: @retroactive ObservationSortable {
-    var taxon: Taxon? { Taxonomy.global.find(for: speciesCode) }
+    var taxon: Taxon? {
+        Taxonomy.global.find(for: speciesCode)
+    }
 
     public var taxonOrder: Double {
         taxon?.taxonOrder ?? 9_999_999
@@ -26,7 +30,9 @@ extension eBirdRecentObservation: @retroactive ObservationSortable {
 }
 
 extension eBirdRecentObservation: Matchable {
-    var matchText: String { comName }
+    var matchText: String {
+        comName
+    }
 }
 
 extension eBirdRecentObservation: ChecklistDataServiceObservation {}

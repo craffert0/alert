@@ -9,9 +9,9 @@ extension TimeZone {
         // nb: this #available MUST be in its own test
         if #available(iOS 26.0, macOS 26.0, *) {
             if let request = MKReverseGeocodingRequest(
-                location: .init(latitude: latitude, longitude: longitude)
-            ),
-                let first = try? await request.mapItems.compactMap(\.timeZone).first
+                   location: .init(latitude: latitude, longitude: longitude)
+               ),
+               let first = try? await request.mapItems.compactMap(\.timeZone).first
             {
                 return first
             }

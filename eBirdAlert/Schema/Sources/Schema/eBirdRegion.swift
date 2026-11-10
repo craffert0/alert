@@ -12,7 +12,9 @@ public extension eBirdRegion {
 }
 
 extension eBirdRegion: Identifiable {
-    public var id: String { code }
+    public var id: String {
+        code
+    }
 }
 
 extension eBirdRegion: Comparable {

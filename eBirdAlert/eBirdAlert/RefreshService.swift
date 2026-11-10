@@ -11,12 +11,12 @@ struct RefreshService {
     let notificationService: NotificationService
     let notablesViewModel: NotablesViewModel
 
-    // The user saw these birds' speciesCodes.
+    /// The user saw these birds' speciesCodes.
     @AppStorage("system.lastViewedNotables")
     var lastViewedNotables: Set<String> = []
 
-    // The user has seen these birds' speciesCodes or been notified about
-    // them.
+    /// The user has seen these birds' speciesCodes or been notified about
+    /// them.
     @AppStorage("system.lastLoadedNotables")
     var lastLoadedNotables: Set<String> = []
 

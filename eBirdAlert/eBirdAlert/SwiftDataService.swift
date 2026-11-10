@@ -61,14 +61,13 @@ extension SwiftDataService: ChecklistDataService {
     }
 }
 
+@MainActor
 extension SwiftDataService {
-    // Stuff for DebugLine!
-    @MainActor
+    /// Stuff for DebugLine!
     func addLine(text: String) {
         modelContext.insert(DebugLine(text: text))
     }
 
-    @MainActor
     func clearLines() {
         guard let lines = try? modelContext.fetch(FetchDescriptor<DebugLine>()) else {
             return

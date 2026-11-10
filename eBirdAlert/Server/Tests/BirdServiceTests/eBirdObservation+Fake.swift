@@ -5,5 +5,7 @@ import Foundation
 import Schema
 
 extension [String] {
-    var fakes: [eBirdObservation] { self.map { eBirdObservation(fake: $0) } }
+    var fakes: [eBirdObservation] {
+        self.map { eBirdObservation(fake: $0) }
+    }
 }

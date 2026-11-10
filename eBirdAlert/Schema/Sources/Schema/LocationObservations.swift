@@ -4,12 +4,30 @@
 import Foundation
 
 public struct LocationObservations {
-    public var locId: String { observations.first!.locId }
-    public var locName: String { observations.first!.locName }
-    public var lat: Double { observations.first!.lat }
-    public var lng: Double { observations.first!.lng }
-    // public var speciesCode: String { observations.first!.speciesCode }
-    public var comName: String { observations.first!.comName }
-    public var latestSighting: Date { observations.first!.obsDt }
+    public var locId: String {
+        observations.first!.locId
+    }
+
+    public var locName: String {
+        observations.first!.locName
+    }
+
+    public var lat: Double {
+        observations.first!.lat
+    }
+
+    public var lng: Double {
+        observations.first!.lng
+    }
+
+    /// public var speciesCode: String { observations.first!.speciesCode }
+    public var comName: String {
+        observations.first!.comName
+    }
+
+    public var latestSighting: Date {
+        observations.first!.obsDt
+    }
+
     public let observations: [eBirdObservation]
 }

@@ -5,11 +5,15 @@ import Foundation
 import Schema
 
 extension BirdObservations: @retroactive Identifiable {
-    public var id: String { speciesCode }
+    public var id: String {
+        speciesCode
+    }
 }
 
 extension BirdObservations: @retroactive ObservationSortable {
-    var taxon: Taxon? { Taxonomy.global.find(for: speciesCode) }
+    var taxon: Taxon? {
+        Taxonomy.global.find(for: speciesCode)
+    }
 
     public var taxonOrder: Double {
         taxon?.taxonOrder ?? 9_999_999
@@ -19,11 +23,15 @@ extension BirdObservations: @retroactive ObservationSortable {
         taxon?.familyCode ?? .unknown
     }
 
-    public var obsDt: Date { latestSighting }
+    public var obsDt: Date {
+        latestSighting
+    }
 }
 
 extension BirdObservations: Matchable {
-    var matchText: String { comName }
+    var matchText: String {
+        comName
+    }
 }
 
 extension BirdObservations: @retroactive Equatable {

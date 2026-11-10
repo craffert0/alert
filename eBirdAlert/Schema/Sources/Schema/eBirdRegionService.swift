@@ -15,7 +15,7 @@ public extension eBirdRegionService {
 }
 
 public extension eBirdRegionService {
-    // Get a list of lowest regions containing the location.
+    /// Get a list of lowest regions containing the location.
     @concurrent
     func getRegions(at location: Coordinate) async -> [eBirdRegionInfo] {
         await getRegions(location, .world, .world, .custom)
@@ -60,8 +60,8 @@ public extension eBirdRegionService {
 }
 
 public extension eBirdRegionService {
-    // Get a list of lowest regions within the window specified by location &
-    // span.
+    /// Get a list of lowest regions within the window specified by location &
+    /// span.
     func getRegions(at location: Coordinate,
                     around span: CoordinateSpan) async
         -> [eBirdRegionInfo]
@@ -110,8 +110,8 @@ public extension eBirdRegionService {
 }
 
 public extension eBirdRegionService {
-    // Get the lowest containing region whose center is closest to the
-    // location.
+    /// Get the lowest containing region whose center is closest to the
+    /// location.
     func getRegion(at location: Coordinate) async -> eBirdRegionInfo? {
         let regions = await getRegions(at: location)
         guard var best = regions.first else { return nil }

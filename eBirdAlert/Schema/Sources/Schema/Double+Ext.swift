@@ -7,6 +7,11 @@ public extension Double {
     static let maxNotableDistance: Double = 250
     static let maxLocalDistance: Double = 50
 
-    var reduced: Double { log(self) }
-    var expanded: Double { exp(self) }
+    var reduced: Double {
+        log(self)
+    }
+
+    var expanded: Double {
+        exp(self)
+    }
 }
